@@ -5,14 +5,13 @@ import java.sql.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-
 @Entity
-//@NamedQuery(name = "VwUserprofile.findUserProfileByUserId", query = "SELECT o FROM VwUserprofile o  WHERE o.UserId = (?1)")
+// @NamedQuery(name = "VwUserprofile.findUserProfileByUserId", query = "SELECT o
+// FROM VwUserprofile o WHERE o.UserId = (?1)")
 @Table(name = "vw_userprofile")
-public class VwUserprofile implements java.io.Serializable{
+public class VwUserprofile implements java.io.Serializable {
 
 	/**
 	 * 
@@ -35,52 +34,47 @@ public class VwUserprofile implements java.io.Serializable{
 	private String ZipCode;
 	private Date DOB;
 	private String Gender;
-	
-	public  VwUserprofile(){
-		
+
+	public VwUserprofile() {
+
 	}
-	
-	
-	public  VwUserprofile(int UserId,String FirstName,String LastName,String NickName,
-    		String Address_1,String Address_2,String CityName,String StateName){
-    	    
-    	// this.UserProfileID=UserProfileID;
-    	 this.UserId=UserId;
-    	 this.FirstName=FirstName;
-    	 this.LastName=LastName;
-    	 this.NickName=NickName;
-    	 this.Address_1=Address_1;
-    	 this.Address_2=Address_2;
-    	 this.CityName=CityName;
-    	 this.StateName=StateName;
-    	 
-    			 
-		
+
+	public VwUserprofile(int UserId, String FirstName, String LastName, String NickName, String Address_1,
+			String Address_2, String CityName, String StateName) {
+
+		// this.UserProfileID=UserProfileID;
+		this.UserId = UserId;
+		this.FirstName = FirstName;
+		this.LastName = LastName;
+		this.NickName = NickName;
+		this.Address_1 = Address_1;
+		this.Address_2 = Address_2;
+		this.CityName = CityName;
+		this.StateName = StateName;
+
 	}
-	
-	
-    public  VwUserprofile(int UserId,String FirstName,String LastName,String NickName,
-    		String Address_1,String Address_2,String CityName,String StateName,String CountryName,String ZipCode,
-    		Date DOB,String Gender){
-    	    
-    	// this.UserProfileID=UserProfileID;
-    	 this.UserId=UserId;
-    	 this.FirstName=FirstName;
-    	 this.LastName=LastName;
-    	 this.NickName=NickName;
-    	 this.Address_1=Address_1;
-    	 this.Address_2=Address_2;
-    	 this.CityName=CityName;
-    	 this.StateName=StateName;
-    	 this.CountryName=CountryName;
-    	 this.ZipCode=ZipCode;
-    	 this.DOB=DOB;
-    	 this.Gender=Gender;
-    			 
-		
+
+	public VwUserprofile(int UserId, String FirstName, String LastName, String NickName, String Address_1,
+			String Address_2, String CityName, String StateName, String CountryName, String ZipCode, Date DOB,
+			String Gender) {
+
+		// this.UserProfileID=UserProfileID;
+		this.UserId = UserId;
+		this.FirstName = FirstName;
+		this.LastName = LastName;
+		this.NickName = NickName;
+		this.Address_1 = Address_1;
+		this.Address_2 = Address_2;
+		this.CityName = CityName;
+		this.StateName = StateName;
+		this.CountryName = CountryName;
+		this.ZipCode = ZipCode;
+		this.DOB = DOB;
+		this.Gender = Gender;
+
 	}
-   
-    @Id
+
+	@Id
 	@Column(name = "UserProfileID")
 	public int getUserProfileID() {
 		return UserProfileID;
@@ -186,8 +180,4 @@ public class VwUserprofile implements java.io.Serializable{
 		this.Gender = gender;
 	}
 
-	
-    
-    
-	
 }

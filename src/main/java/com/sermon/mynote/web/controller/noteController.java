@@ -36,17 +36,16 @@ public class noteController {
 
 	@Autowired
 	private NoteService noteService;
-	
+
 	@Autowired
 	private UserService userService;
 
 	@RequestMapping(value = "/addNote", method = RequestMethod.POST, headers = { "Content-type=application/json" })
 	public @ResponseBody Note PostNote(@RequestBody Note note) {
-		
 
 		Note newNote = noteService.save(note);
-		
-		userService.updateUserRole(note.getAuthorId(),2);
+
+		userService.updateUserRole(note.getAuthorId(), 2);
 
 		return newNote;
 	}
@@ -54,8 +53,7 @@ public class noteController {
 	/* update */
 	@RequestMapping(value = "/updateNote/{id}", method = RequestMethod.PUT)
 	@ResponseBody
-	public StatusResponse updateNote(@RequestBody Note note,
-			@PathVariable Long id) {
+	public StatusResponse updateNote(@RequestBody Note note, @PathVariable Long id) {
 
 		Note noteTemp = new Note();
 		Date date = new Date();
@@ -144,8 +142,7 @@ public class noteController {
 	}
 
 	@RequestMapping(value = "/publishLater", method = RequestMethod.POST, headers = { "Content-type=application/json" })
-	public @ResponseBody StatusResponse publishLater(
-			@RequestBody PublishSchedule publishSchedule) {
+	public @ResponseBody StatusResponse publishLater(@RequestBody PublishSchedule publishSchedule) {
 
 		PublishSchedule schedule = noteService.publishLater(publishSchedule);
 
@@ -163,8 +160,7 @@ public class noteController {
 	@ResponseBody
 	public StatusResponse updatePublishNow(@RequestBody Note note) {
 
-		int result = noteService.updatePublishNow(note.getNoteId(),
-				note.getPublished());
+		int result = noteService.updatePublishNow(note.getNoteId(), note.getPublished());
 
 		StatusResponse response = new StatusResponse();
 
@@ -175,85 +171,84 @@ public class noteController {
 
 		return response;
 	}
-	
+
 	@RequestMapping(value = "/createNote", method = RequestMethod.POST)
-	 @ResponseBody
-	 public StatusResponse createNote(@RequestBody AddNote note) {
+	@ResponseBody
+	public StatusResponse createNote(@RequestBody AddNote note) {
 
-	  int result=noteService.createNote(note);
+		int result = noteService.createNote(note);
 
-	  StatusResponse response = new StatusResponse();
+		StatusResponse response = new StatusResponse();
 
-	  if (result > 0)
-	   response.setStatus(true);
-	  else
-	   response.setStatus(false);
+		if (result > 0)
+			response.setStatus(true);
+		else
+			response.setStatus(false);
 
-	  return response;
-	 }
-	
+		return response;
+	}
+
 	@RequestMapping(value = "/getAddNoteDetails", method = RequestMethod.GET, produces = "application/json")
-	 @ResponseBody
-	 public AddNote getAddNoteDetails() {
+	@ResponseBody
+	public AddNote getAddNoteDetails() {
 
-	  AddNote note = new AddNote();
-	  note.setAuthorId(288);
-	  note.setCategoryId(1);
-	  note.setIntroduction("intro test");
-	  note.setKeywords("test");
-	  note.setSubTitle("subtitle test");
-	  note.setTitle("test");
-	  note.setOrganizationId(2);
-	  note.setGroupId(1);
-	  note.setPublished("N");
-	  note.setNoteId(1);
-	  
-	  
-	  List<Section> sections=new ArrayList<Section>();
-	  
-	  Section section1=new Section();
-	  section1.setSectionId(1);
-	  section1.setNoteId(1);
-	  section1.setSectionText("example section");
-	  section1.setSectionKeyWords("1,2");
-	  sections.add(section1);
-	  
-	  Section section2=new Section();
-	  section2.setNoteId(1);
-	  section2.setSectionId(2);
-	  section2.setSectionText("example section");
-	  section2.setSectionKeyWords("1,2");
-	  sections.add(section2);
-	  
-	  note.setSections(sections);
-	  
-	  List<SubSection> subSections=new ArrayList<SubSection>();
-	  
-	  SubSection subSection1=new SubSection();
-	  subSection1.setSectionId(1);
-	  subSection1.setSubsectionId(1);
-	  subSection1.setSubsectionText("example subsection");
-	  subSection1.setSubsectionKeyWords("1,2");
-	  subSections.add(subSection1);
-	  
-	  SubSection subSection2=new SubSection();
-	  subSection2.setSectionId(1);
-	  subSection2.setSubsectionId(2);
-	  subSection2.setSubsectionText("example subsection");
-	  subSection2.setSubsectionKeyWords("1,2");
-	  subSections.add(subSection2);
-	  
-	  SubSection subSection3=new SubSection();
-	  subSection3.setSectionId(2);
-	  subSection3.setSubsectionId(1);
-	  subSection3.setSubsectionText("example subsection");
-	  subSection3.setSubsectionKeyWords("1,2");
-	  subSections.add(subSection3);
-	  
-	  note.setSubSections(subSections);
-	  
-	  return note;
-	  
-	 }
+		AddNote note = new AddNote();
+		note.setAuthorId(288);
+		note.setCategoryId(1);
+		note.setIntroduction("intro test");
+		note.setKeywords("test");
+		note.setSubTitle("subtitle test");
+		note.setTitle("test");
+		note.setOrganizationId(2);
+		note.setGroupId(1);
+		note.setPublished("N");
+		note.setNoteId(1);
+
+		List<Section> sections = new ArrayList<Section>();
+
+		Section section1 = new Section();
+		section1.setSectionId(1);
+		section1.setNoteId(1);
+		section1.setSectionText("example section");
+		section1.setSectionKeyWords("1,2");
+		sections.add(section1);
+
+		Section section2 = new Section();
+		section2.setNoteId(1);
+		section2.setSectionId(2);
+		section2.setSectionText("example section");
+		section2.setSectionKeyWords("1,2");
+		sections.add(section2);
+
+		note.setSections(sections);
+
+		List<SubSection> subSections = new ArrayList<SubSection>();
+
+		SubSection subSection1 = new SubSection();
+		subSection1.setSectionId(1);
+		subSection1.setSubsectionId(1);
+		subSection1.setSubsectionText("example subsection");
+		subSection1.setSubsectionKeyWords("1,2");
+		subSections.add(subSection1);
+
+		SubSection subSection2 = new SubSection();
+		subSection2.setSectionId(1);
+		subSection2.setSubsectionId(2);
+		subSection2.setSubsectionText("example subsection");
+		subSection2.setSubsectionKeyWords("1,2");
+		subSections.add(subSection2);
+
+		SubSection subSection3 = new SubSection();
+		subSection3.setSectionId(2);
+		subSection3.setSubsectionId(1);
+		subSection3.setSubsectionText("example subsection");
+		subSection3.setSubsectionKeyWords("1,2");
+		subSections.add(subSection3);
+
+		note.setSubSections(subSections);
+
+		return note;
+
+	}
 
 }

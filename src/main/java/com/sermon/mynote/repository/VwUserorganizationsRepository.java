@@ -6,13 +6,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.sermon.mynote.domain.VwUserorganizations;
 
+public interface VwUserorganizationsRepository extends PagingAndSortingRepository<VwUserorganizations, Long> {
 
-
-
-public interface VwUserorganizationsRepository extends PagingAndSortingRepository<VwUserorganizations, Long>{
-	
 	public List<VwUserorganizations> findOrganizationsByUser(int userid);
-		
-	
 
 }

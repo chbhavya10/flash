@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sermon.mynote.domain.NoteLike;
 import com.sermon.mynote.domain.StatusResponse;
-import com.sermon.mynote.domain.User;
 import com.sermon.mynote.service.NoteLikeService;
 
 @RequestMapping("/noteLike")
@@ -32,17 +31,17 @@ public class NoteLikeController {
 
 		if (like != null)
 			response.setStatus(true);
-		else 
+		else
 			response.setStatus(false);
 
 		return response;
 	}
-	 
+
 	@RequestMapping(value = "/updateLike", method = RequestMethod.POST)
 	@ResponseBody
 	public StatusResponse updateLike(@RequestBody NoteLike noteLike) {
 
-		int result = noteLikeService.updateLike(noteLike.getNoteId(),noteLike.getUserId(),noteLike.getLikeCount());
+		int result = noteLikeService.updateLike(noteLike.getNoteId(), noteLike.getUserId(), noteLike.getLikeCount());
 		StatusResponse response = new StatusResponse();
 
 		if (result == 0)

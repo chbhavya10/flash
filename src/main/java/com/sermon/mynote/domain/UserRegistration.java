@@ -34,7 +34,6 @@ public class UserRegistration implements Serializable {
 	private String zipCode;
 	private Date DOB;
 	private String Gender;
-	
 
 	public String getAddress1() {
 		return address1;
@@ -141,7 +140,6 @@ public class UserRegistration implements Serializable {
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
 	}
-
 
 	public String getUserPhone() {
 		return userPhone;

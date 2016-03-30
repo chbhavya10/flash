@@ -15,72 +15,71 @@ import com.sermon.mynote.domain.StatusResponse;
 import com.sermon.mynote.domain.SubSection;
 import com.sermon.mynote.service.SubSectionService;
 
-
 @RequestMapping("/subsection")
 @Controller
 public class SubSectionController {
-	
-final Logger logger = LoggerFactory.getLogger(SubSectionController.class);	
-	
+
+	final Logger logger = LoggerFactory.getLogger(SubSectionController.class);
+
 	@Autowired
 	MessageSource messageSource;
-	
+
 	@Autowired
 	private SubSectionService subsectionService;
-	
-	@RequestMapping(value = "/addSubSection", method = RequestMethod.POST,headers = {"Content-type=application/json"})
+
+	@RequestMapping(value = "/addSubSection", method = RequestMethod.POST, headers = {
+			"Content-type=application/json" })
 	public @ResponseBody SubSection PostSubsection(@RequestBody SubSection subsection) {
-		
-		
-		SubSection newSubSection=subsectionService.save(subsection);
-		
+
+		SubSection newSubSection = subsectionService.save(subsection);
+
 		return newSubSection;
 	}
-	
-	/*update  */
-	@RequestMapping(value="/updateSubSection/{id}", method=RequestMethod.PUT)
-    @ResponseBody
-    public StatusResponse updateNote(@RequestBody SubSection subsection,@PathVariable Long id) {
-       
-		 SubSection subsectionTemp=new SubSection();
-		 subsectionTemp=subsectionService.findById(id.intValue());
-		 subsectionTemp.setSectionId(subsection.getSectionId());
-		 subsectionTemp.setSubsectionKeyWords(subsection.getSubsectionKeyWords());
-		 subsectionTemp.setSubsectionText(subsection.getSubsectionText());
-		
-		 SubSection subsectionResponse = subsectionService.save(subsectionTemp);
 
-			StatusResponse response = new StatusResponse();
-
-			if (subsectionResponse != null)
-				response.setStatus(true);
-			else
-				response.setStatus(false);
-
-			return response;
-        
-    }
-	
-	@RequestMapping(value="/delete/{id}", method=RequestMethod.DELETE)
-    @ResponseBody
-    public StatusResponse delete(@PathVariable Long id) {
-        logger.info("Deleting note with id: " + id);
-        SubSection subsectionTemp = subsectionService.findById(id.intValue());
-        subsectionService.delete(subsectionTemp);
-        logger.info("subsection deleted successfully");
-        StatusResponse status = new StatusResponse();
-        status.setStatus(true);
-        
-        return status;
-     }
-    
-	@RequestMapping(value = "/searchSubSection/{id}", method = RequestMethod.GET, produces="application/json")
+	/* update */
+	@RequestMapping(value = "/updateSubSection/{id}", method = RequestMethod.PUT)
 	@ResponseBody
-	public SubSection getSubSectionById(@PathVariable int id) {	 
-		logger.info("Listing subsection");	
-		
+	public StatusResponse updateNote(@RequestBody SubSection subsection, @PathVariable Long id) {
+
+		SubSection subsectionTemp = new SubSection();
+		subsectionTemp = subsectionService.findById(id.intValue());
+		subsectionTemp.setSectionId(subsection.getSectionId());
+		subsectionTemp.setSubsectionKeyWords(subsection.getSubsectionKeyWords());
+		subsectionTemp.setSubsectionText(subsection.getSubsectionText());
+
+		SubSection subsectionResponse = subsectionService.save(subsectionTemp);
+
+		StatusResponse response = new StatusResponse();
+
+		if (subsectionResponse != null)
+			response.setStatus(true);
+		else
+			response.setStatus(false);
+
+		return response;
+
+	}
+
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+	@ResponseBody
+	public StatusResponse delete(@PathVariable Long id) {
+		logger.info("Deleting note with id: " + id);
+		SubSection subsectionTemp = subsectionService.findById(id.intValue());
+		subsectionService.delete(subsectionTemp);
+		logger.info("subsection deleted successfully");
+		StatusResponse status = new StatusResponse();
+		status.setStatus(true);
+
+		return status;
+	}
+
+	@RequestMapping(value = "/searchSubSection/{id}", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public SubSection getSubSectionById(@PathVariable int id) {
+		logger.info("Listing subsection");
+
 		SubSection subsection = subsectionService.findById(id);
 		return subsection;
 	}
-	
+
 }

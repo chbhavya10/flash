@@ -16,6 +16,10 @@ import javax.persistence.Table;
 @Table(name = "vw_NoteSummary")
 public class VwNoteSummary implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int noteId;
 	private String author;
 	private String title;

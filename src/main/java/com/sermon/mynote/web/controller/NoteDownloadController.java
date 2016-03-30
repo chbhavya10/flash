@@ -22,15 +22,15 @@ public class NoteDownloadController {
 	@Autowired
 	private NoteDownloadService noteDownloadService;
 
-	@RequestMapping(value = "/addNoteDownload", method = RequestMethod.POST, headers = { "Content-type=application/json" })
-	public @ResponseBody StatusResponse PostNoteDownload(
-			@RequestBody NoteDownload noteDownload) {
+	@RequestMapping(value = "/addNoteDownload", method = RequestMethod.POST, headers = {
+			"Content-type=application/json" })
+	public @ResponseBody StatusResponse PostNoteDownload(@RequestBody NoteDownload noteDownload) {
 
 		NoteDownload newNoteDownload = noteDownloadService.save(noteDownload);
-		
-		StatusResponse response=new StatusResponse();
-		
-		if(newNoteDownload !=null)
+
+		StatusResponse response = new StatusResponse();
+
+		if (newNoteDownload != null)
 			response.setStatus(true);
 		else
 			response.setStatus(false);

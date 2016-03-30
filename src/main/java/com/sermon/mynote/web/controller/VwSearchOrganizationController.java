@@ -15,19 +15,16 @@ import com.sermon.mynote.service.VwSearchOrganizationService;
 @RequestMapping("/searchorg")
 @Controller
 public class VwSearchOrganizationController {
-	
-	@Autowired 
+
+	@Autowired
 	private VwSearchOrganizationService vwSearchOrganizationService;
 
-	
-	
-	@RequestMapping(value = "/search/{orgname}/{zipcode}/{city}", method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(value = "/search/{orgname}/{zipcode}/{city}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public List<SearchOrganization> SearchOrganiz(@PathVariable  String orgname,@PathVariable String zipcode,@PathVariable String city) {	 
-			
-	
-		
-		List<SearchOrganization> searchOrganization = vwSearchOrganizationService.SearchOrganiz(orgname,zipcode,city);
+	public List<SearchOrganization> SearchOrganiz(@PathVariable String orgname, @PathVariable String zipcode,
+			@PathVariable String city) {
+
+		List<SearchOrganization> searchOrganization = vwSearchOrganizationService.SearchOrganiz(orgname, zipcode, city);
 		return searchOrganization;
 	}
 }

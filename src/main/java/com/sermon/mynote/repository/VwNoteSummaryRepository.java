@@ -6,11 +6,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.sermon.mynote.domain.VwNoteSummary;
 
+public interface VwNoteSummaryRepository extends PagingAndSortingRepository<VwNoteSummary, Long> {
 
-
-
-public interface VwNoteSummaryRepository extends PagingAndSortingRepository<VwNoteSummary,Long>{
-	
 	public List<VwNoteSummary> findNoteSummaryByNoteId(int noteid);
 
 }

@@ -17,32 +17,28 @@ import com.sermon.mynote.service.SubSectionService;
 @Service("subsectionService")
 @Repository
 @Transactional
-public class SubSectionServiceImpl implements SubSectionService{
+public class SubSectionServiceImpl implements SubSectionService {
 
-	
-	final Logger logger = LoggerFactory.getLogger(SubSectionServiceImpl.class);	
+	final Logger logger = LoggerFactory.getLogger(SubSectionServiceImpl.class);
 
 	@PersistenceContext
 	private EntityManager em;
 
 	@Autowired
 	private SubSectionRepository subsectionRepository;
-	
-	
-   public SubSection findById(Integer id)
-   {
-	   return subsectionRepository.findOne(id.intValue());
-   }
-	
-	public SubSection save(SubSection subsection){
-		
+
+	public SubSection findById(Integer id) {
+		return subsectionRepository.findOne(id.intValue());
+	}
+
+	public SubSection save(SubSection subsection) {
+
 		return subsectionRepository.save(subsection);
 	}
-	
 
 	@Override
-    public void delete(SubSection subsection) {
+	public void delete(SubSection subsection) {
 		SubSection mergedsubSection = em.merge(subsection);
-        em.remove(mergedsubSection);
-    }
+		em.remove(mergedsubSection);
+	}
 }

@@ -1,6 +1,5 @@
 package com.sermon.mynote.service.jpa;
 
-import java.math.BigDecimal;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -78,8 +77,8 @@ public class UserServiceImpl implements UserService {
 		return userRepository.save(user);
 	}
 
-	public boolean createUser(String username, String useremail,
-			String userpassword, String userStatus, Timestamp currentDate) {
+	public boolean createUser(String username, String useremail, String userpassword, String userStatus,
+			Timestamp currentDate) {
 		/*
 		 * List result = em .createNamedQuery("add_user")
 		 * .setParameter("username", username) .setParameter("useremail",
@@ -88,13 +87,10 @@ public class UserServiceImpl implements UserService {
 		 */
 
 		String password = AppUtil.sha256(userpassword);
-		StoredProcedureQuery proc = em
-				.createNamedStoredProcedureQuery("User.add_user");
+		StoredProcedureQuery proc = em.createNamedStoredProcedureQuery("User.add_user");
 
-		proc.setParameter("username", username)
-				.setParameter("useremail", useremail)
-				.setParameter("userpassword", password)
-				.setParameter("userStatus", userStatus)
+		proc.setParameter("username", username).setParameter("useremail", useremail)
+				.setParameter("userpassword", password).setParameter("userStatus", userStatus)
 				.setParameter("createDt", currentDate);
 
 		boolean result = proc.execute();
@@ -104,8 +100,7 @@ public class UserServiceImpl implements UserService {
 
 	public int updateUserPassword(Integer userId, String newPassword) {
 
-		StoredProcedureQuery proc = em
-				.createNamedStoredProcedureQuery("User.update_userpassword");
+		StoredProcedureQuery proc = em.createNamedStoredProcedureQuery("User.update_userpassword");
 		String password = AppUtil.sha256(newPassword);
 		proc.setParameter("userId", userId).setParameter("userPwd", password);
 
@@ -126,8 +121,7 @@ public class UserServiceImpl implements UserService {
 			Query query = em
 					.createNativeQuery(
 							"select userid returnvalue from user where username=:username and userpassword=:password")
-					.setParameter("username", username)
-					.setParameter("password", encryptPassword);
+					.setParameter("username", username).setParameter("password", encryptPassword);
 			System.out.println(query);
 			query.setParameter("username", username);
 
@@ -149,9 +143,7 @@ public class UserServiceImpl implements UserService {
 	public Integer checkUserNameAvailability(String username) {
 
 		try {
-			Query query = em
-					.createNativeQuery(
-							"select userid returnvalue from user where username=:username")
+			Query query = em.createNativeQuery("select userid returnvalue from user where username=:username")
 					.setParameter("username", username);
 			System.out.println(query);
 			query.setParameter("username", username);
@@ -170,9 +162,7 @@ public class UserServiceImpl implements UserService {
 	public int checkUserEmailAvailability(String useremail) {
 
 		try {
-			Query query = em
-					.createNativeQuery(
-							"select userid returnvalue from user where useremail=:useremail")
+			Query query = em.createNativeQuery("select userid returnvalue from user where useremail=:useremail")
 					.setParameter("useremail", useremail);
 			System.out.println(query);
 			query.setParameter("useremail", useremail);
@@ -195,8 +185,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void updateUserRole(int authorId, int roleId) {
 
-		StoredProcedureQuery proc = em
-				.createNamedStoredProcedureQuery("User.update_user_role");
+		StoredProcedureQuery proc = em.createNamedStoredProcedureQuery("User.update_user_role");
 		proc.setParameter("roleId", roleId).setParameter("userId", authorId);
 
 		proc.executeUpdate();

@@ -14,50 +14,50 @@ import javax.persistence.Table;
 @Table(name = "OrganizationGroup")
 public class OrganizationGroup implements Serializable {
 
- /**
-  * 
-  */
- private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
- private int organizationGroupId;
- private String groupName;
- private String groupDescription;
+	private int organizationGroupId;
+	private String groupName;
+	private String groupDescription;
 
- public OrganizationGroup() {
+	public OrganizationGroup() {
 
- }
+	}
 
- public OrganizationGroup(int organizationGroupId, String groupName, String groupDescription) {
-  this.organizationGroupId = organizationGroupId;
-  this.groupName = groupName;
-  this.groupDescription = groupDescription;
- }
+	public OrganizationGroup(int organizationGroupId, String groupName, String groupDescription) {
+		this.organizationGroupId = organizationGroupId;
+		this.groupName = groupName;
+		this.groupDescription = groupDescription;
+	}
 
- @Id
- @GeneratedValue(strategy = IDENTITY)
- @Column(name = "OrganizationGroupId")
- public int getOrganizationGroupId() {
-  return organizationGroupId;
- }
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "OrganizationGroupId")
+	public int getOrganizationGroupId() {
+		return organizationGroupId;
+	}
 
- public void setOrganizationGroupId(int organizationGroupId) {
-  this.organizationGroupId = organizationGroupId;
- }
+	public void setOrganizationGroupId(int organizationGroupId) {
+		this.organizationGroupId = organizationGroupId;
+	}
 
- public String getGroupName() {
-  return groupName;
- }
+	public String getGroupName() {
+		return groupName;
+	}
 
- public void setGroupName(String groupName) {
-  this.groupName = groupName;
- }
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
 
- public String getGroupDescription() {
-  return groupDescription;
- }
+	public String getGroupDescription() {
+		return groupDescription;
+	}
 
- public void setGroupDescription(String groupDescription) {
-  this.groupDescription = groupDescription;
- }
+	public void setGroupDescription(String groupDescription) {
+		this.groupDescription = groupDescription;
+	}
 
 }

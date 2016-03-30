@@ -17,6 +17,10 @@ import javax.persistence.Table;
 @Table(name = "country")
 public class Country implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Integer countryId;
 	private String countryName;
 

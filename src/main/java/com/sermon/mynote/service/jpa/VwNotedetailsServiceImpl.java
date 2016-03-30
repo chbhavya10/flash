@@ -15,18 +15,15 @@ import com.sermon.mynote.service.VwNotedetailsService;
 @Service("vwNotedetailsService")
 @Repository
 @Transactional
-public class VwNotedetailsServiceImpl implements VwNotedetailsService{
+public class VwNotedetailsServiceImpl implements VwNotedetailsService {
 
-	
 	@Autowired
 	private VwNotedetailsRepository vwNotedetailsRepository;
-	
-	
-	@Transactional(readOnly=true)
-	public List<VwNotedetails> findNoteDetailsByNoteId(int noteid)
-	{
+
+	@Transactional(readOnly = true)
+	public List<VwNotedetails> findNoteDetailsByNoteId(int noteid) {
 		return Lists.newArrayList(vwNotedetailsRepository.findNoteDetailsByNoteId(noteid));
-		
+
 	}
-	
+
 }

@@ -17,21 +17,18 @@ import com.sermon.mynote.domain.Country;
 import com.sermon.mynote.domain.State;
 import com.sermon.mynote.service.StatesService;
 
-
-
 @RequestMapping("/countries")
 @Controller
 public class StatesController {
-	
+
 	final Logger logger = LoggerFactory.getLogger(StatesController.class);
 
 	@Autowired
 	MessageSource messageSource;
-	
+
 	@Autowired
 	private StatesService statesService;
-	
-	
+
 	@RequestMapping(value = "/getStates", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public List<State> getStates(@RequestBody Country country) {
@@ -40,7 +37,7 @@ public class StatesController {
 		List<State> states = statesService.findStateByCountryId(country.getCountryId());
 		return states;
 	}
-	
+
 	@RequestMapping(value = "/getCountries", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public List<Country> getCountries() {
@@ -49,7 +46,7 @@ public class StatesController {
 		List<Country> countries = statesService.findAll();
 		return countries;
 	}
-	
+
 	@RequestMapping(value = "/getCities", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public List<City> getCities(@RequestBody State state) {
@@ -58,8 +55,5 @@ public class StatesController {
 		List<City> Cities = statesService.findCityByStateId(state.getStateId());
 		return Cities;
 	}
-
-
-
 
 }

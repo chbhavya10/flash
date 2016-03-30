@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "subsection")
-public class SubSection implements java.io.Serializable{
+public class SubSection implements java.io.Serializable {
 
 	/**
 	 * 
@@ -21,8 +21,7 @@ public class SubSection implements java.io.Serializable{
 	private int sectionId;
 	private String subsectionText;
 	private String subsectionKeyWords;
-	
-	
+
 	public SubSection() {
 	}
 
@@ -31,36 +30,40 @@ public class SubSection implements java.io.Serializable{
 		this.subsectionText = subsectionText;
 		this.subsectionKeyWords = subsectionKeyWords;
 	}
-	
+
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "SubSectionID")
 	public Integer getSubsectionId() {
 		return this.subsectionId;
 	}
+
 	public void setSubsectionId(Integer subsectionId) {
 		this.subsectionId = subsectionId;
 	}
+
 	public int getSectionId() {
 		return this.sectionId;
 	}
+
 	public void setSectionId(int sectionId) {
 		this.sectionId = sectionId;
 	}
+
 	public String getSubsectionText() {
 		return this.subsectionText;
 	}
+
 	public void setSubsectionText(String subsectionText) {
 		this.subsectionText = subsectionText;
 	}
+
 	public String getSubsectionKeyWords() {
 		return this.subsectionKeyWords;
 	}
+
 	public void setSubsectionKeyWords(String subsectionKeyWords) {
 		this.subsectionKeyWords = subsectionKeyWords;
 	}
-	
-	
-	
-	
+
 }

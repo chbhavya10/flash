@@ -40,6 +40,10 @@ import javax.persistence.Table;
 @Table(name = "userprofile")
 public class UserProfile implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Integer userProfileId;
 	private Integer userId;
 	private String firstName;

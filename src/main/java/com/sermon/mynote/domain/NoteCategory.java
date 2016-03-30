@@ -17,6 +17,10 @@ import javax.persistence.Table;
 @Table(name = "notecategory")
 public class NoteCategory implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Integer categoryId;
 	private String category;
 

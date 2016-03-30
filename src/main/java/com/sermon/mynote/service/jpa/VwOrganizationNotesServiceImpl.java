@@ -8,27 +8,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
-import com.sermon.mynote.domain.VwNoteSummary;
 import com.sermon.mynote.domain.VwOrganizationNotes;
-import com.sermon.mynote.repository.VwNoteSummaryRepository;
 import com.sermon.mynote.repository.VwOrganizationNotesRepository;
 import com.sermon.mynote.service.VwOrganizationNotesService;
 
 @Service("vwOrganizationNotesService")
 @Repository
 @Transactional
-public class VwOrganizationNotesServiceImpl implements VwOrganizationNotesService{
-	
-	
+public class VwOrganizationNotesServiceImpl implements VwOrganizationNotesService {
+
 	@Autowired
 	private VwOrganizationNotesRepository vwOrganizationNotesRepository;
-	
-	@Transactional(readOnly=true)
+
+	@Transactional(readOnly = true)
 	public List<VwOrganizationNotes> findAll() {
 		return Lists.newArrayList(vwOrganizationNotesRepository.findAll());
 	}
 
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public List<VwOrganizationNotes> findSermonsByOrgId(int orgid) {
 		return Lists.newArrayList(vwOrganizationNotesRepository.findSermonsByOrgId(orgid));
 	}

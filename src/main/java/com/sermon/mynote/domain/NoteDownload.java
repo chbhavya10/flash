@@ -18,8 +18,8 @@ import org.joda.time.DateTime;
 public class NoteDownload implements Serializable {
 
 	/**
-  * 
-  */
+	* 
+	*/
 	private static final long serialVersionUID = 1L;
 	private Integer noteDownloadKey;
 	private int noteId;

@@ -7,7 +7,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import com.sermon.mynote.domain.City;
 
 public interface CityRepository extends PagingAndSortingRepository<City, Integer> {
-	
+
 	List<City> findCityByStateId(Integer stateId);
 
 }

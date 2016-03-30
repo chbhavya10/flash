@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
-import com.sermon.mynote.domain.Organization;
 import com.sermon.mynote.domain.VwUserorganizations;
 import com.sermon.mynote.repository.VwUserorganizationsRepository;
 import com.sermon.mynote.service.VwUserorganizationsService;
@@ -17,16 +16,15 @@ import com.sermon.mynote.service.VwUserorganizationsService;
 @Repository
 @Transactional
 public class VwUserorganizationsServiceImpl implements VwUserorganizationsService {
-	
+
 	@Autowired
 	private VwUserorganizationsRepository vwUserorganizationsRepository;
-	
-	
-	@Transactional(readOnly=true)
-	public List<VwUserorganizations> findOrganizationsByUser(int userid){
-		
+
+	@Transactional(readOnly = true)
+	public List<VwUserorganizations> findOrganizationsByUser(int userid) {
+
 		return Lists.newArrayList(vwUserorganizationsRepository.findOrganizationsByUser(userid));
-		
+
 	}
 
 }

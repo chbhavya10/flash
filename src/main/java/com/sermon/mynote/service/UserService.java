@@ -17,8 +17,8 @@ public interface UserService {
 
 	public User save(User user);
 
-	public boolean createUser(String username, String useremail,
-			String userpassword, String userStatus, Timestamp currentDate);
+	public boolean createUser(String username, String useremail, String userpassword, String userStatus,
+			Timestamp currentDate);
 
 	public int updateUserPassword(Integer userId, String password);
 

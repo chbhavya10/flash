@@ -1,10 +1,7 @@
 package com.sermon.mynote.domain;
 
-import static javax.persistence.GenerationType.IDENTITY;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -23,14 +20,13 @@ public class VwUserorganizations implements java.io.Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -228958903428769102L;
-	
+
 	private int orguserid;
 	private int organizationId;
 	private int userid;
 	private String username;
 	private String organizationName;
 	private String cityName;
-	
 
 	private String stateName;
 	private String countryName;
@@ -39,19 +35,18 @@ public class VwUserorganizations implements java.io.Serializable {
 	public VwUserorganizations() {
 	}
 
-	public VwUserorganizations(int userid, String username, String cityName,
-			String stateName, String countryName,int organizationId) {
+	public VwUserorganizations(int userid, String username, String cityName, String stateName, String countryName,
+			int organizationId) {
 		this.userid = userid;
 		this.username = username;
 		this.cityName = cityName;
 		this.stateName = stateName;
 		this.countryName = countryName;
-		this.organizationId=organizationId;
+		this.organizationId = organizationId;
 	}
 
-	public VwUserorganizations(int userid, String username,
-			String organizationName, String cityName, String stateName,
-			String countryName, String zipcode,int organizationId) {
+	public VwUserorganizations(int userid, String username, String organizationName, String cityName, String stateName,
+			String countryName, String zipcode, int organizationId) {
 		this.userid = userid;
 		this.username = username;
 		this.organizationName = organizationName;
@@ -59,9 +54,9 @@ public class VwUserorganizations implements java.io.Serializable {
 		this.stateName = stateName;
 		this.countryName = countryName;
 		this.zipcode = zipcode;
-		this.organizationId=organizationId;
+		this.organizationId = organizationId;
 	}
-   
+
 	@Id
 	@Column(name = "orguserid")
 	public int getOrguserid() {
@@ -71,8 +66,7 @@ public class VwUserorganizations implements java.io.Serializable {
 	public void setOrguserid(int orguserid) {
 		this.orguserid = orguserid;
 	}
-	
-	
+
 	public int getUserid() {
 		return this.userid;
 	}
@@ -147,57 +141,37 @@ public class VwUserorganizations implements java.io.Serializable {
 		VwUserorganizations castOther = (VwUserorganizations) other;
 
 		return (this.getUserid() == castOther.getUserid())
-				&& ((this.getUsername() == castOther.getUsername()) || (this
-						.getUsername() != null
-						&& castOther.getUsername() != null && this
-						.getUsername().equals(castOther.getUsername())))
-				&& ((this.getOrganizationName() == castOther
-						.getOrganizationName()) || (this.getOrganizationName() != null
-						&& castOther.getOrganizationName() != null && this
-						.getOrganizationName().equals(
-								castOther.getOrganizationName())))
-				&& ((this.getCityName() == castOther.getCityName()) || (this
-						.getCityName() != null
-						&& castOther.getCityName() != null && this
-						.getCityName().equals(castOther.getCityName())))
-				&& ((this.getStateName() == castOther.getStateName()) || (this
-						.getStateName() != null
-						&& castOther.getStateName() != null && this
-						.getStateName().equals(castOther.getStateName())))
-				&& ((this.getCountryName() == castOther.getCountryName()) || (this
-						.getCountryName() != null
-						&& castOther.getCountryName() != null && this
-						.getCountryName().equals(castOther.getCountryName())))
-				&& ((this.getZipcode() == castOther.getZipcode()) || (this
-						.getZipcode() != null && castOther.getZipcode() != null && this
-						.getZipcode().equals(castOther.getZipcode())))
-						
-			    &&     (this.getorganizationId() == castOther.getorganizationId());
+				&& ((this.getUsername() == castOther.getUsername()) || (this.getUsername() != null
+						&& castOther.getUsername() != null && this.getUsername().equals(castOther.getUsername())))
+				&& ((this.getOrganizationName() == castOther.getOrganizationName())
+						|| (this.getOrganizationName() != null && castOther.getOrganizationName() != null
+								&& this.getOrganizationName().equals(castOther.getOrganizationName())))
+				&& ((this.getCityName() == castOther.getCityName()) || (this.getCityName() != null
+						&& castOther.getCityName() != null && this.getCityName().equals(castOther.getCityName())))
+				&& ((this.getStateName() == castOther.getStateName()) || (this.getStateName() != null
+						&& castOther.getStateName() != null && this.getStateName().equals(castOther.getStateName())))
+				&& ((this.getCountryName() == castOther.getCountryName())
+						|| (this.getCountryName() != null && castOther.getCountryName() != null
+								&& this.getCountryName().equals(castOther.getCountryName())))
+				&& ((this.getZipcode() == castOther.getZipcode()) || (this.getZipcode() != null
+						&& castOther.getZipcode() != null && this.getZipcode().equals(castOther.getZipcode())))
+
+				&& (this.getorganizationId() == castOther.getorganizationId());
 	}
 
 	public int hashCode() {
 		int result = 17;
 
 		result = 37 * result + this.getUserid();
-		result = 37 * result
-				+ (getUsername() == null ? 0 : this.getUsername().hashCode());
-		result = 37
-				* result
-				+ (getOrganizationName() == null ? 0 : this
-						.getOrganizationName().hashCode());
-		result = 37 * result
-				+ (getCityName() == null ? 0 : this.getCityName().hashCode());
-		result = 37 * result
-				+ (getStateName() == null ? 0 : this.getStateName().hashCode());
-		result = 37
-				* result
-				+ (getCountryName() == null ? 0 : this.getCountryName()
-						.hashCode());
-		result = 37 * result
-				+ (getZipcode() == null ? 0 : this.getZipcode().hashCode());
-		
+		result = 37 * result + (getUsername() == null ? 0 : this.getUsername().hashCode());
+		result = 37 * result + (getOrganizationName() == null ? 0 : this.getOrganizationName().hashCode());
+		result = 37 * result + (getCityName() == null ? 0 : this.getCityName().hashCode());
+		result = 37 * result + (getStateName() == null ? 0 : this.getStateName().hashCode());
+		result = 37 * result + (getCountryName() == null ? 0 : this.getCountryName().hashCode());
+		result = 37 * result + (getZipcode() == null ? 0 : this.getZipcode().hashCode());
+
 		result = 37 * result + this.getorganizationId();
-		
+
 		return result;
 	}
 

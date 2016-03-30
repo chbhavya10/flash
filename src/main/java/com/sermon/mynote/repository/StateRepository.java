@@ -6,7 +6,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.sermon.mynote.domain.State;
 
-public interface StateRepository extends PagingAndSortingRepository<State, Integer>{
+public interface StateRepository extends PagingAndSortingRepository<State, Integer> {
 
 	List<State> findStateByCountryId(Integer countryId);
 

@@ -22,6 +22,10 @@ import javax.persistence.Table;
 @Table(name = "organizationusers")
 public class OrganizationUsers implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Integer orgUserId;
 	private int organizationId;
 	private int userId;

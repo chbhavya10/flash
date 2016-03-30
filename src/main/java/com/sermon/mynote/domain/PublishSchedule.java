@@ -15,58 +15,58 @@ import javax.persistence.Table;
 @Table(name = "PublishSchedule")
 public class PublishSchedule implements Serializable {
 
- /**
-  * 
-  */
- private static final long serialVersionUID = 1L;
- private int publishScheduleId;
- private int noteId;
- private Date publishDate;
- private Time publishTime;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private int publishScheduleId;
+	private int noteId;
+	private Date publishDate;
+	private Time publishTime;
 
- public PublishSchedule() {
- }
+	public PublishSchedule() {
+	}
 
- public PublishSchedule(int publishScheduleId, int noteId, Date publishDate, Time publishTime) {
-  this.publishScheduleId = publishScheduleId;
-  this.noteId = noteId;
-  this.publishDate = publishDate;
-  this.publishTime = publishTime;
- }
+	public PublishSchedule(int publishScheduleId, int noteId, Date publishDate, Time publishTime) {
+		this.publishScheduleId = publishScheduleId;
+		this.noteId = noteId;
+		this.publishDate = publishDate;
+		this.publishTime = publishTime;
+	}
 
- @Id
- @GeneratedValue(strategy = GenerationType.IDENTITY)
- @Column(name = "PublishScheduleId")
- public int getPublishScheduleId() {
-  return publishScheduleId;
- }
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "PublishScheduleId")
+	public int getPublishScheduleId() {
+		return publishScheduleId;
+	}
 
- public void setPublishScheduleId(int publishScheduleId) {
-  this.publishScheduleId = publishScheduleId;
- }
+	public void setPublishScheduleId(int publishScheduleId) {
+		this.publishScheduleId = publishScheduleId;
+	}
 
- public int getNoteId() {
-  return noteId;
- }
+	public int getNoteId() {
+		return noteId;
+	}
 
- public void setNoteId(int noteId) {
-  this.noteId = noteId;
- }
+	public void setNoteId(int noteId) {
+		this.noteId = noteId;
+	}
 
- public Date getPublishDate() {
-  return publishDate;
- }
+	public Date getPublishDate() {
+		return publishDate;
+	}
 
- public void setPublishDate(Date publishDate) {
-  this.publishDate = publishDate;
- }
+	public void setPublishDate(Date publishDate) {
+		this.publishDate = publishDate;
+	}
 
- public Time getPublishTime() {
-  return publishTime;
- }
+	public Time getPublishTime() {
+		return publishTime;
+	}
 
- public void setPublishTime(Time publishTime) {
-  this.publishTime = publishTime;
- }
+	public void setPublishTime(Time publishTime) {
+		this.publishTime = publishTime;
+	}
 
 }

@@ -3,7 +3,6 @@ package com.sermon.mynote.domain;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,13 +21,12 @@ import org.joda.time.DateTime;
 
 @NamedStoredProcedureQueries({
 
-	@NamedStoredProcedureQuery(name = "NoteLike.update_like", procedureName = "update_like", parameters = {
-			@StoredProcedureParameter(mode = ParameterMode.IN, name = "noteId", type = Integer.class),
-			@StoredProcedureParameter(mode = ParameterMode.IN, name = "userId", type = Integer.class),
-			@StoredProcedureParameter(mode = ParameterMode.IN, name = "likeCount", type = Integer.class)
+		@NamedStoredProcedureQuery(name = "NoteLike.update_like", procedureName = "update_like", parameters = {
+				@StoredProcedureParameter(mode = ParameterMode.IN, name = "noteId", type = Integer.class),
+				@StoredProcedureParameter(mode = ParameterMode.IN, name = "userId", type = Integer.class),
+				@StoredProcedureParameter(mode = ParameterMode.IN, name = "likeCount", type = Integer.class)
 
-	})
-})
+		}) })
 
 @Table(name = "NoteLike")
 public class NoteLike implements Serializable {

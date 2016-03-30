@@ -14,21 +14,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sermon.mynote.domain.VwNotedetails;
 import com.sermon.mynote.service.VwNotedetailsService;
 
-
 @RequestMapping("/notedetail")
 @Controller
 public class VwNotedetailsServiceController {
-	
+
 	@Autowired
 	private VwNotedetailsService vwNotedetailsService;
-	
+
 	final Logger logger = LoggerFactory.getLogger(organizationController.class);
-	
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces="application/json")
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public List<VwNotedetails> getNoteDetailsById(@PathVariable int id) {	 
-		logger.info("Listing contacts");	
-		
+	public List<VwNotedetails> getNoteDetailsById(@PathVariable int id) {
+		logger.info("Listing contacts");
+
 		List<VwNotedetails> vwNotedetails = vwNotedetailsService.findNoteDetailsByNoteId(id);
 		return vwNotedetails;
 	}

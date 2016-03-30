@@ -3,7 +3,7 @@ package com.sermon.mynote.domain;
 import java.io.Serializable;
 
 public class StatusResponse implements Serializable {
-	
+
 	/**
 	 * 
 	 */
@@ -19,6 +19,3 @@ public class StatusResponse implements Serializable {
 	}
 
 }
-
-
-

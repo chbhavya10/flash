@@ -1,28 +1,13 @@
 package com.sermon.mynote.service;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.util.List;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
-import com.sermon.mynote.domain.Note;
 import com.sermon.mynote.domain.Section;
 
-
-
 public interface SectionService {
-	
-	
+
 	public Section findById(Integer id);
-	
+
 	public Section save(Section section);
-	
+
 	public int delete(Section section);
-	
-	
-	
-   
 
 }

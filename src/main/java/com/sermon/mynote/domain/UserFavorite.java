@@ -1,14 +1,11 @@
 
 package com.sermon.mynote.domain;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Type;
 
 // Generated May 7, 2015 9:40:59 PM by Hibernate Tools 4.0.0
 
@@ -20,6 +17,7 @@ import org.hibernate.annotations.Type;
 @Table(name = "userfavorite")
 public class UserFavorite implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
 	/**
 	 * 
 	 */
@@ -28,18 +26,16 @@ public class UserFavorite implements java.io.Serializable {
 	private int userId;
 	private int organizationId;
 
-	public  UserFavorite() {
+	public UserFavorite() {
 
 	}
 
-	public UserFavorite(int userFavoriteId,int userId, int organizationId) {
-	    this.userFavoriteId=userFavoriteId;
+	public UserFavorite(int userFavoriteId, int userId, int organizationId) {
+		this.userFavoriteId = userFavoriteId;
 		this.userId = userId;
 		this.organizationId = organizationId;
 	}
 
-	
-	
 	@Id
 	@Column(name = "UserFavoriteKey")
 	public int getUserFavoriteId() {
@@ -49,7 +45,7 @@ public class UserFavorite implements java.io.Serializable {
 	public void setUserFavoriteId(int userFavoriteId) {
 		this.userFavoriteId = userFavoriteId;
 	}
-   
+
 	@Column(name = "UserID")
 	public int getUserId() {
 		return this.userId;
@@ -67,7 +63,5 @@ public class UserFavorite implements java.io.Serializable {
 	public void setOrganizationId(int organizationId) {
 		this.organizationId = organizationId;
 	}
-
-	
 
 }

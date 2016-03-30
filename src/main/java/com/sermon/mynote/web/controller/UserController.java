@@ -53,8 +53,7 @@ public class UserController {
 
 	@RequestMapping(value = "/validateUser/{username}/{password}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public Integer getValidateUser(@PathVariable String username,
-			@PathVariable String password) {
+	public Integer getValidateUser(@PathVariable String username, @PathVariable String password) {
 		logger.info("Validating user");
 
 		return userService.validateUser(username, password);
@@ -72,8 +71,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/addNewUser", method = RequestMethod.POST, headers = { "Content-type=application/json" })
-	public @ResponseBody StatusResponse PostServiceAddNewUser(
-			@RequestBody User user) {
+	public @ResponseBody StatusResponse PostServiceAddNewUser(@RequestBody User user) {
 
 		System.out.println("user:--" + user.getUserName());
 		logger.debug(user.toString());
@@ -82,8 +80,7 @@ public class UserController {
 
 		Timestamp currentDate = new Timestamp(date.getTime());
 
-		boolean result = userService.createUser(user.getUserName(),
-				user.getUserEmail(), user.getUserPassword(),
+		boolean result = userService.createUser(user.getUserName(), user.getUserEmail(), user.getUserPassword(),
 				user.getUserStatus(), currentDate);
 
 		StatusResponse statusResponse = new StatusResponse();
@@ -111,8 +108,7 @@ public class UserController {
 	@ResponseBody
 	public StatusResponse updateUserPassword(@RequestBody User user) {
 
-		int result = userService.updateUserPassword(user.getUserId(),
-				user.getUserPassword());
+		int result = userService.updateUserPassword(user.getUserId(), user.getUserPassword());
 
 		StatusResponse response = new StatusResponse();
 
@@ -126,8 +122,7 @@ public class UserController {
 
 	@RequestMapping(value = "/checkUserNameAvailability/{username}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public StatusResponse checkUserNameAvailability(
-			@PathVariable String username) {
+	public StatusResponse checkUserNameAvailability(@PathVariable String username) {
 		logger.info("check username availability");
 
 		int result = userService.checkUserNameAvailability(username);
@@ -147,8 +142,7 @@ public class UserController {
 	public StatusResponse checkUserEmailAvailability(@RequestBody User user) {
 		logger.info("check username availability");
 
-		int result = userService
-				.checkUserEmailAvailability(user.getUserEmail());
+		int result = userService.checkUserEmailAvailability(user.getUserEmail());
 
 		StatusResponse response = new StatusResponse();
 
@@ -170,8 +164,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/registerUser", method = RequestMethod.POST, headers = { "Content-type=application/json" })
-	public @ResponseBody StatusResponse registerUser(
-			@RequestBody UserRegistration user) {
+	public @ResponseBody StatusResponse registerUser(@RequestBody UserRegistration user) {
 
 		System.out.println("user:--" + user.getUserName());
 
@@ -186,22 +179,21 @@ public class UserController {
 		int result = 0;
 
 		if (resultUser != null) {
-			
-			String nickName=user.getNickName();
-			
+
+			String nickName = user.getNickName();
+
 			UserProfile profile = new UserProfile();
-			
-			if(nickName==null){
+
+			if (nickName == null) {
 				profile.setNickName(user.getUserName());
-			}else{
+			} else {
 				profile.setNickName(user.getNickName());
 			}
 
-			
 			profile.setUserId(resultUser.getUserId());
 			profile.setFirstName(user.getFirstName());
 			profile.setLastName(user.getLastName());
-			
+
 			profile.setAddress1(user.getAddress1());
 			profile.setAddress2(user.getAddress2());
 			profile.setCountryId(user.getCountryId());
@@ -211,15 +203,12 @@ public class UserController {
 			profile.setDOB(user.getDOB());
 			profile.setGender(user.getGender());
 
-			result = userProfileService.updateUserProfile(profile.getUserId(),
-					profile.getFirstName(), profile.getLastName(),
-					profile.getNickName(), profile.getAddress1(),
-					profile.getAddress2(), profile.getCityId(),
-					profile.getStateId(), profile.getCountryId(),
-					profile.getZipCode()
+			result = userProfileService.updateUserProfile(profile.getUserId(), profile.getFirstName(),
+					profile.getLastName(), profile.getNickName(), profile.getAddress1(), profile.getAddress2(),
+					profile.getCityId(), profile.getStateId(), profile.getCountryId(), profile.getZipCode()
 			// profile.getDOB(),
 			// profile.getGender()
-					);
+			);
 
 		}
 

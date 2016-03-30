@@ -18,6 +18,10 @@ import javax.persistence.Table;
 @Table(name = "vw_OrganizationNotes")
 public class VwOrganizationNotes implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int noteId;
 	private int organizationid;
 	private String organizationName;

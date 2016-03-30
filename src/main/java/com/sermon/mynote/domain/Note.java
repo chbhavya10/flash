@@ -22,14 +22,14 @@ import javax.persistence.Table;
 @Entity
 @NamedStoredProcedureQueries({
 
-@NamedStoredProcedureQuery(name = "Note.delete_note", procedureName = "delete_note", parameters = { @StoredProcedureParameter(mode = ParameterMode.IN, name = "NoteId", type = Integer.class)
+		@NamedStoredProcedureQuery(name = "Note.delete_note", procedureName = "delete_note", parameters = {
+				@StoredProcedureParameter(mode = ParameterMode.IN, name = "NoteId", type = Integer.class)
 
-}),
+		}),
 
-@NamedStoredProcedureQuery(name = "Note.update_publish_now", procedureName = "update_publish_now", parameters = {
-		@StoredProcedureParameter(mode = ParameterMode.IN, name = "noteId", type = Integer.class),
-		@StoredProcedureParameter(mode = ParameterMode.IN, name = "published", type = String.class) })
-})
+		@NamedStoredProcedureQuery(name = "Note.update_publish_now", procedureName = "update_publish_now", parameters = {
+				@StoredProcedureParameter(mode = ParameterMode.IN, name = "noteId", type = Integer.class),
+				@StoredProcedureParameter(mode = ParameterMode.IN, name = "published", type = String.class) }) })
 @Table(name = "note")
 public class Note implements java.io.Serializable {
 
@@ -74,11 +74,9 @@ public class Note implements java.io.Serializable {
 		this.title = title;
 	}
 
-
-	public Note(Integer noteId, int authorId, String title, String subTitle,
-			String introduction, Date eventDate, Date eventTime,
-			Integer categoryId, String keywords, Integer organizationId,
-			Integer groupId, String published) {
+	public Note(Integer noteId, int authorId, String title, String subTitle, String introduction, Date eventDate,
+			Date eventTime, Integer categoryId, String keywords, Integer organizationId, Integer groupId,
+			String published) {
 		this.noteId = noteId;
 		this.authorId = authorId;
 		this.title = title;

@@ -22,27 +22,26 @@ import com.sermon.mynote.service.StatesService;
 @Service("statesService")
 @Repository
 @Transactional
-public class StatesServiceImpl implements StatesService{
-	
+public class StatesServiceImpl implements StatesService {
+
 	@PersistenceContext
-    private EntityManager em;
-	
+	private EntityManager em;
+
 	@Autowired
 	private StateRepository stateRepository;
-	
+
 	@Autowired
 	private CountryRepository countryRepository;
-	
+
 	@Autowired
 	private CityRepository cityRepository;
-	
 
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public List<State> findStateByCountryId(Integer countryId) {
 		return Lists.newArrayList(stateRepository.findStateByCountryId(countryId));
 	}
 
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public List<Country> findAll() {
 		return Lists.newArrayList(countryRepository.findAll());
 	}

@@ -17,6 +17,10 @@ import javax.persistence.Table;
 @Table(name = "city")
 public class City implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Integer cityId;
 	private String cityName;
 	private Integer stateId;
@@ -32,7 +36,7 @@ public class City implements java.io.Serializable {
 		this.cityName = cityName;
 		this.stateId = stateId;
 	}
-   
+
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "CityId")

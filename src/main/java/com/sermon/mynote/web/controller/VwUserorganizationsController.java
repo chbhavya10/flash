@@ -20,14 +20,14 @@ public class VwUserorganizationsController {
 
 	@Autowired
 	private VwUserorganizationsService vwUserorganizationsService;
-	
+
 	final Logger logger = LoggerFactory.getLogger(organizationController.class);
-	
-	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET, produces="application/json")
+
+	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public List<VwUserorganizations> getChurchesByOrganization(@PathVariable int id) {	 
-		logger.info("Listing contacts");	
-		
+	public List<VwUserorganizations> getChurchesByOrganization(@PathVariable int id) {
+		logger.info("Listing contacts");
+
 		List<VwUserorganizations> vwUserorganizations = vwUserorganizationsService.findOrganizationsByUser(id);
 		return vwUserorganizations;
 	}

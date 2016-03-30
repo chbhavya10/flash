@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sermon.mynote.domain.NoteLike;
 import com.sermon.mynote.repository.NoteLikeRepository;
 import com.sermon.mynote.service.NoteLikeService;
-import com.sermon.util.AppUtil;
 
 @Service("noteLikeService")
 @Repository
@@ -57,12 +56,9 @@ public class NoteLikeServiceImpl implements NoteLikeService {
 
 	@Override
 	public int updateLike(int noteId, int userId, int likeCount) {
-		
-		StoredProcedureQuery proc = em
-				.createNamedStoredProcedureQuery("NoteLike.update_like");
-		proc.setParameter("noteId", noteId)
-				.setParameter("userId", userId)
-				.setParameter("likeCount", likeCount);
+
+		StoredProcedureQuery proc = em.createNamedStoredProcedureQuery("NoteLike.update_like");
+		proc.setParameter("noteId", noteId).setParameter("userId", userId).setParameter("likeCount", likeCount);
 
 		int result = proc.executeUpdate();
 		return result;

@@ -18,23 +18,22 @@ import com.sermon.mynote.service.VwUserprofileService;
 @RequestMapping("/findUserProfile")
 @Controller
 public class VwUserProfileController {
-	
-final Logger logger = LoggerFactory.getLogger(VwUserProfileController.class);	
-	
+
+	final Logger logger = LoggerFactory.getLogger(VwUserProfileController.class);
+
 	@Autowired
 	MessageSource messageSource;
-	
-	@Autowired
-	private VwUserprofileService vwUserProfileService ;
 
-	
-	@RequestMapping(value = "/searchByUserId/{id}", method = RequestMethod.GET, produces="application/json")
+	@Autowired
+	private VwUserprofileService vwUserProfileService;
+
+	@RequestMapping(value = "/searchByUserId/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public List<VwUserprofile> getUserProfileByUserId(@PathVariable int id) {	 
-		logger.info("Listing contacts");	
-		
+	public List<VwUserprofile> getUserProfileByUserId(@PathVariable int id) {
+		logger.info("Listing contacts");
+
 		List<VwUserprofile> vwUserprofile = vwUserProfileService.findUserProfileByUserId(id);
 		return vwUserprofile;
 	}
-	
+
 }

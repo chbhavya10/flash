@@ -64,7 +64,7 @@ war {
 task deploy (dependsOn: war){
 copy {
     from "build/libs"
-     into "C/Apache Software Foundation/Tomcat 7.0/webapps"
+     into "C/Program Files/Apache Software Foundation/Tomcat 7.0/webapps"
        include "*.war"
 }
 }
