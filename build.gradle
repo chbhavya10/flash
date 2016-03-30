@@ -1,0 +1,70 @@
+apply plugin: 'java'
+apply plugin: 'war'
+ 
+// Uses JDK 8
+sourceCompatibility = 1.8
+targetCompatibility = 1.8  
+ 
+repositories {
+    flatDir { dirs "src/main/webapp/WEB-INF/lib" }
+    mavenLocal()
+    mavenCentral()
+}
+ 
+dependencies {
+    compile(group: 'org.springframework', name: 'spring-context', version:'4.1.0.RELEASE') {
+exclude(module: 'commons-logging')
+    }
+    compile group: 'org.springframework', name: 'spring-webmvc', version:'4.1.0.RELEASE'
+    compile group: 'org.aspectj', name: 'aspectjrt', version:'1.6.9'
+    compile group: 'org.slf4j', name: 'slf4j-api', version:'1.7.2'
+    compile group: 'javax.inject', name: 'javax.inject', version:'1'
+    compile group: 'javax.servlet', name: 'jstl', version:'1.2'
+    compile group: 'org.springframework', name: 'spring-jdbc', version:'4.1.0.RELEASE'
+    compile group: 'org.springframework', name: 'spring-orm', version:'4.1.0.RELEASE'
+    compile group: 'org.springframework', name: 'spring-tx', version:'4.1.0.RELEASE'
+    compile group: 'org.springframework.data', name: 'spring-data-jpa', version:'1.0.1.RELEASE'
+    compile group: 'org.hibernate', name: 'hibernate-entitymanager', version:'4.3.10.Final'
+    compile group: 'javax.validation', name: 'validation-api', version:'1.0.0.GA'
+    compile group: 'org.hibernate', name: 'hibernate-validator', version:'4.3.2.Final'
+    
+    compile group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: '1.0.0.Final'
+    
+ 
+    compile group: 'com.google.guava', name: 'guava', version:'10.0.1'
+    compile group: 'joda-time', name: 'joda-time', version:'2.1'
+    compile group: 'joda-time', name: 'joda-time-hibernate', version:'1.3'
+    compile group: 'joda-time', name: 'joda-time-jsptags', version:'1.1.1'
+     compile group: 'org.jadira.usertype', name: 'usertype.core', version:'3.0.0.CR1'
+     compile 'mysql:mysql-connector-java:5.1.34'
+   
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.4.3'
+    compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version:'1.9.12'
+    compile group: 'org.codehaus.jackson', name: 'jackson-mapper-lgpl', version:'1.9.2'
+    compile group: 'commons-io', name: 'commons-io', version:'2.1'
+    compile group: 'org.springframework.security', name: 'spring-security-core', version:'3.1.0.RELEASE'
+    compile group: 'org.springframework.security', name: 'spring-security-web', version:'3.1.0.RELEASE'
+    compile group: 'org.springframework.security', name: 'spring-security-config', version:'3.1.0.RELEASE'
+    compile group: 'org.springframework.security', name: 'spring-security-taglibs', version:'3.1.0.RELEASE'
+    runtime group: 'org.slf4j', name: 'jcl-over-slf4j', version:'1.5.10'
+  
+    testCompile group: 'junit', name: 'junit', version:'4.7'
+    providedCompile group: 'javax', name: 'javaee-web-api', version:'7.0'
+    providedCompile group: 'javax.servlet.jsp', name: 'jsp-api', version:'2.1'
+}
+
+ 
+war {    
+    webInf { from 'src/main/webapp/WEB-INF'} // adds a file-set to the WEB-INF dir.    
+    classpath fileTree('src/main/webapp/WEB-INF/lib') // adds a file-set to the WEB-INF/lib dir.
+    webXml = file('src/main/webapp/WEB-INF/web.xml') // copies a file to WEB-INF/web.xml        
+    from('src/main/webapp') { include ('bootstrap/css/*.css', 'bootstrap/js/*.js', 'bootstrap/img/*.*')  }
+}
+ 
+task deploy (dependsOn: war){
+copy {
+    from "build/libs"
+     into "C/Apache Software Foundation/Tomcat 7.0/webapps"
+       include "*.war"
+}
+}

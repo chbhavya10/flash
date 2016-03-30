@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html data-ng-app="formSubmit">
+<head>
+<meta charset="ISO-8859-1">
+<title>AngularJS Post Form Spring MVC example</title>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js"></script>
+<script type="text/javascript">
+	var app = angular.module('formSubmit', []);
+	
+	app.controller('FormSubmitController2',[ '$scope', '$http', function($scope, $http) {
+			
+			$scope.headerText = 'Add new User';
+			$scope.submit = function() {
+				
+				var formData = {
+					
+					
+			        
+				        "UserId" :$scope.UserId,
+				        "OrganizationId":$scope.OrganizationId,
+				      
+						
+				};
+				
+				var response = $http.post('http://localhost:8080/SermonNote/PostFavoritesData', formData);
+				
+			
+			 
+				response.success(function(data, status, headers, config) {
+					$scope.list.push(data);
+				});
+				response.error(function(data, status, headers, config) {
+					alert( "Exception details: " + JSON.stringify({data: data}));
+				});
+				
+				//Empty list data after process
+				$scope.list = [];
+				
+			};
+		}]);
+</script>
+</head>
+<body>
+	<form data-ng-submit="submit()" data-ng-controller="FormSubmitController2">
+		<h3>{{headerText}}</h3>
+
+		<p>UserID: <input type="number" data-ng-model="UserId"></p>
+		<p>OrgID: <input type="number" data-ng-model="OrganizationId"></p>
+		
+		<input type="submit" id="submit" value="Submit" /><br>	
+		
+		<h4>You submitted below data through post:</h4>
+		 <pre>Form data ={{list}}</pre>
+	</form>
+</body>
+</html>
