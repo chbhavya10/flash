@@ -1,7 +1,5 @@
 package com.sermon.mynote.web.controller;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sermon.mynote.domain.NoteLike;
 import com.sermon.mynote.domain.StatusResponse;
-import com.sermon.mynote.domain.User;
 import com.sermon.mynote.service.NoteLikeService;
 
 @RequestMapping("/noteLike")
@@ -54,13 +51,13 @@ public class NoteLikeController {
 
 		return response;
 	}
-	
+
 	@RequestMapping(value = "/getNoteLikeStatus", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public StatusResponse getNoteLikeStatus(@RequestBody NoteLike noteLike) {
 		logger.info("Listing contacts");
 
-		int noteDetails = noteLikeService.findById(noteLike.getNoteId(),noteLike.getUserId());
+		int noteDetails = noteLikeService.findById(noteLike.getNoteId(), noteLike.getUserId());
 		StatusResponse response = new StatusResponse();
 
 		if (noteDetails == 1)

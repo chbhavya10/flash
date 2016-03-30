@@ -174,18 +174,11 @@ public class noteController {
 
 	@RequestMapping(value = "/createNote", method = RequestMethod.POST)
 	@ResponseBody
-	public StatusResponse createNote(@RequestBody AddNote note) {
+	public int createNote(@RequestBody AddNote note) {
 
 		int result = noteService.createNote(note);
 
-		StatusResponse response = new StatusResponse();
-
-		if (result > 0)
-			response.setStatus(true);
-		else
-			response.setStatus(false);
-
-		return response;
+		return result;
 	}
 
 	@RequestMapping(value = "/getAddNoteDetails", method = RequestMethod.GET, produces = "application/json")

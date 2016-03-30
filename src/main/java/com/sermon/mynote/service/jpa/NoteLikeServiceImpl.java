@@ -4,7 +4,6 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -20,9 +19,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.common.collect.Lists;
 import com.sermon.mynote.domain.NoteLike;
-import com.sermon.mynote.domain.User;
 import com.sermon.mynote.repository.NoteLikeRepository;
 import com.sermon.mynote.service.NoteLikeService;
 
@@ -69,16 +66,16 @@ public class NoteLikeServiceImpl implements NoteLikeService {
 		return result;
 
 	}
-	
+
 	@Transactional(readOnly = true)
-	public int findById(int noteId,int userId) {
+	public int findById(int noteId, int userId) {
 		try {
 			Query query = em
 					.createNativeQuery(
 							"select LikeCount returnvalue from NoteLike where NoteId=:NoteId and UserId=:UserId")
 					.setParameter("NoteId", noteId).setParameter("UserId", userId);
 			System.out.println(query);
-			//query.setParameter("username", username);
+			// query.setParameter("username", username);
 
 			if (query.getSingleResult() != null) {
 				return (Integer) query.getSingleResult();
@@ -88,6 +85,5 @@ public class NoteLikeServiceImpl implements NoteLikeService {
 		}
 		return 0;
 	}
-
 
 }
