@@ -18,28 +18,28 @@ public class AddNote implements Serializable {
 	private Date eventDate;
 	private Date eventTime;
 	private Integer categoryId;
-	private String keywords;
+	private List<String> keywords;
 	private Integer OrganizationId;
 	private Integer groupId;
 	private String published;
 
-	private List<Section> sections;
+	private List<AddSection> sections;
 
-	private List<SubSection> subSections;
+	private List<AddSubSection> subSections;
 
-	public List<Section> getSections() {
+	public List<AddSection> getSections() {
 		return sections;
 	}
 
-	public void setSections(List<Section> sections) {
+	public void setSections(List<AddSection> sections) {
 		this.sections = sections;
 	}
 
-	public List<SubSection> getSubSections() {
+	public List<AddSubSection> getSubSections() {
 		return subSections;
 	}
 
-	public void setSubSections(List<SubSection> subSections) {
+	public void setSubSections(List<AddSubSection> subSections) {
 		this.subSections = subSections;
 	}
 
@@ -47,8 +47,8 @@ public class AddNote implements Serializable {
 	}
 
 	public AddNote(Integer noteId, int authorId, String title, String subTitle, String introduction, Date eventDate,
-			Date eventTime, Integer categoryId, String keywords, Integer organizationId, Integer groupId,
-			String published, List<Section> sections, List<SubSection> subSections) {
+			Date eventTime, Integer categoryId, List<String> keywords, Integer organizationId, Integer groupId,
+			String published, List<AddSection> sections, List<AddSubSection> subSections) {
 		super();
 		this.noteId = noteId;
 		this.authorId = authorId;
@@ -130,11 +130,11 @@ public class AddNote implements Serializable {
 		this.categoryId = categoryId;
 	}
 
-	public String getKeywords() {
+	public List<String> getKeywords() {
 		return keywords;
 	}
 
-	public void setKeywords(String keywords) {
+	public void setKeywords(List<String> keywords) {
 		this.keywords = keywords;
 	}
 

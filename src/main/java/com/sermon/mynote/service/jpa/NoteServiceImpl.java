@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
 import com.sermon.mynote.domain.AddNote;
+import com.sermon.mynote.domain.AddSection;
+import com.sermon.mynote.domain.AddSubSection;
 import com.sermon.mynote.domain.Note;
 import com.sermon.mynote.domain.PublishSchedule;
 import com.sermon.mynote.domain.Section;
@@ -122,7 +125,9 @@ public class NoteServiceImpl implements NoteService {
 		note.setEventTime(new Timestamp(date.getTime()));
 		note.setGroupId(addNote.getGroupId());
 		note.setIntroduction(addNote.getIntroduction());
-		note.setKeywords(addNote.getKeywords());
+		List<String> keywords = addNote.getKeywords();
+		String sectionKeyword = StringUtils.join(keywords, ',');
+		note.setKeywords(sectionKeyword);
 		note.setOrganizationId(addNote.getOrganizationId());
 		note.setPublished(addNote.getPublished());
 		note.setSubTitle(addNote.getSubTitle());
@@ -130,10 +135,10 @@ public class NoteServiceImpl implements NoteService {
 
 		Note newNote = noteRepository.save(note);
 
-		List<Section> sections = addNote.getSections();
+		List<AddSection> sections = addNote.getSections();
 
 		if (!sections.isEmpty()) {
-			for (Section section : sections) {
+			for (AddSection section : sections) {
 				if (noteId == section.getNoteId()) {
 
 					sectionId = section.getSectionId();
@@ -141,21 +146,25 @@ public class NoteServiceImpl implements NoteService {
 					Section noteSection = new Section();
 
 					noteSection.setNoteId(newNote.getNoteId());
-					noteSection.setSectionKeyWords(section.getSectionKeyWords());
+					List<Integer> sectionKeywords = section.getSectionKeyWords();
+					String newSectionKeyword = StringUtils.join(sectionKeywords, ',');
+					noteSection.setSectionKeyWords(newSectionKeyword);
 					noteSection.setSectionText(section.getSectionText());
 
 					Section newSection = sectionRepository.save(noteSection);
 
-					List<SubSection> subSections = addNote.getSubSections();
+					List<AddSubSection> subSections = addNote.getSubSections();
 
 					if (!subSections.isEmpty()) {
-						for (SubSection subSection : subSections) {
+						for (AddSubSection subSection : subSections) {
 							if (sectionId == subSection.getSectionId()) {
 
 								SubSection noteSubSection = new SubSection();
 
 								noteSubSection.setSectionId(newSection.getSectionId());
-								noteSubSection.setSubsectionKeyWords(subSection.getSubsectionKeyWords());
+								List<Integer> subSectionKeywords = subSection.getSubsectionKeyWords();
+								String newSubSectionKeyword = StringUtils.join(subSectionKeywords, ',');
+								noteSubSection.setSubsectionKeyWords(newSubSectionKeyword);
 								noteSubSection.setSubsectionText(subSection.getSubsectionText());
 
 								subsectionRepository.save(noteSubSection);

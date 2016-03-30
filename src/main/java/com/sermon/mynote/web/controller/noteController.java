@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sermon.mynote.domain.AddNote;
+import com.sermon.mynote.domain.AddSection;
+import com.sermon.mynote.domain.AddSubSection;
 import com.sermon.mynote.domain.Note;
 import com.sermon.mynote.domain.PublishSchedule;
-import com.sermon.mynote.domain.Section;
 import com.sermon.mynote.domain.StatusResponse;
-import com.sermon.mynote.domain.SubSection;
 import com.sermon.mynote.service.NoteService;
 import com.sermon.mynote.service.UserService;
 
@@ -196,7 +196,9 @@ public class noteController {
 		note.setAuthorId(288);
 		note.setCategoryId(1);
 		note.setIntroduction("intro test");
-		note.setKeywords("test");
+		List<String> keywords = new ArrayList<String>();
+		keywords.add("test");
+		note.setKeywords(keywords);
 		note.setSubTitle("subtitle test");
 		note.setTitle("test");
 		note.setOrganizationId(2);
@@ -204,45 +206,60 @@ public class noteController {
 		note.setPublished("N");
 		note.setNoteId(1);
 
-		List<Section> sections = new ArrayList<Section>();
+		List<AddSection> sections = new ArrayList<AddSection>();
 
-		Section section1 = new Section();
+		AddSection section1 = new AddSection();
 		section1.setSectionId(1);
 		section1.setNoteId(1);
 		section1.setSectionText("example section");
-		section1.setSectionKeyWords("1,2");
+		List<Integer> sectionKeywords = new ArrayList<Integer>();
+		sectionKeywords.add(1);
+		sectionKeywords.add(2);
+		section1.setSectionKeyWords(sectionKeywords);
 		sections.add(section1);
 
-		Section section2 = new Section();
+		AddSection section2 = new AddSection();
 		section2.setNoteId(1);
 		section2.setSectionId(2);
 		section2.setSectionText("example section");
-		section2.setSectionKeyWords("1,2");
+		List<Integer> sectionKeywords1 = new ArrayList<Integer>();
+		sectionKeywords1.add(1);
+		sectionKeywords1.add(2);
+		section2.setSectionKeyWords(sectionKeywords1);
 		sections.add(section2);
 
 		note.setSections(sections);
 
-		List<SubSection> subSections = new ArrayList<SubSection>();
+		List<AddSubSection> subSections = new ArrayList<AddSubSection>();
 
-		SubSection subSection1 = new SubSection();
+		AddSubSection subSection1 = new AddSubSection();
 		subSection1.setSectionId(1);
 		subSection1.setSubsectionId(1);
 		subSection1.setSubsectionText("example subsection");
-		subSection1.setSubsectionKeyWords("1,2");
+		List<Integer> subSectionKeywords = new ArrayList<Integer>();
+		subSectionKeywords.add(1);
+		subSectionKeywords.add(2);
+		subSection1.setSubsectionKeyWords(subSectionKeywords);
 		subSections.add(subSection1);
 
-		SubSection subSection2 = new SubSection();
+		AddSubSection subSection2 = new AddSubSection();
 		subSection2.setSectionId(1);
 		subSection2.setSubsectionId(2);
 		subSection2.setSubsectionText("example subsection");
-		subSection2.setSubsectionKeyWords("1,2");
+		List<Integer> subSectionKeywords1 = new ArrayList<Integer>();
+		subSectionKeywords1.add(1);
+		subSectionKeywords1.add(2);
+		subSection2.setSubsectionKeyWords(subSectionKeywords1);
 		subSections.add(subSection2);
 
-		SubSection subSection3 = new SubSection();
+		AddSubSection subSection3 = new AddSubSection();
 		subSection3.setSectionId(2);
 		subSection3.setSubsectionId(1);
 		subSection3.setSubsectionText("example subsection");
-		subSection3.setSubsectionKeyWords("1,2");
+		List<Integer> subSectionKeywords2 = new ArrayList<Integer>();
+		subSectionKeywords2.add(1);
+		subSectionKeywords2.add(2);
+		subSection3.setSubsectionKeyWords(subSectionKeywords2);
 		subSections.add(subSection3);
 
 		note.setSubSections(subSections);
