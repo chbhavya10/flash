@@ -1,8 +1,6 @@
 package com.sermon.mynote.service.jpa;
 
-import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.persistence.EntityManager;
@@ -11,7 +9,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.StoredProcedureQuery;
 
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,19 +35,9 @@ public class NoteLikeServiceImpl implements NoteLikeService {
 
 	@Override
 	public NoteLike save(NoteLike noteLike) {
-		Date date = new Date(System.currentTimeMillis());
-		Time time = new Time(System.currentTimeMillis());
 
-		String myDate = date + " " + time;
-
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		java.util.Date utilDate = new java.util.Date();
-		try {
-			utilDate = sdf.parse(myDate);
-		} catch (ParseException e) {
-		}
-
-		DateTime dateTime = new DateTime(utilDate);
+		Date date = new Date();
+		Timestamp dateTime = new Timestamp(date.getTime());
 		noteLike.setLikeDate(dateTime);
 
 		return noteLikeRepository.save(noteLike);

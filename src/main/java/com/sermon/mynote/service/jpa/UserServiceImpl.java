@@ -43,6 +43,10 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private GroupRepository groupRepository;
 
+	/*
+	 * @Autowired private EmailService emailService;
+	 */
+
 	@Transactional(readOnly = true)
 	public List<User> findAll() {
 		return Lists.newArrayList(userRepository.findAll());
@@ -190,6 +194,13 @@ public class UserServiceImpl implements UserService {
 
 		proc.executeUpdate();
 
+	}
+
+	@Override
+	public int forgotPassword(String userEmail) {
+
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

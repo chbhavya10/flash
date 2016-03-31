@@ -38,6 +38,10 @@ exclude(module: 'commons-logging')
     compile group: 'org.jadira.usertype', name: 'usertype.core', version:'3.0.0.CR1'
     compile 'mysql:mysql-connector-java:5.1.34'
     compile 'org.apache.commons:commons-lang3:3.0'
+    compile 'javax.mail:mail:1.4'
+    compile 'org.apache.velocity:velocity:1.7'
+    compile 'org.springframework:spring-context-support:3.2.0.RELEASE'
+    
      
    
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.4.3'

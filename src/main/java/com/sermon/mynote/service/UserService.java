@@ -34,4 +34,6 @@ public interface UserService {
 
 	public void updateUserRole(int authorId, int roleId);
 
+	public int forgotPassword(String userEmail);
+
 }

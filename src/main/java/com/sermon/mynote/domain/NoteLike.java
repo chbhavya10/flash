@@ -3,6 +3,7 @@ package com.sermon.mynote.domain;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,9 +14,6 @@ import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.ParameterMode;
 import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
 
 @Entity
 
@@ -38,14 +36,14 @@ public class NoteLike implements Serializable {
 	private int noteLikeId;
 	private int noteId;
 	private int userId;
-	private DateTime likeDate;
+	private Timestamp likeDate;
 	private int likeCount;
 
 	public NoteLike() {
 
 	}
 
-	public NoteLike(int noteLikeId, int noteId, int userId, DateTime likeDate, int likeCount) {
+	public NoteLike(int noteLikeId, int noteId, int userId, Timestamp likeDate, int likeCount) {
 		this.noteLikeId = noteLikeId;
 		this.noteId = noteId;
 		this.userId = userId;
@@ -80,12 +78,11 @@ public class NoteLike implements Serializable {
 		this.userId = userId;
 	}
 
-	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-	public DateTime getLikeDate() {
+	public Timestamp getLikeDate() {
 		return likeDate;
 	}
 
-	public void setLikeDate(DateTime likeDate) {
+	public void setLikeDate(Timestamp likeDate) {
 		this.likeDate = likeDate;
 	}
 

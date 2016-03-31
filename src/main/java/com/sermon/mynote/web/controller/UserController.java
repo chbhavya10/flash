@@ -220,5 +220,23 @@ public class UserController {
 		}
 		return statusResponse;
 	}
+	
+	@RequestMapping(value = "/forgotPassword", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public StatusResponse forgotPassword(@RequestBody User user) {
+		logger.info("check username availability");
+
+		int result = userService.forgotPassword(user.getUserEmail());
+
+		StatusResponse response = new StatusResponse();
+
+		if (result > 0)
+			response.setStatus(false);
+		else
+			response.setStatus(true);
+
+		return response;
+	}
+
 
 }
