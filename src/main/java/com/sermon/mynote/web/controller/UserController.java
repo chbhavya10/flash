@@ -81,7 +81,7 @@ public class UserController {
 		Timestamp currentDate = new Timestamp(date.getTime());
 
 		boolean result = userService.createUser(user.getUserName(), user.getUserEmail(), user.getUserPassword(),
-				user.getUserStatus(), currentDate);
+				currentDate);
 
 		StatusResponse statusResponse = new StatusResponse();
 		if (result == false) {
@@ -220,7 +220,7 @@ public class UserController {
 		}
 		return statusResponse;
 	}
-	
+
 	@RequestMapping(value = "/forgotPassword", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public StatusResponse forgotPassword(@RequestBody User user) {
@@ -237,6 +237,5 @@ public class UserController {
 
 		return response;
 	}
-
 
 }

@@ -81,8 +81,7 @@ public class UserServiceImpl implements UserService {
 		return userRepository.save(user);
 	}
 
-	public boolean createUser(String username, String useremail, String userpassword, String userStatus,
-			Timestamp currentDate) {
+	public boolean createUser(String username, String useremail, String userpassword, Timestamp currentDate) {
 		/*
 		 * List result = em .createNamedQuery("add_user")
 		 * .setParameter("username", username) .setParameter("useremail",
@@ -94,8 +93,7 @@ public class UserServiceImpl implements UserService {
 		StoredProcedureQuery proc = em.createNamedStoredProcedureQuery("User.add_user");
 
 		proc.setParameter("username", username).setParameter("useremail", useremail)
-				.setParameter("userpassword", password).setParameter("userStatus", userStatus)
-				.setParameter("createDt", currentDate);
+				.setParameter("userpassword", password).setParameter("createDt", currentDate);
 
 		boolean result = proc.execute();
 		return result;

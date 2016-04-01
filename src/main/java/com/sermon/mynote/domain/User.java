@@ -38,7 +38,6 @@ import org.joda.time.DateTime;
 				@StoredProcedureParameter(mode = ParameterMode.IN, name = "username", type = String.class),
 				@StoredProcedureParameter(mode = ParameterMode.IN, name = "useremail", type = String.class),
 				@StoredProcedureParameter(mode = ParameterMode.IN, name = "userpassword", type = String.class),
-				@StoredProcedureParameter(mode = ParameterMode.IN, name = "userStatus", type = String.class),
 				@StoredProcedureParameter(mode = ParameterMode.IN, name = "createDt", type = Timestamp.class)
 
 		}),
