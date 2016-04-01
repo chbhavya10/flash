@@ -1,5 +1,8 @@
 package com.sermon.mynote.web.controller;
 
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sermon.mynote.domain.AddSubSection;
 import com.sermon.mynote.domain.StatusResponse;
 import com.sermon.mynote.domain.SubSection;
 import com.sermon.mynote.service.SubSectionService;
@@ -39,12 +43,14 @@ public class SubSectionController {
 	/* update */
 	@RequestMapping(value = "/updateSubSection/{id}", method = RequestMethod.PUT)
 	@ResponseBody
-	public StatusResponse updateNote(@RequestBody SubSection subsection, @PathVariable Long id) {
+	public StatusResponse updateNote(@RequestBody AddSubSection subsection, @PathVariable Long id) {
 
 		SubSection subsectionTemp = new SubSection();
 		subsectionTemp = subsectionService.findById(id.intValue());
 		subsectionTemp.setSectionId(subsection.getSectionId());
-		subsectionTemp.setSubsectionKeyWords(subsection.getSubsectionKeyWords());
+		List<Integer> subSectionKeywords = subsection.getSubsectionKeyWords();
+		String subSectionKeyword = StringUtils.join(subSectionKeywords, ",");
+		subsectionTemp.setSubsectionKeyWords(subSectionKeyword);
 		subsectionTemp.setSubsectionText(subsection.getSubsectionText());
 
 		SubSection subsectionResponse = subsectionService.save(subsectionTemp);

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,7 @@ public class noteController {
 	/* update */
 	@RequestMapping(value = "/updateNote/{id}", method = RequestMethod.PUT)
 	@ResponseBody
-	public StatusResponse updateNote(@RequestBody Note note, @PathVariable Long id) {
+	public StatusResponse updateNote(@RequestBody AddNote note, @PathVariable Long id) {
 
 		Note noteTemp = new Note();
 		Date date = new Date();
@@ -67,7 +68,9 @@ public class noteController {
 		noteTemp.setEventDate(note.getEventDate());
 		noteTemp.setEventTime(note.getEventTime());
 		noteTemp.setIntroduction(note.getIntroduction());
-		noteTemp.setKeywords(note.getKeywords());
+		List<String> keywords=note.getKeywords();
+		String keyword=StringUtils.join(keywords, ',');
+		noteTemp.setKeywords(keyword);
 		noteTemp.setSubTitle(note.getSubTitle());
 		noteTemp.setTitle(note.getTitle());
 		noteTemp.setOrganizationId(note.getOrganizationId());
