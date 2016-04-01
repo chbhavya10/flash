@@ -176,6 +176,10 @@ public class noteController {
 	@ResponseBody
 	public int createNote(@RequestBody AddNote note) {
 
+		int subSectionLength = note.getSubSections().size();
+		for (int i = 0; i < subSectionLength; i++) {
+			logger.info(note.getSubSections().get(i).getSubsectionText());
+		}
 		int result = noteService.createNote(note);
 
 		return result;
@@ -259,6 +263,15 @@ public class noteController {
 
 		return note;
 
+	}
+
+	@RequestMapping(value = "/getNote/{id}", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public AddNote getNote(@PathVariable int id) {
+		logger.info("Listing note");
+
+		AddNote note = noteService.getNote(id);
+		return note;
 	}
 
 }

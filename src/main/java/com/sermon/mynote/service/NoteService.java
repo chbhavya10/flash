@@ -24,6 +24,8 @@ public interface NoteService {
 
 	public int createNote(AddNote note);
 
+	public AddNote getNote(int id);
+
 	/*
 	 * public void createNote(Integer authorId,String title,String
 	 * subTitle,String introduction, Date eventDate,Time eventTime,Integer
