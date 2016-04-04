@@ -1,8 +1,6 @@
 package com.sermon.mynote.web.controller;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -57,9 +55,11 @@ public class noteController {
 	public StatusResponse updateNote(@RequestBody AddNote note, @PathVariable Long id) {
 
 		Note noteTemp = new Note();
-		Date date = new Date();
-		note.setEventDate(new Timestamp(date.getTime()));
-		note.setEventTime(new Timestamp(date.getTime()));
+		/*
+		 * Date date = new Date(); note.setEventDate(new
+		 * Timestamp(date.getTime())); note.setEventTime(new
+		 * Timestamp(date.getTime()));
+		 */
 
 		noteTemp = noteService.findById(id.intValue());
 
@@ -68,8 +68,8 @@ public class noteController {
 		noteTemp.setEventDate(note.getEventDate());
 		noteTemp.setEventTime(note.getEventTime());
 		noteTemp.setIntroduction(note.getIntroduction());
-		List<String> keywords=note.getKeywords();
-		String keyword=StringUtils.join(keywords, ',');
+		List<String> keywords = note.getKeywords();
+		String keyword = StringUtils.join(keywords, ',');
 		noteTemp.setKeywords(keyword);
 		noteTemp.setSubTitle(note.getSubTitle());
 		noteTemp.setTitle(note.getTitle());
