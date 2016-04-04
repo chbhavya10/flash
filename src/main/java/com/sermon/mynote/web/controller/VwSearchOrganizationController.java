@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sermon.mynote.domain.SearchOrganization;
+import com.sermon.mynote.domain.OrganizationLike;
 import com.sermon.mynote.service.VwSearchOrganizationService;
 
 @RequestMapping("/searchorg")
@@ -21,10 +21,10 @@ public class VwSearchOrganizationController {
 
 	@RequestMapping(value = "/search/{orgname}/{zipcode}/{city}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public List<SearchOrganization> SearchOrganiz(@PathVariable String orgname, @PathVariable String zipcode,
+	public List<OrganizationLike> SearchOrganiz(@PathVariable String orgname, @PathVariable String zipcode,
 			@PathVariable String city) {
 
-		List<SearchOrganization> searchOrganization = vwSearchOrganizationService.SearchOrganiz(orgname, zipcode, city);
+		List<OrganizationLike> searchOrganization = vwSearchOrganizationService.SearchOrganiz(orgname, zipcode, city);
 		return searchOrganization;
 	}
 }
