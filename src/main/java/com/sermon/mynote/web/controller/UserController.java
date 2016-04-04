@@ -96,10 +96,18 @@ public class UserController {
 	public void updateUserFavorite(@RequestBody User user, @PathVariable Long id) {
 
 		User usertemp = userService.findById(id.intValue());
-		user = usertemp;
+		// user = usertemp;
+
+		usertemp.setUserEmail(user.getUserEmail());
+		usertemp.setUserId(id.intValue());
+		usertemp.setUserName(user.getUserName());
+		usertemp.setUserMobile(user.getUserMobile());
 
 		logger.info("Updating user : " + user);
-		userService.save(user);
+		int result = userService.updateUser(usertemp.getUserId(), usertemp.getUserEmail(), usertemp.getUserName(),
+				usertemp.getUserMobile());
+		System.out.println(result);
+		// userService.save(usertemp);
 		logger.info("Contact updated successfully with info: " + userService);
 	}
 

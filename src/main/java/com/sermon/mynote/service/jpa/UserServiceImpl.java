@@ -201,4 +201,16 @@ public class UserServiceImpl implements UserService {
 		return 0;
 	}
 
+	@Override
+	public int updateUser(Integer userId, String userEmail, String userName, String userMobile) {
+
+		StoredProcedureQuery proc = em.createNamedStoredProcedureQuery("User.update_user");
+		proc.setParameter("userId", userId).setParameter("userName", userName).setParameter("userEmail", userEmail)
+				.setParameter("userMobile", userMobile);
+
+		int result = proc.executeUpdate();
+		return result;
+
+	}
+
 }
