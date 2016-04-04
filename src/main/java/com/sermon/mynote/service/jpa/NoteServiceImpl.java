@@ -1,9 +1,7 @@
 package com.sermon.mynote.service.jpa;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -64,9 +62,12 @@ public class NoteServiceImpl implements NoteService {
 
 	public Note save(Note note) {
 
-		Date date = new Date();
-		note.setEventDate(new Timestamp(date.getTime()));
-		note.setEventTime(new Timestamp(date.getTime()));
+		/*
+		 * Date date = new Date(); note.setEventDate(new
+		 * Timestamp(date.getTime())); note.setEventTime(new
+		 * Timestamp(date.getTime()));
+		 */
+
 		return noteRepository.save(note);
 	}
 
@@ -122,9 +123,13 @@ public class NoteServiceImpl implements NoteService {
 
 		note.setAuthorId(addNote.getAuthorId());
 		note.setCategoryId(addNote.getCategoryId());
-		Date date = new Date();
-		note.setEventDate(new Timestamp(date.getTime()));
-		note.setEventTime(new Timestamp(date.getTime()));
+		/*
+		 * Date date = new Date(); note.setEventDate(new
+		 * Timestamp(date.getTime())); note.setEventTime(new
+		 * Timestamp(date.getTime()));
+		 */
+		note.setEventDate(addNote.getEventDate());
+		note.setEventTime(addNote.getEventTime());
 		note.setGroupId(addNote.getGroupId());
 		note.setIntroduction(addNote.getIntroduction());
 		List<String> keywords = addNote.getKeywords();
@@ -186,7 +191,7 @@ public class NoteServiceImpl implements NoteService {
 		Note note = noteRepository.findOne(id);
 		List<Section> sections = new ArrayList<Section>();
 		List<SubSection> subSections = new ArrayList<SubSection>();
-		List<SubSection> tempSubSections=new ArrayList<SubSection>();
+		List<SubSection> tempSubSections = new ArrayList<SubSection>();
 		sections = sectionRepository.findSectionByNoteId(note.getNoteId());
 		for (Section section : sections) {
 			tempSubSections = subsectionRepository.findSubsectionBySectionId(section.getSectionId());
