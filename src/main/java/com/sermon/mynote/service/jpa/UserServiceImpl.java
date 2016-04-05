@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -21,12 +22,14 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import com.google.common.collect.Lists;
+import com.sermon.mynote.components.EmailService;
 import com.sermon.mynote.domain.OrganizationGroup;
 import com.sermon.mynote.domain.User;
+import com.sermon.mynote.domain.UserVerificationTokens;
 import com.sermon.mynote.repository.GroupRepository;
 import com.sermon.mynote.repository.UserRepository;
+import com.sermon.mynote.repository.UserVerificationTokenRepository;
 import com.sermon.mynote.service.UserService;
 import com.sermon.util.AppUtil;
 
@@ -44,13 +47,13 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private GroupRepository groupRepository;
 
-	/*
-	 * @Autowired private UserVerificationTokenRepository tokenRepository;
-	 */
-
-	/*
-	 * @Autowired private EmailService emailService;
-	 */
+	
+	 @Autowired 
+	 private UserVerificationTokenRepository tokenRepository;
+	 
+	 @Autowired 
+	 private EmailService emailService;
+	 
 
 	@Transactional(readOnly = true)
 	public List<User> findAll() {
@@ -258,6 +261,53 @@ public class UserServiceImpl implements UserService {
 		int result = proc.executeUpdate();
 		return result;
 
+	}
+
+	@Override
+	public int forgetPasswordLink(String userEmail) {
+		
+		int userId = 0;
+		String userName = null;	
+		try {
+			Query query = em
+					.createNativeQuery(
+							"select userid returnvalue from user where useremail=:useremail")
+					.setParameter("useremail", userEmail);
+			System.out.println(query);
+
+			if (query.getSingleResult() != null) {
+				userId = (Integer) query.getSingleResult();
+			}
+		} catch (NoResultException e) {
+
+		}
+		
+		UUID uuId = UUID.randomUUID();
+		UserVerificationTokens tokens = new UserVerificationTokens();
+		tokens.setVerificationToken(uuId.toString());
+		tokens.setUserId(userId);
+		
+		tokenRepository.save(tokens);
+		
+		try {
+			Query query = em
+					.createNativeQuery(
+							"select username returnvalue from user where userid=:userid")
+					.setParameter("userid", userId);
+			System.out.println(query);
+
+			if (query.getSingleResult() != null) {
+				userName = (String) query.getSingleResult();
+			}
+		} catch (NoResultException e) {
+
+		}
+		
+		String resetPasswordUrl = "file:///D:/SermonNote/resetpassword.html#/?passwordResetToken="+tokens.getVerificationToken();
+
+		emailService.forgotPassword(userEmail, resetPasswordUrl, userName);
+		
+		return 0;
 	}
 
 }

@@ -28,6 +28,15 @@ import javax.persistence.Table;
 public class UserVerificationTokens {
 
 	private int userVerificationTokenId;
+	private int userId;
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
 	private String verificationToken;
 	private String password;
 	private int isVerified;

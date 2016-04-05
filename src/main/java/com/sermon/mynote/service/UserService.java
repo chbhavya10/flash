@@ -37,4 +37,6 @@ public interface UserService {
 
 	public int updateUser(Integer userId, String userEmail, String userName, String userMobile);
 
+	public int forgetPasswordLink(String userEmail);
+
 }
