@@ -1,3 +1,4 @@
+
 package com.sermon.mynote.web.controller;
 
 import java.sql.Timestamp;
@@ -100,9 +101,9 @@ public class UserController {
 		User usertemp = userService.findById(id.intValue());
 		// user = usertemp;
 
-		//usertemp.setUserEmail(user.getUserEmail());
+		// usertemp.setUserEmail(user.getUserEmail());
 		usertemp.setUserId(id.intValue());
-		//usertemp.setUserName(user.getUserName());
+		// usertemp.setUserName(user.getUserName());
 		usertemp.setUserMobile(user.getUserMobile());
 
 		logger.info("Updating user : " + user);
@@ -251,20 +252,20 @@ public class UserController {
 
 		return response;
 	}
-	
+
 	@RequestMapping(value = "/forgetPassword", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public StatusResponse forgetPassword(@RequestBody User user) {
-		
+
 		int result = userService.forgetPasswordLink(user.getUserEmail());
 		StatusResponse response = new StatusResponse();
-		if(result == 0){
+		if (result == 0) {
 			response.setStatus(true);
-	}else{
-		response.setStatus(false);
-	}
+		} else {
+			response.setStatus(false);
+		}
 		return response;
-		
+
 	}
 
 }
