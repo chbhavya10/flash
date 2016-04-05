@@ -21,6 +21,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import com.google.common.collect.Lists;
 import com.sermon.mynote.domain.OrganizationGroup;
 import com.sermon.mynote.domain.User;
@@ -199,7 +200,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int forgotPassword(String userEmail) {
 
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
