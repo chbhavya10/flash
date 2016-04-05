@@ -33,7 +33,7 @@ public interface UserService {
 
 	public void updateUserRole(int authorId, int roleId);
 
-	public int forgotPassword(String userEmail);
+	public int forgotPassword(String verificationToken, String password);
 
 	public int updateUser(Integer userId, String userEmail, String userName, String userMobile);
 

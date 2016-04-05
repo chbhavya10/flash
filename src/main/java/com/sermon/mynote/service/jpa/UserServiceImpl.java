@@ -44,6 +44,10 @@ public class UserServiceImpl implements UserService {
 	private GroupRepository groupRepository;
 
 	/*
+	 * @Autowired private UserVerificationTokenRepository tokenRepository;
+	 */
+
+	/*
 	 * @Autowired private EmailService emailService;
 	 */
 
@@ -195,10 +199,52 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int forgotPassword(String userEmail) {
+	public int forgotPassword(String verificationToken, String password) {
 
-		// TODO Auto-generated method stub
-		return 0;
+		int userId = 0;
+
+		try {
+			Query query = em
+					.createNativeQuery(
+							"select userid returnvalue from userverificationtokens where verificationtoken=:verificationtoken")
+					.setParameter("verificationtoken", verificationToken);
+			System.out.println(query);
+
+			if (query.getSingleResult() != null) {
+				userId = (Integer) query.getSingleResult();
+			}
+		} catch (NoResultException e) {
+
+		}
+
+		if (userId > 0) {
+
+			StoredProcedureQuery proc = em.createNamedStoredProcedureQuery("User.update_userpassword");
+			String newPassword = AppUtil.sha256(password);
+			proc.setParameter("userId", userId).setParameter("userPwd", newPassword);
+
+			int result = proc.executeUpdate();
+
+			if (result == 0) {
+
+				StoredProcedureQuery proce = em
+						.createNamedStoredProcedureQuery("UserVerificationTokens.update_tokenstatus");
+				proce.setParameter("userid", userId).setParameter("verificationtoken", verificationToken);
+
+				proce.executeUpdate();
+				
+				StoredProcedureQuery proced = em
+						.createNamedStoredProcedureQuery("UserVerificationTokens.delete_token");
+				proced.setParameter("userid", userId).setParameter("verificationtoken", verificationToken);
+
+				proced.executeUpdate();
+
+			}
+			return result;
+		} else {
+			return -1;
+		}
+
 	}
 
 	@Override

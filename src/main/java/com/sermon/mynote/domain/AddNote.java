@@ -1,6 +1,7 @@
 package com.sermon.mynote.domain;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class AddNote implements Serializable {
 	private String subTitle;
 	private String introduction;
 	private Date eventDate;
-	private Date eventTime;
+	private Time eventTime;
 	private Integer categoryId;
 	private List<String> keywords;
 	private Integer OrganizationId;
@@ -47,7 +48,7 @@ public class AddNote implements Serializable {
 	}
 
 	public AddNote(Integer noteId, int authorId, String title, String subTitle, String introduction, Date eventDate,
-			Date eventTime, Integer categoryId, List<String> keywords, Integer organizationId, Integer groupId,
+			Time eventTime, Integer categoryId, List<String> keywords, Integer organizationId, Integer groupId,
 			String published, List<AddSection> sections, List<AddSubSection> subSections) {
 		super();
 		this.noteId = noteId;
@@ -114,11 +115,11 @@ public class AddNote implements Serializable {
 		this.eventDate = eventDate;
 	}
 
-	public Date getEventTime() {
+	public Time getEventTime() {
 		return eventTime;
 	}
 
-	public void setEventTime(Date eventTime) {
+	public void setEventTime(Time eventTime) {
 		this.eventTime = eventTime;
 	}
 
