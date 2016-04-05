@@ -34,13 +34,40 @@ public class VwUserprofile implements java.io.Serializable {
 	private String ZipCode;
 	private Date DOB;
 	private String Gender;
+	private int CityId;
+	private int StateId;
+	private int CountryID;
+
+	public int getCityId() {
+		return CityId;
+	}
+
+	public void setCityId(int cityId) {
+		CityId = cityId;
+	}
+
+	public int getStateId() {
+		return StateId;
+	}
+
+	public void setStateId(int stateId) {
+		StateId = stateId;
+	}
+
+	public int getCountryID() {
+		return CountryID;
+	}
+
+	public void setCountryID(int countryID) {
+		CountryID = countryID;
+	}
 
 	public VwUserprofile() {
 
 	}
 
 	public VwUserprofile(int UserId, String FirstName, String LastName, String NickName, String Address_1,
-			String Address_2, String CityName, String StateName) {
+			String Address_2, String CityName, String StateName, int CityId, int StateId, int CountryID) {
 
 		// this.UserProfileID=UserProfileID;
 		this.UserId = UserId;
@@ -51,12 +78,15 @@ public class VwUserprofile implements java.io.Serializable {
 		this.Address_2 = Address_2;
 		this.CityName = CityName;
 		this.StateName = StateName;
+		this.CityId = CityId;
+		this.StateId = StateId;
+		this.CountryID = CountryID;
 
 	}
 
 	public VwUserprofile(int UserId, String FirstName, String LastName, String NickName, String Address_1,
 			String Address_2, String CityName, String StateName, String CountryName, String ZipCode, Date DOB,
-			String Gender) {
+			String Gender, int CityId, int StateId, int CountryID) {
 
 		// this.UserProfileID=UserProfileID;
 		this.UserId = UserId;
@@ -71,6 +101,9 @@ public class VwUserprofile implements java.io.Serializable {
 		this.ZipCode = ZipCode;
 		this.DOB = DOB;
 		this.Gender = Gender;
+		this.CityId = CityId;
+		this.StateId = StateId;
+		this.CountryID = CountryID;
 
 	}
 
