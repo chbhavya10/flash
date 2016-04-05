@@ -20,7 +20,7 @@ import org.springframework.ui.velocity.VelocityEngineUtils;
 
 
 
-@Service
+@Service("emailService")
 public class EmailService {
 
     private final Logger log = LoggerFactory.getLogger(EmailService.class);
@@ -58,7 +58,7 @@ public class EmailService {
         }
     }
     
-  /*  @Async
+     @Async
     public void sendEmail(String to,String countyEmail, String stateEmail, String subject, String content, boolean isMultipart, boolean isHtml) {
         log.debug("Send e-mail[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}",
                 isMultipart, isHtml, to, subject, content);
@@ -77,7 +77,7 @@ public class EmailService {
             log.error("E-mail could not be sent to user '{}', exception is: {}", to, e.getMessage());
         }
     }
-*/    
+    
     
     @Async
     public void forgotPassword(final String tomail, final String resetPasswordUrl, final String licenseeName) {

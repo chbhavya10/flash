@@ -47,13 +47,11 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private GroupRepository groupRepository;
 
-	
-	 @Autowired 
-	 private UserVerificationTokenRepository tokenRepository;
-	 
-	 @Autowired 
-	 private EmailService emailService;
-	 
+	@Autowired
+	private UserVerificationTokenRepository tokenRepository;
+
+	@Autowired
+	private EmailService emailService;
 
 	@Transactional(readOnly = true)
 	public List<User> findAll() {
@@ -236,9 +234,8 @@ public class UserServiceImpl implements UserService {
 				proce.setParameter("userid", userId).setParameter("verificationtoken", verificationToken);
 
 				proce.executeUpdate();
-				
-				StoredProcedureQuery proced = em
-						.createNamedStoredProcedureQuery("UserVerificationTokens.delete_token");
+
+				StoredProcedureQuery proced = em.createNamedStoredProcedureQuery("UserVerificationTokens.delete_token");
 				proced.setParameter("userid", userId).setParameter("verificationtoken", verificationToken);
 
 				proced.executeUpdate();
@@ -265,13 +262,11 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int forgetPasswordLink(String userEmail) {
-		
+
 		int userId = 0;
-		String userName = null;	
+		String userName = null;
 		try {
-			Query query = em
-					.createNativeQuery(
-							"select userid returnvalue from user where useremail=:useremail")
+			Query query = em.createNativeQuery("select userid returnvalue from user where useremail=:useremail")
 					.setParameter("useremail", userEmail);
 			System.out.println(query);
 
@@ -281,18 +276,16 @@ public class UserServiceImpl implements UserService {
 		} catch (NoResultException e) {
 
 		}
-		
+
 		UUID uuId = UUID.randomUUID();
 		UserVerificationTokens tokens = new UserVerificationTokens();
 		tokens.setVerificationToken(uuId.toString());
 		tokens.setUserId(userId);
-		
+
 		tokenRepository.save(tokens);
-		
+
 		try {
-			Query query = em
-					.createNativeQuery(
-							"select username returnvalue from user where userid=:userid")
+			Query query = em.createNativeQuery("select username returnvalue from user where userid=:userid")
 					.setParameter("userid", userId);
 			System.out.println(query);
 
@@ -302,11 +295,12 @@ public class UserServiceImpl implements UserService {
 		} catch (NoResultException e) {
 
 		}
-		
-		String resetPasswordUrl = "file:///D:/SermonNote/resetpassword.html#/?passwordResetToken="+tokens.getVerificationToken();
+
+		String resetPasswordUrl = "file:///D:/SermonNote/resetpassword.html#/?passwordResetToken="
+				+ tokens.getVerificationToken();
 
 		emailService.forgotPassword(userEmail, resetPasswordUrl, userName);
-		
+
 		return 0;
 	}
 
