@@ -231,9 +231,9 @@ public class UserController {
 		return statusResponse;
 	}
 
-	@RequestMapping(value = "/forgotPassword", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/resetPassword", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public StatusResponse forgotPassword(@RequestBody UserVerificationTokens token) {
+	public StatusResponse resetPassword(@RequestBody UserVerificationTokens token) {
 		logger.info("check username availability");
 
 		int result = userService.forgotPassword(token.getVerificationToken(), token.getPassword());

@@ -1,6 +1,6 @@
 package com.sermon.mynote.domain;
 
-
+import java.sql.Time;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -28,7 +28,7 @@ public class VwNotedetails implements java.io.Serializable {
 	private String title;
 	private String subtitle;
 	private Date eventDate;
-	private Date eventTime;
+	private Time eventTime;
 	private String introduction;
 	private int sectionId;
 	private String sectionText;
@@ -38,8 +38,6 @@ public class VwNotedetails implements java.io.Serializable {
 	private String subSectionKeywords;
 	private int groupId;
 	private String published;
-	
-	
 
 	public int getGroupId() {
 		return groupId;
@@ -60,8 +58,7 @@ public class VwNotedetails implements java.io.Serializable {
 	public VwNotedetails() {
 	}
 
-	public VwNotedetails(int noteKey, int noteId, String author,
-			String title, int sectionId, int subSectionId) {
+	public VwNotedetails(int noteKey, int noteId, String author, String title, int sectionId, int subSectionId) {
 		this.noteKey = noteKey;
 		this.noteId = noteId;
 		this.author = author;
@@ -70,13 +67,9 @@ public class VwNotedetails implements java.io.Serializable {
 		this.subSectionId = subSectionId;
 	}
 
-	
-
-	public VwNotedetails(int noteKey, int noteId, String author, String title,
-			String subtitle, Date eventDate, Date eventTime,
-			String introduction, int sectionId, String sectionText,
-			String sectionKeywords, int subSectionId, String subSectionText,
-			String subSectionKeywords, int groupId, String published) {
+	public VwNotedetails(int noteKey, int noteId, String author, String title, String subtitle, Date eventDate,
+			Time eventTime, String introduction, int sectionId, String sectionText, String sectionKeywords,
+			int subSectionId, String subSectionText, String subSectionKeywords, int groupId, String published) {
 		this.noteKey = noteKey;
 		this.noteId = noteId;
 		this.author = author;
@@ -144,16 +137,14 @@ public class VwNotedetails implements java.io.Serializable {
 	public void setEventDate(Date eventDate) {
 		this.eventDate = eventDate;
 	}
-    /*
-	@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
-	public Date getEventTime() {
+
+	public Time getEventTime() {
 		return this.eventTime;
 	}
 
-	public void setEventTime(Date eventTime) {
+	public void setEventTime(Time eventTime) {
 		this.eventTime = eventTime;
 	}
-	*/
 
 	public String getIntroduction() {
 		return this.introduction;
@@ -220,52 +211,34 @@ public class VwNotedetails implements java.io.Serializable {
 			return false;
 		VwNotedetails castOther = (VwNotedetails) other;
 
-		return (this.getNoteKey() == castOther.getNoteKey())
-				&& (this.getNoteId() == castOther.getNoteId())
-				&& ((this.getAuthor() == castOther.getAuthor()) || (this
-						.getAuthor() != null && castOther.getAuthor() != null && this
-						.getAuthor().equals(castOther.getAuthor())))
-				&& ((this.getTitle() == castOther.getTitle()) || (this
-						.getTitle() != null && castOther.getTitle() != null && this
-						.getTitle().equals(castOther.getTitle())))
-				&& ((this.getSubtitle() == castOther.getSubtitle()) || (this
-						.getSubtitle() != null
-						&& castOther.getSubtitle() != null && this
-						.getSubtitle().equals(castOther.getSubtitle())))
-				&& ((this.getEventDate() == castOther.getEventDate()) || (this
-						.getEventDate() != null
-						&& castOther.getEventDate() != null && this
-						.getEventDate().equals(castOther.getEventDate())))
-				/**&& ((this.getEventTime() == castOther.getEventTime()) || (this
-						.getEventTime() != null
-						&& castOther.getEventTime() != null && this
-						.getEventTime().equals(castOther.getEventTime())))*/
-				&& ((this.getIntroduction() == castOther.getIntroduction()) || (this
-						.getIntroduction() != null
-						&& castOther.getIntroduction() != null && this
-						.getIntroduction().equals(castOther.getIntroduction())))
+		return (this.getNoteKey() == castOther.getNoteKey()) && (this.getNoteId() == castOther.getNoteId())
+				&& ((this.getAuthor() == castOther.getAuthor()) || (this.getAuthor() != null
+						&& castOther.getAuthor() != null && this.getAuthor().equals(castOther.getAuthor())))
+				&& ((this.getTitle() == castOther.getTitle()) || (this.getTitle() != null
+						&& castOther.getTitle() != null && this.getTitle().equals(castOther.getTitle())))
+				&& ((this.getSubtitle() == castOther.getSubtitle()) || (this.getSubtitle() != null
+						&& castOther.getSubtitle() != null && this.getSubtitle().equals(castOther.getSubtitle())))
+				&& ((this.getEventDate() == castOther.getEventDate()) || (this.getEventDate() != null
+						&& castOther.getEventDate() != null && this.getEventDate().equals(castOther.getEventDate())))
+				&& ((this.getEventTime() == castOther.getEventTime()) || (this.getEventTime() != null
+						&& castOther.getEventTime() != null && this.getEventTime().equals(castOther.getEventTime())))
+				&& ((this.getIntroduction() == castOther.getIntroduction())
+						|| (this.getIntroduction() != null && castOther.getIntroduction() != null
+								&& this.getIntroduction().equals(castOther.getIntroduction())))
 				&& (this.getSectionId() == castOther.getSectionId())
-				&& ((this.getSectionText() == castOther.getSectionText()) || (this
-						.getSectionText() != null
-						&& castOther.getSectionText() != null && this
-						.getSectionText().equals(castOther.getSectionText())))
-				&& ((this.getSectionKeywords() == castOther
-						.getSectionKeywords()) || (this.getSectionKeywords() != null
-						&& castOther.getSectionKeywords() != null && this
-						.getSectionKeywords().equals(
-								castOther.getSectionKeywords())))
+				&& ((this.getSectionText() == castOther.getSectionText())
+						|| (this.getSectionText() != null && castOther.getSectionText() != null
+								&& this.getSectionText().equals(castOther.getSectionText())))
+				&& ((this.getSectionKeywords() == castOther.getSectionKeywords())
+						|| (this.getSectionKeywords() != null && castOther.getSectionKeywords() != null
+								&& this.getSectionKeywords().equals(castOther.getSectionKeywords())))
 				&& (this.getSubSectionId() == castOther.getSubSectionId())
-				&& ((this.getSubSectionText() == castOther.getSubSectionText()) || (this
-						.getSubSectionText() != null
-						&& castOther.getSubSectionText() != null && this
-						.getSubSectionText().equals(
-								castOther.getSubSectionText())))
-				&& ((this.getSubSectionKeywords() == castOther
-						.getSubSectionKeywords()) || (this
-						.getSubSectionKeywords() != null
-						&& castOther.getSubSectionKeywords() != null && this
-						.getSubSectionKeywords().equals(
-								castOther.getSubSectionKeywords())));
+				&& ((this.getSubSectionText() == castOther.getSubSectionText())
+						|| (this.getSubSectionText() != null && castOther.getSubSectionText() != null
+								&& this.getSubSectionText().equals(castOther.getSubSectionText())))
+				&& ((this.getSubSectionKeywords() == castOther.getSubSectionKeywords())
+						|| (this.getSubSectionKeywords() != null && castOther.getSubSectionKeywords() != null
+								&& this.getSubSectionKeywords().equals(castOther.getSubSectionKeywords())));
 	}
 
 	public int hashCode() {
@@ -273,38 +246,18 @@ public class VwNotedetails implements java.io.Serializable {
 
 		result = 37 * result + this.getNoteKey();
 		result = 37 * result + this.getNoteId();
-		result = 37 * result
-				+ (getAuthor() == null ? 0 : this.getAuthor().hashCode());
-		result = 37 * result
-				+ (getTitle() == null ? 0 : this.getTitle().hashCode());
-		result = 37 * result
-				+ (getSubtitle() == null ? 0 : this.getSubtitle().hashCode());
-		result = 37 * result
-				+ (getEventDate() == null ? 0 : this.getEventDate().hashCode());
-		/*result = 37 * result
-				+ (getEventTime() == null ? 0 : this.getEventTime().hashCode());*/
-		result = 37
-				* result
-				+ (getIntroduction() == null ? 0 : this.getIntroduction()
-						.hashCode());
+		result = 37 * result + (getAuthor() == null ? 0 : this.getAuthor().hashCode());
+		result = 37 * result + (getTitle() == null ? 0 : this.getTitle().hashCode());
+		result = 37 * result + (getSubtitle() == null ? 0 : this.getSubtitle().hashCode());
+		result = 37 * result + (getEventDate() == null ? 0 : this.getEventDate().hashCode());
+		result = 37 * result + (getEventTime() == null ? 0 : this.getEventTime().hashCode());
+		result = 37 * result + (getIntroduction() == null ? 0 : this.getIntroduction().hashCode());
 		result = 37 * result + this.getSectionId();
-		result = 37
-				* result
-				+ (getSectionText() == null ? 0 : this.getSectionText()
-						.hashCode());
-		result = 37
-				* result
-				+ (getSectionKeywords() == null ? 0 : this.getSectionKeywords()
-						.hashCode());
+		result = 37 * result + (getSectionText() == null ? 0 : this.getSectionText().hashCode());
+		result = 37 * result + (getSectionKeywords() == null ? 0 : this.getSectionKeywords().hashCode());
 		result = 37 * result + this.getSubSectionId();
-		result = 37
-				* result
-				+ (getSubSectionText() == null ? 0 : this.getSubSectionText()
-						.hashCode());
-		result = 37
-				* result
-				+ (getSubSectionKeywords() == null ? 0 : this
-						.getSubSectionKeywords().hashCode());
+		result = 37 * result + (getSubSectionText() == null ? 0 : this.getSubSectionText().hashCode());
+		result = 37 * result + (getSubSectionKeywords() == null ? 0 : this.getSubSectionKeywords().hashCode());
 		return result;
 	}
 

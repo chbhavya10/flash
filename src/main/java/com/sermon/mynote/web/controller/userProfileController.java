@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sermon.mynote.domain.StatusResponse;
-import com.sermon.mynote.domain.UserProfile;
+import com.sermon.mynote.domain.VwUserprofile;
 import com.sermon.mynote.service.UserProfileService;
+import com.sermon.mynote.service.UserService;
 
 @RequestMapping("/userProfile")
 @Controller
@@ -26,9 +27,12 @@ public class userProfileController {
 	@Autowired
 	private UserProfileService userProfileService;
 
+	@Autowired
+	private UserService userService;
+
 	@RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
 	@ResponseBody
-	public StatusResponse updateUserProfile(@RequestBody UserProfile userProfile) {
+	public StatusResponse updateUserProfile(@RequestBody VwUserprofile userProfile) {
 
 		/*
 		 * @RequestMapping(value="/updateProfile/{id}", method =
@@ -51,12 +55,15 @@ public class userProfileController {
 		// userProfile.setUserId(userId);
 
 		int result = userProfileService.updateUserProfile(userProfile.getUserId(), userProfile.getFirstName(),
-				userProfile.getLastName(), userProfile.getNickName(), userProfile.getAddress1(),
-				userProfile.getAddress2(), userProfile.getCityId(), userProfile.getStateId(),
-				userProfile.getCountryId(), userProfile.getZipCode()
+				userProfile.getLastName(), userProfile.getNickName(), userProfile.getAddress_1(),
+				userProfile.getAddress_2(), userProfile.getCityId(), userProfile.getStateId(),
+				userProfile.getCountryID(), userProfile.getZipCode()
 		// userProfile.getDOB(),
 		// userProfile.getGender()
 		);
+
+		userService.updateUser(userProfile.getUserId(), userProfile.getUserEmail(), userProfile.getUserName(),
+				userProfile.getUserPhone());
 
 		// return userProfile;
 		StatusResponse status = new StatusResponse();

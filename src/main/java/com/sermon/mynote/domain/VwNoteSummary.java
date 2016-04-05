@@ -1,4 +1,6 @@
 package com.sermon.mynote.domain;
+
+import java.sql.Time;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -25,7 +27,7 @@ public class VwNoteSummary implements java.io.Serializable {
 	private String title;
 	private String subtitle;
 	private Date eventDate;
-	//private Date eventTime;
+	private Time eventTime;
 	private String introduction;
 
 	public VwNoteSummary() {
@@ -37,17 +39,17 @@ public class VwNoteSummary implements java.io.Serializable {
 		this.title = title;
 	}
 
-	public VwNoteSummary(int noteId, String author, String title,
-			String subtitle, Date eventDate, Date eventTime, String introduction) {
+	public VwNoteSummary(int noteId, String author, String title, String subtitle, Date eventDate, Time eventTime,
+			String introduction) {
 		this.noteId = noteId;
 		this.author = author;
 		this.title = title;
 		this.subtitle = subtitle;
 		this.eventDate = eventDate;
-		//this.eventTime = eventTime;
+		this.eventTime = eventTime;
 		this.introduction = introduction;
 	}
-   
+
 	@Id
 	@Column(name = "NoteId")
 	public int getNoteId() {
@@ -89,15 +91,15 @@ public class VwNoteSummary implements java.io.Serializable {
 	public void setEventDate(Date eventDate) {
 		this.eventDate = eventDate;
 	}
-/*
-	public Date getEventTime() {
+
+	public Time getEventTime() {
 		return this.eventTime;
 	}
 
-	public void setEventTime(Date eventTime) {
+	public void setEventTime(Time eventTime) {
 		this.eventTime = eventTime;
 	}
-*/
+
 	public String getIntroduction() {
 		return this.introduction;
 	}
@@ -116,48 +118,31 @@ public class VwNoteSummary implements java.io.Serializable {
 		VwNoteSummary castOther = (VwNoteSummary) other;
 
 		return (this.getNoteId() == castOther.getNoteId())
-				&& ((this.getAuthor() == castOther.getAuthor()) || (this
-						.getAuthor() != null && castOther.getAuthor() != null && this
-						.getAuthor().equals(castOther.getAuthor())))
-				&& ((this.getTitle() == castOther.getTitle()) || (this
-						.getTitle() != null && castOther.getTitle() != null && this
-						.getTitle().equals(castOther.getTitle())))
-				&& ((this.getSubtitle() == castOther.getSubtitle()) || (this
-						.getSubtitle() != null
-						&& castOther.getSubtitle() != null && this
-						.getSubtitle().equals(castOther.getSubtitle())))
-				&& ((this.getEventDate() == castOther.getEventDate()) || (this
-						.getEventDate() != null
-						&& castOther.getEventDate() != null && this
-						.getEventDate().equals(castOther.getEventDate())))
-			/*	&& ((this.getEventTime() == castOther.getEventTime()) || (this
-						.getEventTime() != null
-						&& castOther.getEventTime() != null && this
-						.getEventTime().equals(castOther.getEventTime())))*/
-				&& ((this.getIntroduction() == castOther.getIntroduction()) || (this
-						.getIntroduction() != null
-						&& castOther.getIntroduction() != null && this
-						.getIntroduction().equals(castOther.getIntroduction())));
+				&& ((this.getAuthor() == castOther.getAuthor()) || (this.getAuthor() != null
+						&& castOther.getAuthor() != null && this.getAuthor().equals(castOther.getAuthor())))
+				&& ((this.getTitle() == castOther.getTitle()) || (this.getTitle() != null
+						&& castOther.getTitle() != null && this.getTitle().equals(castOther.getTitle())))
+				&& ((this.getSubtitle() == castOther.getSubtitle()) || (this.getSubtitle() != null
+						&& castOther.getSubtitle() != null && this.getSubtitle().equals(castOther.getSubtitle())))
+				&& ((this.getEventDate() == castOther.getEventDate()) || (this.getEventDate() != null
+						&& castOther.getEventDate() != null && this.getEventDate().equals(castOther.getEventDate())))
+				&& ((this.getEventTime() == castOther.getEventTime()) || (this.getEventTime() != null
+						&& castOther.getEventTime() != null && this.getEventTime().equals(castOther.getEventTime())))
+				&& ((this.getIntroduction() == castOther.getIntroduction())
+						|| (this.getIntroduction() != null && castOther.getIntroduction() != null
+								&& this.getIntroduction().equals(castOther.getIntroduction())));
 	}
 
 	public int hashCode() {
 		int result = 17;
 
 		result = 37 * result + this.getNoteId();
-		result = 37 * result
-				+ (getAuthor() == null ? 0 : this.getAuthor().hashCode());
-		result = 37 * result
-				+ (getTitle() == null ? 0 : this.getTitle().hashCode());
-		result = 37 * result
-				+ (getSubtitle() == null ? 0 : this.getSubtitle().hashCode());
-		result = 37 * result
-				+ (getEventDate() == null ? 0 : this.getEventDate().hashCode());
-	/*	result = 37 * result
-				+ (getEventTime() == null ? 0 : this.getEventTime().hashCode());*/
-		result = 37
-				* result
-				+ (getIntroduction() == null ? 0 : this.getIntroduction()
-						.hashCode());
+		result = 37 * result + (getAuthor() == null ? 0 : this.getAuthor().hashCode());
+		result = 37 * result + (getTitle() == null ? 0 : this.getTitle().hashCode());
+		result = 37 * result + (getSubtitle() == null ? 0 : this.getSubtitle().hashCode());
+		result = 37 * result + (getEventDate() == null ? 0 : this.getEventDate().hashCode());
+		result = 37 * result + (getEventTime() == null ? 0 : this.getEventTime().hashCode());
+		result = 37 * result + (getIntroduction() == null ? 0 : this.getIntroduction().hashCode());
 		return result;
 	}
 
