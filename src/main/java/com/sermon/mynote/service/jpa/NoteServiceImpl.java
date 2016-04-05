@@ -1,7 +1,7 @@
 package com.sermon.mynote.service.jpa;
 
-import java.sql.Timestamp;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -62,9 +62,12 @@ public class NoteServiceImpl implements NoteService {
 
 	public Note save(Note note) {
 
-		Date date = new Date();
-		note.setEventDate(new Timestamp(date.getTime()));
-		note.setEventTime(new Timestamp(date.getTime()));
+		/*
+		 * Date date = new Date(); note.setEventDate(new
+		 * Timestamp(date.getTime())); note.setEventTime(new
+		 * Timestamp(date.getTime()));
+		 */
+
 		return noteRepository.save(note);
 	}
 
@@ -120,9 +123,13 @@ public class NoteServiceImpl implements NoteService {
 
 		note.setAuthorId(addNote.getAuthorId());
 		note.setCategoryId(addNote.getCategoryId());
-		Date date = new Date();
-		note.setEventDate(new Timestamp(date.getTime()));
-		note.setEventTime(new Timestamp(date.getTime()));
+		/*
+		 * Date date = new Date(); note.setEventDate(new
+		 * Timestamp(date.getTime())); note.setEventTime(new
+		 * Timestamp(date.getTime()));
+		 */
+		note.setEventDate(addNote.getEventDate());
+		note.setEventTime(addNote.getEventTime());
 		note.setGroupId(addNote.getGroupId());
 		note.setIntroduction(addNote.getIntroduction());
 		List<String> keywords = addNote.getKeywords();
@@ -130,8 +137,8 @@ public class NoteServiceImpl implements NoteService {
 		note.setKeywords(sectionKeyword);
 		note.setOrganizationId(addNote.getOrganizationId());
 		note.setPublished(addNote.getPublished());
-		note.setSubTitle(addNote.getSubTitle());
-		note.setTitle(addNote.getTitle());
+		note.setSubTitle((addNote.getSubTitle()).trim());
+		note.setTitle((addNote.getTitle()).trim());
 
 		Note newNote = noteRepository.save(note);
 
@@ -149,7 +156,7 @@ public class NoteServiceImpl implements NoteService {
 					List<Integer> sectionKeywords = section.getSectionKeyWords();
 					String newSectionKeyword = StringUtils.join(sectionKeywords, ',');
 					noteSection.setSectionKeyWords(newSectionKeyword);
-					noteSection.setSectionText(section.getSectionText());
+					noteSection.setSectionText((section.getSectionText()).trim());
 
 					Section newSection = sectionRepository.save(noteSection);
 
@@ -165,7 +172,7 @@ public class NoteServiceImpl implements NoteService {
 								List<Integer> subSectionKeywords = subSection.getSubsectionKeyWords();
 								String newSubSectionKeyword = StringUtils.join(subSectionKeywords, ',');
 								noteSubSection.setSubsectionKeyWords(newSubSectionKeyword);
-								noteSubSection.setSubsectionText(subSection.getSubsectionText());
+								noteSubSection.setSubsectionText((subSection.getSubsectionText()).trim());
 
 								subsectionRepository.save(noteSubSection);
 							}
@@ -176,6 +183,85 @@ public class NoteServiceImpl implements NoteService {
 		}
 
 		return newNote.getNoteId();
+	}
+
+	@Override
+	public AddNote getNote(int id) {
+
+		Note note = noteRepository.findOne(id);
+		List<Section> sections = new ArrayList<Section>();
+		List<SubSection> subSections = new ArrayList<SubSection>();
+		List<SubSection> tempSubSections = new ArrayList<SubSection>();
+		sections = sectionRepository.findSectionByNoteId(note.getNoteId());
+		for (Section section : sections) {
+			tempSubSections = subsectionRepository.findSubsectionBySectionId(section.getSectionId());
+			subSections.addAll(tempSubSections);
+		}
+
+		AddNote addNote = new AddNote();
+		addNote.setAuthorId(note.getAuthorId());
+		addNote.setCategoryId(note.getCategoryId());
+		addNote.setEventDate(note.getEventDate());
+		addNote.setEventTime(note.getEventTime());
+		addNote.setGroupId(note.getGroupId());
+		addNote.setIntroduction(note.getIntroduction());
+		List<String> keywords = new ArrayList<String>(Arrays.asList(note.getKeywords().split(",")));
+		addNote.setKeywords(keywords);
+		addNote.setNoteId(note.getNoteId());
+		addNote.setOrganizationId(note.getOrganizationId());
+		addNote.setPublished(note.getPublished());
+		addNote.setSubTitle(note.getSubTitle());
+		addNote.setTitle(note.getTitle());
+
+		List<AddSection> addSections = new ArrayList<AddSection>();
+
+		for (Section section : sections) {
+
+			AddSection addSection = new AddSection();
+			addSection.setNoteId(section.getNoteId());
+			addSection.setSectionId(section.getSectionId());
+			List<String> sectionKeyWords = new ArrayList<String>(
+					Arrays.asList(section.getSectionKeyWords().split(",")));
+			List<Integer> list = new ArrayList<Integer>();
+			for (String s : sectionKeyWords) {
+				try {
+					list.add(Integer.valueOf(s));
+				} catch (NumberFormatException e) {
+					continue;
+				}
+			}
+			addSection.setSectionKeyWords(list);
+			addSection.setSectionText(section.getSectionText());
+			addSections.add(addSection);
+		}
+
+		addNote.setSections(addSections);
+
+		List<AddSubSection> addSubSections = new ArrayList<AddSubSection>();
+
+		for (SubSection subSection : subSections) {
+
+			AddSubSection addSubSection = new AddSubSection();
+			addSubSection.setSectionId(subSection.getSectionId());
+			addSubSection.setSubsectionId(subSection.getSubsectionId());
+			List<String> subSectionKeyWords = new ArrayList<String>(
+					Arrays.asList(subSection.getSubsectionKeyWords().split(",")));
+			List<Integer> list = new ArrayList<Integer>();
+			for (String s : subSectionKeyWords) {
+				try {
+					list.add(Integer.valueOf(s));
+				} catch (NumberFormatException ex) {
+					continue;
+				}
+			}
+			addSubSection.setSubsectionKeyWords(list);
+			addSubSection.setSubsectionText(subSection.getSubsectionText());
+			addSubSections.add(addSubSection);
+		}
+
+		addNote.setSubSections(addSubSections);
+
+		return addNote;
 	}
 
 }

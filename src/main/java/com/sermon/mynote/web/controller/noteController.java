@@ -1,10 +1,9 @@
 package com.sermon.mynote.web.controller;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,12 +52,14 @@ public class noteController {
 	/* update */
 	@RequestMapping(value = "/updateNote/{id}", method = RequestMethod.PUT)
 	@ResponseBody
-	public StatusResponse updateNote(@RequestBody Note note, @PathVariable Long id) {
+	public StatusResponse updateNote(@RequestBody AddNote note, @PathVariable Long id) {
 
 		Note noteTemp = new Note();
-		Date date = new Date();
-		note.setEventDate(new Timestamp(date.getTime()));
-		note.setEventTime(new Timestamp(date.getTime()));
+		/*
+		 * Date date = new Date(); note.setEventDate(new
+		 * Timestamp(date.getTime())); note.setEventTime(new
+		 * Timestamp(date.getTime()));
+		 */
 
 		noteTemp = noteService.findById(id.intValue());
 
@@ -67,7 +68,9 @@ public class noteController {
 		noteTemp.setEventDate(note.getEventDate());
 		noteTemp.setEventTime(note.getEventTime());
 		noteTemp.setIntroduction(note.getIntroduction());
-		noteTemp.setKeywords(note.getKeywords());
+		List<String> keywords = note.getKeywords();
+		String keyword = StringUtils.join(keywords, ',');
+		noteTemp.setKeywords(keyword);
 		noteTemp.setSubTitle(note.getSubTitle());
 		noteTemp.setTitle(note.getTitle());
 		noteTemp.setOrganizationId(note.getOrganizationId());
@@ -176,6 +179,10 @@ public class noteController {
 	@ResponseBody
 	public int createNote(@RequestBody AddNote note) {
 
+		int subSectionLength = note.getSubSections().size();
+		for (int i = 0; i < subSectionLength; i++) {
+			logger.info(note.getSubSections().get(i).getSubsectionText());
+		}
 		int result = noteService.createNote(note);
 
 		return result;
@@ -259,6 +266,15 @@ public class noteController {
 
 		return note;
 
+	}
+
+	@RequestMapping(value = "/getNote/{id}", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public AddNote getNote(@PathVariable int id) {
+		logger.info("Listing note");
+
+		AddNote note = noteService.getNote(id);
+		return note;
 	}
 
 }

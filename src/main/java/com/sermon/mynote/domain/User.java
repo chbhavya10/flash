@@ -38,7 +38,6 @@ import org.joda.time.DateTime;
 				@StoredProcedureParameter(mode = ParameterMode.IN, name = "username", type = String.class),
 				@StoredProcedureParameter(mode = ParameterMode.IN, name = "useremail", type = String.class),
 				@StoredProcedureParameter(mode = ParameterMode.IN, name = "userpassword", type = String.class),
-				@StoredProcedureParameter(mode = ParameterMode.IN, name = "userStatus", type = String.class),
 				@StoredProcedureParameter(mode = ParameterMode.IN, name = "createDt", type = Timestamp.class)
 
 		}),
@@ -51,7 +50,17 @@ import org.joda.time.DateTime;
 
 		@NamedStoredProcedureQuery(name = "User.update_user_role", procedureName = "update_user_role", parameters = {
 				@StoredProcedureParameter(mode = ParameterMode.IN, name = "roleId", type = Integer.class),
-				@StoredProcedureParameter(mode = ParameterMode.IN, name = "userId", type = Integer.class) })
+				@StoredProcedureParameter(mode = ParameterMode.IN, name = "userId", type = Integer.class)
+
+		}),
+
+		@NamedStoredProcedureQuery(name = "User.update_user", procedureName = "update_user", parameters = {
+				@StoredProcedureParameter(mode = ParameterMode.IN, name = "userId", type = Integer.class),
+				@StoredProcedureParameter(mode = ParameterMode.IN, name = "userName", type = String.class),
+				@StoredProcedureParameter(mode = ParameterMode.IN, name = "userEmail", type = String.class),
+				@StoredProcedureParameter(mode = ParameterMode.IN, name = "userMobile", type = String.class)
+
+		})
 
 })
 @Table(name = "user")
@@ -82,17 +91,15 @@ public class User implements java.io.Serializable {
 	public User() {
 	}
 
-	public User(String userName, String userEmail, String userPassword,
-			String userStatus) {
+	public User(String userName, String userEmail, String userPassword, String userStatus) {
 		this.userName = userName;
 		this.userEmail = userEmail;
 		this.userPassword = userPassword;
 		this.userStatus = userStatus;
 	}
 
-	public User(String userName, String userEmail, String userPassword,
-			String userStatus, DateTime createDt, DateTime updateDt,
-			String userMobile) {
+	public User(String userName, String userEmail, String userPassword, String userStatus, DateTime createDt,
+			DateTime updateDt, String userMobile) {
 		this.userName = userName;
 		this.userEmail = userEmail;
 		this.userPassword = userPassword;

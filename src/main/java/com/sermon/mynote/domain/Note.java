@@ -4,6 +4,7 @@ package com.sermon.mynote.domain;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.sql.Time;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -43,7 +44,7 @@ public class Note implements java.io.Serializable {
 	private String subTitle;
 	private String introduction;
 	private Date eventDate;
-	private Date eventTime;
+	private Time eventTime;
 	private Integer categoryId;
 	private String keywords;
 	private Integer OrganizationId;
@@ -75,7 +76,7 @@ public class Note implements java.io.Serializable {
 	}
 
 	public Note(Integer noteId, int authorId, String title, String subTitle, String introduction, Date eventDate,
-			Date eventTime, Integer categoryId, String keywords, Integer organizationId, Integer groupId,
+			Time eventTime, Integer categoryId, String keywords, Integer organizationId, Integer groupId,
 			String published) {
 		this.noteId = noteId;
 		this.authorId = authorId;
@@ -142,11 +143,11 @@ public class Note implements java.io.Serializable {
 		this.eventDate = eventDate;
 	}
 
-	public Date getEventTime() {
+	public Time getEventTime() {
 		return this.eventTime;
 	}
 
-	public void setEventTime(Date eventTime) {
+	public void setEventTime(Time eventTime) {
 		this.eventTime = eventTime;
 	}
 

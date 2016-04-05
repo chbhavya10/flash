@@ -1,5 +1,6 @@
 package com.sermon.mynote.domain;
 
+import java.sql.Time;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -28,29 +29,37 @@ public class VwOrganizationNotes implements java.io.Serializable {
 	private String author;
 	private String title;
 	private Date eventDate;
-	//private Date eventTime;
+	private Time eventTime;
+	private String published;
+
+	public String getPublished() {
+		return published;
+	}
+
+	public void setPublished(String published) {
+		this.published = published;
+	}
 
 	public VwOrganizationNotes() {
 	}
 
-	public VwOrganizationNotes(int noteId, int organizationid, String author,
-			String title) {
+	public VwOrganizationNotes(int noteId, int organizationid, String author, String title) {
 		this.noteId = noteId;
 		this.organizationid = organizationid;
 		this.author = author;
 		this.title = title;
 	}
 
-	public VwOrganizationNotes(int noteId, int organizationid,
-			String organizationName, String author, String title,
-			Date eventDate, Date eventTime) {
+	public VwOrganizationNotes(int noteId, int organizationid, String organizationName, String author, String title,
+			Date eventDate, Time eventTime, String published) {
 		this.noteId = noteId;
 		this.organizationid = organizationid;
 		this.organizationName = organizationName;
 		this.author = author;
 		this.title = title;
 		this.eventDate = eventDate;
-		//this.eventTime = eventTime;
+		this.eventTime = eventTime;
+		this.published = published;
 	}
 
 	@Id
@@ -102,15 +111,15 @@ public class VwOrganizationNotes implements java.io.Serializable {
 	public void setEventDate(Date eventDate) {
 		this.eventDate = eventDate;
 	}
-/*
-	public Date getEventTime() {
+
+	public Time getEventTime() {
 		return this.eventTime;
 	}
 
-	public void setEventTime(Date eventTime) {
+	public void setEventTime(Time eventTime) {
 		this.eventTime = eventTime;
 	}
-*/
+
 	public boolean equals(Object other) {
 		if ((this == other))
 			return true;
@@ -122,25 +131,19 @@ public class VwOrganizationNotes implements java.io.Serializable {
 
 		return (this.getNoteId() == castOther.getNoteId())
 				&& (this.getOrganizationid() == castOther.getOrganizationid())
-				&& ((this.getOrganizationName() == castOther
-						.getOrganizationName()) || (this.getOrganizationName() != null
-						&& castOther.getOrganizationName() != null && this
-						.getOrganizationName().equals(
-								castOther.getOrganizationName())))
-				&& ((this.getAuthor() == castOther.getAuthor()) || (this
-						.getAuthor() != null && castOther.getAuthor() != null && this
-						.getAuthor().equals(castOther.getAuthor())))
-				&& ((this.getTitle() == castOther.getTitle()) || (this
-						.getTitle() != null && castOther.getTitle() != null && this
-						.getTitle().equals(castOther.getTitle())))
-				&& ((this.getEventDate() == castOther.getEventDate()) || (this
-						.getEventDate() != null
-						&& castOther.getEventDate() != null && this
-						.getEventDate().equals(castOther.getEventDate())))
-		/*		&& ((this.getEventTime() == castOther.getEventTime()) || (this
-						.getEventTime() != null
-						&& castOther.getEventTime() != null && this
-						.getEventTime().equals(castOther.getEventTime())))*/;
+				&& ((this.getOrganizationName() == castOther.getOrganizationName())
+						|| (this.getOrganizationName() != null && castOther.getOrganizationName() != null
+								&& this.getOrganizationName().equals(castOther.getOrganizationName())))
+				&& ((this.getAuthor() == castOther.getAuthor()) || (this.getAuthor() != null
+						&& castOther.getAuthor() != null && this.getAuthor().equals(castOther.getAuthor())))
+				&& ((this.getTitle() == castOther.getTitle()) || (this.getTitle() != null
+						&& castOther.getTitle() != null && this.getTitle().equals(castOther.getTitle())))
+				&& ((this.getEventDate() == castOther.getEventDate()) || (this.getEventDate() != null
+						&& castOther.getEventDate() != null && this.getEventDate().equals(castOther.getEventDate())))
+				&& ((this.getPublished() == castOther.getPublished()) || (this.getPublished() != null
+						&& castOther.getPublished() != null && this.getPublished().equals(castOther.getPublished())))
+				&& ((this.getEventTime() == castOther.getEventTime()) || (this.getEventTime() != null
+						&& castOther.getEventTime() != null && this.getEventTime().equals(castOther.getEventTime())));
 	}
 
 	public int hashCode() {
@@ -148,18 +151,13 @@ public class VwOrganizationNotes implements java.io.Serializable {
 
 		result = 37 * result + this.getNoteId();
 		result = 37 * result + this.getOrganizationid();
-		result = 37
-				* result
-				+ (getOrganizationName() == null ? 0 : this
-						.getOrganizationName().hashCode());
-		result = 37 * result
-				+ (getAuthor() == null ? 0 : this.getAuthor().hashCode());
-		result = 37 * result
-				+ (getTitle() == null ? 0 : this.getTitle().hashCode());
-		result = 37 * result
-				+ (getEventDate() == null ? 0 : this.getEventDate().hashCode());
-		/*result = 37 * result
-				+ (getEventTime() == null ? 0 : this.getEventTime().hashCode());*/
+		result = 37 * result + (getOrganizationName() == null ? 0 : this.getOrganizationName().hashCode());
+		result = 37 * result + (getAuthor() == null ? 0 : this.getAuthor().hashCode());
+		result = 37 * result + (getTitle() == null ? 0 : this.getTitle().hashCode());
+		result = 37 * result + (getEventDate() == null ? 0 : this.getEventDate().hashCode());
+		result = 37 * result + (getEventDate() == null ? 0 : this.getPublished().hashCode());
+		result = 37 * result + (getEventTime() == null ? 0 : this.getEventTime().hashCode());
+
 		return result;
 	}
 

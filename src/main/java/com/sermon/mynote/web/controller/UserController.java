@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sermon.mynote.domain.OrganizationGroup;
+import com.sermon.mynote.domain.StatusMsg;
 import com.sermon.mynote.domain.StatusResponse;
 import com.sermon.mynote.domain.User;
 import com.sermon.mynote.domain.UserProfile;
 import com.sermon.mynote.domain.UserRegistration;
+import com.sermon.mynote.domain.UserVerificationTokens;
 import com.sermon.mynote.service.UserProfileService;
 import com.sermon.mynote.service.UserService;
 
@@ -81,7 +83,7 @@ public class UserController {
 		Timestamp currentDate = new Timestamp(date.getTime());
 
 		boolean result = userService.createUser(user.getUserName(), user.getUserEmail(), user.getUserPassword(),
-				user.getUserStatus(), currentDate);
+				currentDate);
 
 		StatusResponse statusResponse = new StatusResponse();
 		if (result == false) {
@@ -96,10 +98,18 @@ public class UserController {
 	public void updateUserFavorite(@RequestBody User user, @PathVariable Long id) {
 
 		User usertemp = userService.findById(id.intValue());
-		user = usertemp;
+		// user = usertemp;
+
+		//usertemp.setUserEmail(user.getUserEmail());
+		usertemp.setUserId(id.intValue());
+		//usertemp.setUserName(user.getUserName());
+		usertemp.setUserMobile(user.getUserMobile());
 
 		logger.info("Updating user : " + user);
-		userService.save(user);
+		int result = userService.updateUser(usertemp.getUserId(), usertemp.getUserEmail(), usertemp.getUserName(),
+				usertemp.getUserMobile());
+		System.out.println(result);
+		// userService.save(usertemp);
 		logger.info("Contact updated successfully with info: " + userService);
 	}
 
@@ -220,23 +230,26 @@ public class UserController {
 		}
 		return statusResponse;
 	}
-	
+
 	@RequestMapping(value = "/forgotPassword", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public StatusResponse forgotPassword(@RequestBody User user) {
+	public StatusResponse forgotPassword(@RequestBody UserVerificationTokens token) {
 		logger.info("check username availability");
 
-		int result = userService.forgotPassword(user.getUserEmail());
+		int result = userService.forgotPassword(token.getVerificationToken(), token.getPassword());
 
 		StatusResponse response = new StatusResponse();
+		StatusMsg statusMsg = new StatusMsg();
 
-		if (result > 0)
-			response.setStatus(false);
-		else
+		if (result == -1) {
+			statusMsg.setStatus("Link Expired");
+		} else if (result == 0)
 			response.setStatus(true);
+		else {
+			response.setStatus(false);
+		}
 
 		return response;
 	}
-
 
 }
