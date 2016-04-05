@@ -17,6 +17,24 @@ public class OrganizationLike implements Serializable {
 	private String countryName;
 	private String zipcode;
 	private int likeCount;
+	private int downloadCount;
+	private int sermonCount;
+
+	public int getDownloadCount() {
+		return downloadCount;
+	}
+
+	public void setDownloadCount(int downloadCount) {
+		this.downloadCount = downloadCount;
+	}
+
+	public int getSermonCount() {
+		return sermonCount;
+	}
+
+	public void setSermonCount(int sermonCount) {
+		this.sermonCount = sermonCount;
+	}
 
 	public Integer getOrganizationId() {
 		return organizationId;

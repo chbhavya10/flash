@@ -68,7 +68,6 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 								"SELECT COUNT(*) AS likedSermons FROM `note` n, `NoteLike` nl WHERE n.`NoteId`=nl.`NoteId` AND n.`OrganizationId`=:organizationId")
 						.setParameter("organizationId", like.getOrganizationId());
 				System.out.println(likeQuery);
-				// query.setParameter("username", username);
 
 				if (likeQuery.getSingleResult() != null) {
 					likeCount = ((BigInteger) likeQuery.getSingleResult()).intValue();
@@ -77,6 +76,38 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 
 			}
 			like.setLikeCount(likeCount);
+			Integer downloadCount = 0;
+			try {
+				Query downloadQuery = em
+						.createNativeQuery(
+								"SELECT COUNT(*) AS downloadedSermons FROM `note` n,`NoteDownload` nd WHERE n.`NoteId`=nd.`NoteId` AND n.`OrganizationId`=:organizationId")
+						.setParameter("organizationId", like.getOrganizationId());
+				System.out.println(downloadQuery);
+
+				if (downloadQuery.getSingleResult() != null) {
+					downloadCount = ((BigInteger) downloadQuery.getSingleResult()).intValue();
+				}
+			} catch (NoResultException e) {
+
+			}
+			like.setDownloadCount(downloadCount);
+
+			Integer sermonCount = 0;
+			try {
+				Query sermonQuery = em
+						.createNativeQuery(
+								"SELECT COUNT(*) AS sermonCount FROM `note` WHERE `OrganizationId`=:organizationId")
+						.setParameter("organizationId", like.getOrganizationId());
+				System.out.println(sermonQuery);
+
+				if (sermonQuery.getSingleResult() != null) {
+					sermonCount = ((BigInteger) sermonQuery.getSingleResult()).intValue();
+				}
+			} catch (NoResultException e) {
+
+			}
+			like.setSermonCount(sermonCount);
+
 			likes.add(like);
 		}
 
