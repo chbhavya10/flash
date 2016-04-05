@@ -37,6 +37,33 @@ public class VwUserprofile implements java.io.Serializable {
 	private int CityId;
 	private int StateId;
 	private int CountryID;
+	private String UserName;
+	private String UserEmail;
+	private String UserPhone;
+
+	public String getUserName() {
+		return UserName;
+	}
+
+	public void setUserName(String userName) {
+		UserName = userName;
+	}
+
+	public String getUserEmail() {
+		return UserEmail;
+	}
+
+	public void setUserEmail(String userEmail) {
+		UserEmail = userEmail;
+	}
+
+	public String getUserPhone() {
+		return UserPhone;
+	}
+
+	public void setUserPhone(String userPhone) {
+		UserPhone = userPhone;
+	}
 
 	public int getCityId() {
 		return CityId;
@@ -67,7 +94,8 @@ public class VwUserprofile implements java.io.Serializable {
 	}
 
 	public VwUserprofile(int UserId, String FirstName, String LastName, String NickName, String Address_1,
-			String Address_2, String CityName, String StateName, int CityId, int StateId, int CountryID) {
+			String Address_2, String CityName, String StateName, int CityId, int StateId, int CountryID,
+			String UserName, String UserEmail, String UserPhone) {
 
 		// this.UserProfileID=UserProfileID;
 		this.UserId = UserId;
@@ -81,12 +109,16 @@ public class VwUserprofile implements java.io.Serializable {
 		this.CityId = CityId;
 		this.StateId = StateId;
 		this.CountryID = CountryID;
+		this.UserName = UserName;
+		this.UserEmail = UserEmail;
+		this.UserPhone = UserPhone;
 
 	}
 
 	public VwUserprofile(int UserId, String FirstName, String LastName, String NickName, String Address_1,
 			String Address_2, String CityName, String StateName, String CountryName, String ZipCode, Date DOB,
-			String Gender, int CityId, int StateId, int CountryID) {
+			String Gender, int CityId, int StateId, int CountryID, String UserName, String UserEmail,
+			String UserPhone) {
 
 		// this.UserProfileID=UserProfileID;
 		this.UserId = UserId;
@@ -104,6 +136,9 @@ public class VwUserprofile implements java.io.Serializable {
 		this.CityId = CityId;
 		this.StateId = StateId;
 		this.CountryID = CountryID;
+		this.UserName = UserName;
+		this.UserEmail = UserEmail;
+		this.UserPhone = UserPhone;
 
 	}
 
