@@ -31,6 +31,15 @@ public class VwOrganizationNotes implements java.io.Serializable {
 	private Date eventDate;
 	private Time eventTime;
 	private String published;
+	private String subTitle;
+
+	public String getSubTitle() {
+		return subTitle;
+	}
+
+	public void setSubTitle(String subTitle) {
+		this.subTitle = subTitle;
+	}
 
 	public String getPublished() {
 		return published;
@@ -51,7 +60,7 @@ public class VwOrganizationNotes implements java.io.Serializable {
 	}
 
 	public VwOrganizationNotes(int noteId, int organizationid, String organizationName, String author, String title,
-			Date eventDate, Time eventTime, String published) {
+			Date eventDate, Time eventTime, String published, String subTitle) {
 		this.noteId = noteId;
 		this.organizationid = organizationid;
 		this.organizationName = organizationName;
@@ -60,6 +69,7 @@ public class VwOrganizationNotes implements java.io.Serializable {
 		this.eventDate = eventDate;
 		this.eventTime = eventTime;
 		this.published = published;
+		this.subTitle = subTitle;
 	}
 
 	@Id
@@ -138,6 +148,8 @@ public class VwOrganizationNotes implements java.io.Serializable {
 						&& castOther.getAuthor() != null && this.getAuthor().equals(castOther.getAuthor())))
 				&& ((this.getTitle() == castOther.getTitle()) || (this.getTitle() != null
 						&& castOther.getTitle() != null && this.getTitle().equals(castOther.getTitle())))
+				&& ((this.getSubTitle() == castOther.getSubTitle()) || (this.getSubTitle() != null
+						&& castOther.getSubTitle() != null && this.getSubTitle().equals(castOther.getSubTitle())))
 				&& ((this.getEventDate() == castOther.getEventDate()) || (this.getEventDate() != null
 						&& castOther.getEventDate() != null && this.getEventDate().equals(castOther.getEventDate())))
 				&& ((this.getPublished() == castOther.getPublished()) || (this.getPublished() != null
@@ -154,6 +166,7 @@ public class VwOrganizationNotes implements java.io.Serializable {
 		result = 37 * result + (getOrganizationName() == null ? 0 : this.getOrganizationName().hashCode());
 		result = 37 * result + (getAuthor() == null ? 0 : this.getAuthor().hashCode());
 		result = 37 * result + (getTitle() == null ? 0 : this.getTitle().hashCode());
+		result = 37 * result + (getSubTitle() == null ? 0 : this.getSubTitle().hashCode());
 		result = 37 * result + (getEventDate() == null ? 0 : this.getEventDate().hashCode());
 		result = 37 * result + (getEventDate() == null ? 0 : this.getPublished().hashCode());
 		result = 37 * result + (getEventTime() == null ? 0 : this.getEventTime().hashCode());
