@@ -139,6 +139,7 @@ public class NoteServiceImpl implements NoteService {
 		note.setPublished(addNote.getPublished());
 		note.setSubTitle((addNote.getSubTitle()).trim());
 		note.setTitle((addNote.getTitle()).trim());
+		note.setPreacherName(addNote.getPreacherName());
 
 		Note newNote = noteRepository.save(note);
 

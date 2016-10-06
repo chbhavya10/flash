@@ -23,6 +23,15 @@ public class AddNote implements Serializable {
 	private Integer OrganizationId;
 	private Integer groupId;
 	private String published;
+	private String PreacherName;
+
+	public String getPreacherName() {
+		return PreacherName;
+	}
+
+	public void setPreacherName(String preacherName) {
+		PreacherName = preacherName;
+	}
 
 	private List<AddSection> sections;
 

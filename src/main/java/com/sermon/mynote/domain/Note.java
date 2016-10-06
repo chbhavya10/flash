@@ -50,6 +50,7 @@ public class Note implements java.io.Serializable {
 	private Integer OrganizationId;
 	private Integer groupId;
 	private String published;
+	private String PreacherName;
 
 	public Integer getGroupId() {
 		return groupId;
@@ -61,6 +62,14 @@ public class Note implements java.io.Serializable {
 
 	public String getPublished() {
 		return published;
+	}
+
+	public String getPreacherName() {
+		return PreacherName;
+	}
+
+	public void setPreacherName(String preacherName) {
+		PreacherName = preacherName;
 	}
 
 	public void setPublished(String published) {
@@ -77,7 +86,7 @@ public class Note implements java.io.Serializable {
 
 	public Note(Integer noteId, int authorId, String title, String subTitle, String introduction, Date eventDate,
 			Time eventTime, Integer categoryId, String keywords, Integer organizationId, Integer groupId,
-			String published) {
+			String published,String PreacherName) {
 		this.noteId = noteId;
 		this.authorId = authorId;
 		this.title = title;
@@ -90,6 +99,7 @@ public class Note implements java.io.Serializable {
 		OrganizationId = organizationId;
 		this.groupId = groupId;
 		this.published = published;
+		this.PreacherName=PreacherName;
 	}
 
 	@Id

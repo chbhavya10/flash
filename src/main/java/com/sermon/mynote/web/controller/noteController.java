@@ -74,6 +74,7 @@ public class noteController {
 		noteTemp.setSubTitle(note.getSubTitle());
 		noteTemp.setTitle(note.getTitle());
 		noteTemp.setOrganizationId(note.getOrganizationId());
+		noteTemp.setPreacherName(note.getPreacherName());
 
 		Note noteResponse = noteService.save(noteTemp);
 
