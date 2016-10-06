@@ -106,11 +106,12 @@ public class UserServiceImpl implements UserService {
 
 	}
 
-	public int updateUserPassword(Integer userId, String newPassword) {
+	public int updateUserPassword(Integer userId, String newPassword, String oldPassword) {
 
 		StoredProcedureQuery proc = em.createNamedStoredProcedureQuery("User.update_userpassword");
 		String password = AppUtil.sha256(newPassword);
-		proc.setParameter("userId", userId).setParameter("userPwd", password);
+		String oldPwd = AppUtil.sha256(oldPassword);
+		proc.setParameter("userId", userId).setParameter("userPwd", password).setParameter("userOldPwd", oldPwd);
 
 		int result = proc.executeUpdate();
 		return result;
@@ -208,7 +209,7 @@ public class UserServiceImpl implements UserService {
 		try {
 			Query query = em
 					.createNativeQuery(
-							"select userid returnvalue from userverificationtokens where verificationtoken=:verificationtoken")
+							"select userid returnvalue from UserVerificationTokens where verificationtoken=:verificationtoken")
 					.setParameter("verificationtoken", verificationToken);
 			System.out.println(query);
 
@@ -221,9 +222,12 @@ public class UserServiceImpl implements UserService {
 
 		if (userId > 0) {
 
+			User newUser = findById(userId);
+
 			StoredProcedureQuery proc = em.createNamedStoredProcedureQuery("User.update_userpassword");
 			String newPassword = AppUtil.sha256(password);
-			proc.setParameter("userId", userId).setParameter("userPwd", newPassword);
+			proc.setParameter("userId", userId).setParameter("userPwd", newPassword).setParameter("userOldPwd",
+					newUser.getUserPassword());
 
 			int result = proc.executeUpdate();
 

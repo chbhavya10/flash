@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sermon.mynote.domain.ChangePassword;
 import com.sermon.mynote.domain.OrganizationGroup;
 import com.sermon.mynote.domain.StatusMsg;
 import com.sermon.mynote.domain.StatusResponse;
@@ -117,9 +118,9 @@ public class UserController {
 	// update users password
 	@RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
 	@ResponseBody
-	public StatusResponse updateUserPassword(@RequestBody User user) {
+	public StatusResponse updateUserPassword(@RequestBody ChangePassword user) {
 
-		int result = userService.updateUserPassword(user.getUserId(), user.getUserPassword());
+		int result = userService.updateUserPassword(user.getUserId(), user.getNewPassword(), user.getOldPassword());
 
 		StatusResponse response = new StatusResponse();
 

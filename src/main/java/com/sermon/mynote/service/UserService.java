@@ -19,7 +19,7 @@ public interface UserService {
 
 	public boolean createUser(String username, String useremail, String userpassword, Timestamp currentDate);
 
-	public int updateUserPassword(Integer userId, String password);
+	public int updateUserPassword(Integer userId, String newPassword,String oldPassword);
 
 	public Page<User> findAllByPage(Pageable pageable);
 

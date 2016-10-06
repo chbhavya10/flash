@@ -44,7 +44,8 @@ import org.joda.time.DateTime;
 
 		@NamedStoredProcedureQuery(name = "User.update_userpassword", procedureName = "update_userpassword", parameters = {
 				@StoredProcedureParameter(mode = ParameterMode.IN, name = "userId", type = Integer.class),
-				@StoredProcedureParameter(mode = ParameterMode.IN, name = "userPwd", type = String.class)
+				@StoredProcedureParameter(mode = ParameterMode.IN, name = "userPwd", type = String.class),
+				@StoredProcedureParameter(mode = ParameterMode.IN, name = "userOldPwd", type = String.class)
 
 		}),
 
