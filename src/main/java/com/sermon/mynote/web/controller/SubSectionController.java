@@ -33,9 +33,16 @@ public class SubSectionController {
 
 	@RequestMapping(value = "/addSubSection", method = RequestMethod.POST, headers = {
 			"Content-type=application/json" })
-	public @ResponseBody SubSection PostSubsection(@RequestBody SubSection subsection) {
+	public @ResponseBody SubSection PostSubsection(@RequestBody AddSubSection subsection) {
+		
+		SubSection subsectionTemp = new SubSection();
+		subsectionTemp.setSectionId(subsection.getSectionId());
+		List<Integer> subSectionKeywords = subsection.getSubsectionKeyWords();
+		String subSectionKeyword = StringUtils.join(subSectionKeywords, ",");
+		subsectionTemp.setSubsectionKeyWords(subSectionKeyword);
+		subsectionTemp.setSubsectionText(subsection.getSubsectionText());
 
-		SubSection newSubSection = subsectionService.save(subsection);
+		SubSection newSubSection = subsectionService.save(subsectionTemp);
 
 		return newSubSection;
 	}

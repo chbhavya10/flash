@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
+import javax.ws.rs.core.Response;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,22 +99,30 @@ public class UserController {
 	/* update */
 	@RequestMapping(value = "/updateUser/{id}", method = RequestMethod.PUT)
 	@ResponseBody
-	public void updateUserFavorite(@RequestBody User user, @PathVariable Long id) {
+	public StatusResponse updateUserFavorite(@RequestBody User user, @PathVariable Long id) {
 
 		User usertemp = userService.findById(id.intValue());
 		// user = usertemp;
 
-		// usertemp.setUserEmail(user.getUserEmail());
+		usertemp.setUserEmail(user.getUserEmail());
 		usertemp.setUserId(id.intValue());
-		// usertemp.setUserName(user.getUserName());
-		usertemp.setUserMobile(user.getUserMobile());
+		//usertemp.setUserName(user.getUserName());
+		//usertemp.setUserMobile(user.getUserMobile());
 
 		logger.info("Updating user : " + user);
 		int result = userService.updateUser(usertemp.getUserId(), usertemp.getUserEmail(), usertemp.getUserName(),
 				usertemp.getUserMobile());
-		System.out.println(result);
-		// userService.save(usertemp);
 		logger.info("Contact updated successfully with info: " + userService);
+		
+		StatusResponse response = new StatusResponse();
+
+		if (result == 0)
+			response.setStatus(true);
+		else
+			response.setStatus(false);
+
+		return response;
+
 	}
 
 	// update users password

@@ -32,9 +32,16 @@ public class SectionController {
 	private SectionService sectionService;
 
 	@RequestMapping(value = "/addSection", method = RequestMethod.POST, headers = { "Content-type=application/json" })
-	public @ResponseBody Section PostNote(@RequestBody Section section) {
+	public @ResponseBody Section PostNote(@RequestBody AddSection section) {
+		
+		Section sectionTemp = new Section();
+		sectionTemp.setNoteId(section.getNoteId());
+		List<Integer> sectionKeywords = section.getSectionKeyWords();
+		String sectionKeyword = StringUtils.join(sectionKeywords, ",");
+		sectionTemp.setSectionKeyWords(sectionKeyword);
+		sectionTemp.setSectionText(section.getSectionText());
 
-		Section newSection = sectionService.save(section);
+		Section newSection = sectionService.save(sectionTemp);
 
 		return newSection;
 	}

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sermon.mynote.domain.UserOrgList;
 import com.sermon.mynote.domain.VwUserorganizations;
 import com.sermon.mynote.service.VwUserorganizationsService;
 
@@ -25,10 +26,10 @@ public class VwUserorganizationsController {
 
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public List<VwUserorganizations> getChurchesByOrganization(@PathVariable int id) {
+	public List<UserOrgList> getChurchesByOrganization(@PathVariable int id) {
 		logger.info("Listing contacts");
 
-		List<VwUserorganizations> vwUserorganizations = vwUserorganizationsService.findOrganizationsByUser(id);
+		List<UserOrgList> vwUserorganizations = vwUserorganizationsService.findOrganizationsByUser(id);
 		return vwUserorganizations;
 	}
 }

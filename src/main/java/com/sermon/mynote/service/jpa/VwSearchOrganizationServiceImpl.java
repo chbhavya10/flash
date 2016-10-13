@@ -65,7 +65,7 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 			try {
 				Query likeQuery = em
 						.createNativeQuery(
-								"SELECT COUNT(*) AS likedSermons FROM `note` n, `NoteLike` nl WHERE n.`NoteId`=nl.`NoteId` AND n.`OrganizationId`=:organizationId")
+								"SELECT COUNT(*) AS likedSermons FROM `note` n, `NoteLike` nl WHERE n.`NoteId`=nl.`NoteId` AND n.`OrganizationId`=:organizationId AND `LikeCount`=1")
 						.setParameter("organizationId", like.getOrganizationId());
 				System.out.println(likeQuery);
 

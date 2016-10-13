@@ -2,10 +2,10 @@ package com.sermon.mynote.service;
 
 import java.util.List;
 
-import com.sermon.mynote.domain.VwUserorganizations;
+import com.sermon.mynote.domain.UserOrgList;
 
 public interface VwUserorganizationsService {
 
-	public List<VwUserorganizations> findOrganizationsByUser(int userid);
+	public List<UserOrgList> findOrganizationsByUser(int userid);
 
 }
