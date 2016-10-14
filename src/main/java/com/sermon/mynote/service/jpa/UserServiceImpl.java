@@ -300,7 +300,7 @@ public class UserServiceImpl implements UserService {
 
 		}
 
-		String resetPasswordUrl = "file:///D:/SermonNote/resetpassword.html#/?passwordResetToken="
+		String resetPasswordUrl = "http://www.sermonhub.net/snote/resetpassword.html#/?passwordResetToken="
 				+ tokens.getVerificationToken();
 
 		emailService.forgotPassword(userEmail, resetPasswordUrl, userName);
