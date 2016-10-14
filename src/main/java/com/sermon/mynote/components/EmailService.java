@@ -58,27 +58,6 @@ public class EmailService {
         }
     }
     
-     @Async
-    public void sendEmail(String to,String countyEmail, String stateEmail, String subject, String content, boolean isMultipart, boolean isHtml) {
-        log.debug("Send e-mail[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}",
-                isMultipart, isHtml, to, subject, content);
-
-        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-        try {
-            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, isMultipart, CharEncoding.UTF_8);
-            message.setTo(to);
-            message.setCc(stateEmail);
-            message.setFrom(messageSource.getMessage("mail.from.address", null, null, null));
-            message.setSubject(subject);
-            message.setText(content, isHtml);
-            javaMailSender.send(mimeMessage);
-            log.debug("Sent e-mail to User '{}'", to);
-        } catch (Exception e) {
-            log.error("E-mail could not be sent to user '{}', exception is: {}", to, e.getMessage());
-        }
-    }
-    
-    
     @Async
     public void forgotPassword(final String tomail, final String resetPasswordUrl, final String licenseeName) {
         String subject = messageSource.getMessage("forgot.password",null,null);

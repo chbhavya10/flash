@@ -5,8 +5,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-import javax.ws.rs.core.Response;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +18,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sermon.mynote.domain.ChangePassword;
 import com.sermon.mynote.domain.OrganizationGroup;
+import com.sermon.mynote.domain.ResetPassword;
 import com.sermon.mynote.domain.StatusMsg;
 import com.sermon.mynote.domain.StatusResponse;
 import com.sermon.mynote.domain.User;
 import com.sermon.mynote.domain.UserProfile;
 import com.sermon.mynote.domain.UserRegistration;
-import com.sermon.mynote.domain.UserVerificationTokens;
 import com.sermon.mynote.service.UserProfileService;
 import com.sermon.mynote.service.UserService;
 
@@ -102,18 +100,17 @@ public class UserController {
 	public StatusResponse updateUserFavorite(@RequestBody User user, @PathVariable Long id) {
 
 		User usertemp = userService.findById(id.intValue());
-		// user = usertemp;
 
 		usertemp.setUserEmail(user.getUserEmail());
 		usertemp.setUserId(id.intValue());
-		//usertemp.setUserName(user.getUserName());
-		//usertemp.setUserMobile(user.getUserMobile());
+		// usertemp.setUserName(user.getUserName());
+		// usertemp.setUserMobile(user.getUserMobile());
 
 		logger.info("Updating user : " + user);
 		int result = userService.updateUser(usertemp.getUserId(), usertemp.getUserEmail(), usertemp.getUserName(),
 				usertemp.getUserMobile());
 		logger.info("Contact updated successfully with info: " + userService);
-		
+
 		StatusResponse response = new StatusResponse();
 
 		if (result == 0)
@@ -245,7 +242,7 @@ public class UserController {
 
 	@RequestMapping(value = "/resetPassword", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public StatusResponse resetPassword(@RequestBody UserVerificationTokens token) {
+	public StatusResponse resetPassword(@RequestBody ResetPassword token) {
 		logger.info("check username availability");
 
 		int result = userService.forgotPassword(token.getVerificationToken(), token.getPassword());

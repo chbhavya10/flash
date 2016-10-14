@@ -38,7 +38,7 @@ public class UserVerificationTokens {
 	}
 
 	private String verificationToken;
-	private String password;
+	//private String password;
 	private int isVerified;
 
 	@Id
@@ -67,12 +67,12 @@ public class UserVerificationTokens {
 		this.verificationToken = verificationToken;
 	}
 
-	public String getPassword() {
+	/*public String getPassword() {
 		return password;
 	}
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
+	}*/
 
 }

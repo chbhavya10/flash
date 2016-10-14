@@ -38,4 +38,20 @@ public class NoteDownloadController {
 		return response;
 	}
 
+	@RequestMapping(value = "/removeNoteDownload", method = RequestMethod.POST, headers = {
+			"Content-type=application/json" })
+	public @ResponseBody StatusResponse removeNoteDownload(@RequestBody NoteDownload noteDownload) {
+
+		int result = noteDownloadService.remove(noteDownload);
+
+		StatusResponse response = new StatusResponse();
+
+		if (result > 0)
+			response.setStatus(true);
+		else
+			response.setStatus(false);
+
+		return response;
+	}
+
 }

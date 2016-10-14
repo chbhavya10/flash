@@ -5,6 +5,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -22,6 +27,9 @@ public class NoteDownloadServiceImpl implements NoteDownloadService {
 
 	@Autowired
 	private NoteDownloadRepository noteDownloadRepository;
+
+	@PersistenceContext
+	private EntityManager em;
 
 	@Override
 	public NoteDownload save(NoteDownload noteDownload) {
@@ -42,5 +50,23 @@ public class NoteDownloadServiceImpl implements NoteDownloadService {
 		noteDownload.setDownloadDate(dateTime);
 
 		return noteDownloadRepository.save(noteDownload);
+	}
+
+	@Override
+	public int remove(NoteDownload noteDownload) {
+		try {
+			Query query = em.createNativeQuery("delete from NoteDownload where NoteId=:noteId and UserId=:userId")
+					.setParameter("noteId", noteDownload.getNoteId()).setParameter("userId", noteDownload.getUserId());
+			System.out.println(query);
+			query.setParameter("noteId", noteDownload.getNoteId());
+			query.setParameter("userId", noteDownload.getUserId());
+			
+			int result=query.executeUpdate();
+			return result;
+
+		} catch (NoResultException e) {
+
+		}
+		return 0;
 	}
 }
