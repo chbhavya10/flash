@@ -213,6 +213,7 @@ public class NoteServiceImpl implements NoteService {
 		addNote.setPublished(note.getPublished());
 		addNote.setSubTitle(note.getSubTitle());
 		addNote.setTitle(note.getTitle());
+		addNote.setPreacherName(note.getPreacherName());
 
 		List<AddSection> addSections = new ArrayList<AddSection>();
 
