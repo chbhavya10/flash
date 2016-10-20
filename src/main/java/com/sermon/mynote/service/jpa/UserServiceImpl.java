@@ -1,5 +1,6 @@
 package com.sermon.mynote.service.jpa;
 
+import java.math.BigInteger;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -24,9 +25,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
 import com.sermon.mynote.components.EmailService;
+import com.sermon.mynote.domain.OrgValidation;
 import com.sermon.mynote.domain.OrganizationGroup;
 import com.sermon.mynote.domain.User;
 import com.sermon.mynote.domain.UserVerificationTokens;
+import com.sermon.mynote.domain.ValidateOrgKeyResponse;
 import com.sermon.mynote.repository.GroupRepository;
 import com.sermon.mynote.repository.UserRepository;
 import com.sermon.mynote.repository.UserVerificationTokenRepository;
@@ -281,31 +284,107 @@ public class UserServiceImpl implements UserService {
 
 		}
 
-		UUID uuId = UUID.randomUUID();
-		UserVerificationTokens tokens = new UserVerificationTokens();
-		tokens.setVerificationToken(uuId.toString());
-		tokens.setUserId(userId);
+		if (userId > 0) {
+			UUID uuId = UUID.randomUUID();
+			UserVerificationTokens tokens = new UserVerificationTokens();
+			tokens.setVerificationToken(uuId.toString());
+			tokens.setUserId(userId);
 
-		tokenRepository.save(tokens);
+			tokenRepository.save(tokens);
+
+			try {
+				Query query = em.createNativeQuery("select username returnvalue from user where userid=:userid")
+						.setParameter("userid", userId);
+				System.out.println(query);
+
+				if (query.getSingleResult() != null) {
+					userName = (String) query.getSingleResult();
+				}
+			} catch (NoResultException e) {
+
+			}
+
+			String resetPasswordUrl = "http://www.sermonhub.net/snote/resetpassword.html#/?passwordResetToken="
+					+ tokens.getVerificationToken();
+
+			emailService.forgotPassword(userEmail, resetPasswordUrl, userName);
+
+			return 0;
+		} else {
+			return 1;
+		}
+	}
+
+	@Override
+	public ValidateOrgKeyResponse validateOrgKey(OrgValidation orgValidation) {
+
+		int orgId = 0;
+		int maxCount = 0;
+		BigInteger registeredAuthors = null;
+		ValidateOrgKeyResponse keyResponse = new ValidateOrgKeyResponse();
 
 		try {
-			Query query = em.createNativeQuery("select username returnvalue from user where userid=:userid")
-					.setParameter("userid", userId);
+			Query query = em
+					.createNativeQuery(
+							"select OrganizationId returnvalue from organization where OrganizationId=:OrganizationId and ValidationKey=:ValidationKey")
+					.setParameter("OrganizationId", orgValidation.getOrganizationId())
+					.setParameter("ValidationKey", orgValidation.getValidationKey());
 			System.out.println(query);
+			// query.setParameter("username", username);
 
 			if (query.getSingleResult() != null) {
-				userName = (String) query.getSingleResult();
+				orgId = (Integer) query.getSingleResult();
 			}
 		} catch (NoResultException e) {
 
 		}
 
-		String resetPasswordUrl = "http://www.sermonhub.net/snote/resetpassword.html#/?passwordResetToken="
-				+ tokens.getVerificationToken();
+		if (orgId > 0) {
+			keyResponse.setKeyResponse(true);
+		} else {
+			keyResponse.setKeyResponse(false);
+		}
 
-		emailService.forgotPassword(userEmail, resetPasswordUrl, userName);
+		try {
+			Query query = em
+					.createNativeQuery(
+							"select MaxAuthorCount returnvalue from organization where OrganizationId=:OrganizationId")
+					.setParameter("OrganizationId", orgValidation.getOrganizationId());
+			System.out.println(query);
+			// query.setParameter("username", username);
 
-		return 0;
+			if (query.getSingleResult() != null) {
+				maxCount = (Integer) query.getSingleResult();
+			}
+		} catch (NoResultException e) {
+
+		}
+
+		try {
+			Query query = em
+					.createNativeQuery(
+							"select count(*) returnvalue from organizationusers where OrganizationId=:OrganizationId")
+					.setParameter("OrganizationId", orgValidation.getOrganizationId());
+			System.out.println(query);
+			// query.setParameter("username", username);
+
+			if (query.getSingleResult() != null) {
+				registeredAuthors = (BigInteger) query.getSingleResult();
+			}
+		} catch (NoResultException e) {
+
+		}
+		
+		System.out.println("registered users count : "+registeredAuthors+" max : "+maxCount);
+		
+		Integer registeredUsers =registeredAuthors.intValue();
+		if (registeredUsers > maxCount) {
+			keyResponse.setNewAuthorAvailability(false);
+		} else {
+			keyResponse.setNewAuthorAvailability(true);
+		}
+
+		return keyResponse;
 	}
 
 }

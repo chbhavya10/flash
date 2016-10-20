@@ -115,6 +115,7 @@ public class NoteServiceImpl implements NoteService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public int createNote(AddNote addNote) {
 
 		noteId = addNote.getNoteId();
@@ -137,8 +138,8 @@ public class NoteServiceImpl implements NoteService {
 		note.setKeywords(sectionKeyword);
 		note.setOrganizationId(addNote.getOrganizationId());
 		note.setPublished(addNote.getPublished());
-		note.setSubTitle((addNote.getSubTitle()).trim());
-		note.setTitle((addNote.getTitle()).trim());
+		note.setSubTitle((addNote.getSubTitle()).trim().replaceAll("\\s+", " "));
+		note.setTitle((addNote.getTitle()).trim().replaceAll("\\s+", " "));
 		note.setPreacherName(addNote.getPreacherName());
 
 		Note newNote = noteRepository.save(note);
@@ -157,8 +158,9 @@ public class NoteServiceImpl implements NoteService {
 					List<Integer> sectionKeywords = section.getSectionKeyWords();
 					String newSectionKeyword = StringUtils.join(sectionKeywords, ',');
 					noteSection.setSectionKeyWords(newSectionKeyword);
-					noteSection.setSectionText((section.getSectionText()).trim());
-
+					System.out.println(section.getSectionText());
+					noteSection.setSectionText((section.getSectionText()).trim().replaceAll("\\s+", " "));
+					System.out.println(noteSection.getSectionText());
 					Section newSection = sectionRepository.save(noteSection);
 
 					List<AddSubSection> subSections = addNote.getSubSections();
@@ -173,7 +175,7 @@ public class NoteServiceImpl implements NoteService {
 								List<Integer> subSectionKeywords = subSection.getSubsectionKeyWords();
 								String newSubSectionKeyword = StringUtils.join(subSectionKeywords, ',');
 								noteSubSection.setSubsectionKeyWords(newSubSectionKeyword);
-								noteSubSection.setSubsectionText((subSection.getSubsectionText()).trim());
+								noteSubSection.setSubsectionText((subSection.getSubsectionText()).trim().replaceAll("\\s+", " "));
 
 								subsectionRepository.save(noteSubSection);
 							}

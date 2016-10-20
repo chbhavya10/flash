@@ -6,8 +6,10 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.sermon.mynote.domain.OrgValidation;
 import com.sermon.mynote.domain.OrganizationGroup;
 import com.sermon.mynote.domain.User;
+import com.sermon.mynote.domain.ValidateOrgKeyResponse;
 
 public interface UserService {
 
@@ -38,5 +40,7 @@ public interface UserService {
 	public int updateUser(Integer userId, String userEmail, String userName, String userMobile);
 
 	public int forgetPasswordLink(String userEmail);
+
+	public ValidateOrgKeyResponse validateOrgKey(OrgValidation orgValidation);
 
 }
