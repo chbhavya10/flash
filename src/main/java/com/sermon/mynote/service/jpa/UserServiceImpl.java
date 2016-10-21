@@ -114,10 +114,28 @@ public class UserServiceImpl implements UserService {
 		StoredProcedureQuery proc = em.createNamedStoredProcedureQuery("User.update_userpassword");
 		String password = AppUtil.sha256(newPassword);
 		String oldPwd = AppUtil.sha256(oldPassword);
-		proc.setParameter("userId", userId).setParameter("userPwd", password).setParameter("userOldPwd", oldPwd);
 
-		int result = proc.executeUpdate();
-		return result;
+		String storedPwd = null;
+		try {
+			Query query = em.createNativeQuery("select UserPassword returnvalue from user where userid=:userid")
+					.setParameter("userid", userId);
+			System.out.println(query);
+
+			if (query.getSingleResult() != null) {
+				storedPwd = (String) query.getSingleResult();
+			}
+		} catch (NoResultException e) {
+
+		}
+
+		if (storedPwd.equals(oldPwd)) {
+			proc.setParameter("userId", userId).setParameter("userPwd", password).setParameter("userOldPwd", oldPwd);
+
+			int result = proc.executeUpdate();
+			return result;
+		} else {
+			return 1;
+		}
 
 	}
 
@@ -374,10 +392,10 @@ public class UserServiceImpl implements UserService {
 		} catch (NoResultException e) {
 
 		}
-		
-		System.out.println("registered users count : "+registeredAuthors+" max : "+maxCount);
-		
-		Integer registeredUsers =registeredAuthors.intValue();
+
+		System.out.println("registered users count : " + registeredAuthors + " max : " + maxCount);
+
+		Integer registeredUsers = registeredAuthors.intValue();
 		if (registeredUsers > maxCount) {
 			keyResponse.setNewAuthorAvailability(false);
 		} else {
