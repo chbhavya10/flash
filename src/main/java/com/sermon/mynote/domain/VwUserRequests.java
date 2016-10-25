@@ -1,0 +1,161 @@
+package com.sermon.mynote.domain;
+
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
+
+@Entity
+@NamedQueries({
+		@NamedQuery(name = "VwUserRequests.findRequestsByUserId", query = "SELECT o FROM VwUserRequests o  WHERE o.userId = (?1)"),
+		@NamedQuery(name = "VwUserRequests.findRequestsByOrgId", query = "SELECT o FROM VwUserRequests o  WHERE o.organizationId = (?1)") })
+@Table(name = "vw_UserRequests")
+public class VwUserRequests implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private int requestId;
+	private int requestTypeId;
+	private DateTime requestDate;
+	private String requestStatus;
+	private String requestType;
+	private int organizationId;
+	private String organizationName;
+	private int userId;
+
+	public VwUserRequests() {
+	}
+
+	public VwUserRequests(int requestTypeId, DateTime requestDate, String requestStatus, String requestType,
+			int organizationId, String organizationName, int userId) {
+
+		this.requestTypeId = requestTypeId;
+		this.requestDate = requestDate;
+		this.requestStatus = requestStatus;
+		this.requestType = requestType;
+		this.organizationId = organizationId;
+		this.organizationName = organizationName;
+		this.userId = userId;
+	}
+
+	@Id
+	@Column(name = "RequestId")
+	public int getRequestId() {
+		return requestId;
+	}
+
+	public void setRequestId(int requestId) {
+		this.requestId = requestId;
+	}
+
+	public int getRequestTypeId() {
+		return requestTypeId;
+	}
+
+	public void setRequestTypeId(int requestTypeId) {
+		this.requestTypeId = requestTypeId;
+	}
+
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	public DateTime getRequestDate() {
+		return requestDate;
+	}
+
+	public void setRequestDate(DateTime requestDate) {
+		this.requestDate = requestDate;
+	}
+
+	public String getRequestStatus() {
+		return requestStatus;
+	}
+
+	public void setRequestStatus(String requestStatus) {
+		this.requestStatus = requestStatus;
+	}
+
+	public String getRequestType() {
+		return requestType;
+	}
+
+	public void setRequestType(String requestType) {
+		this.requestType = requestType;
+	}
+
+	public int getOrganizationId() {
+		return organizationId;
+	}
+
+	public void setOrganizationId(int organizationId) {
+		this.organizationId = organizationId;
+	}
+
+	public String getOrganizationName() {
+		return organizationName;
+	}
+
+	public void setOrganizationName(String organizationName) {
+		this.organizationName = organizationName;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	public boolean equals(Object other) {
+		if ((this == other))
+			return true;
+		if ((other == null))
+			return false;
+		if (!(other instanceof VwUserRequests))
+			return false;
+		VwUserRequests castOther = (VwUserRequests) other;
+
+		return (this.getRequestId() == castOther.getRequestId())
+				&& (this.getOrganizationId() == castOther.getOrganizationId())
+				&& (this.getRequestTypeId() == castOther.getRequestTypeId())
+				&& (this.getUserId() == castOther.getUserId())
+				&& ((this.getOrganizationName() == castOther.getOrganizationName())
+						|| (this.getOrganizationName() != null && castOther.getOrganizationName() != null
+								&& this.getOrganizationName().equals(castOther.getOrganizationName())))
+				&& ((this.getRequestDate() == castOther.getRequestDate())
+						|| (this.getRequestDate() != null && castOther.getRequestDate() != null
+								&& this.getRequestDate().equals(castOther.getRequestDate())))
+				&& ((this.getRequestStatus() == castOther.getRequestStatus())
+						|| (this.getRequestStatus() != null && castOther.getRequestStatus() != null
+								&& this.getRequestStatus().equals(castOther.getRequestStatus())))
+				&& ((this.getRequestType() == castOther.getRequestType())
+						|| (this.getRequestType() != null && castOther.getRequestType() != null
+								&& this.getRequestType().equals(castOther.getRequestType())));
+
+	}
+
+	public int hashCode() {
+		int result = 17;
+
+		result = 37 * result + this.getRequestId();
+		result = 37 * result + this.getOrganizationId();
+		result = 37 * result + this.getRequestTypeId();
+		result = 37 * result + this.getUserId();
+		result = 37 * result + (getOrganizationName() == null ? 0 : this.getOrganizationName().hashCode());
+		result = 37 * result + (getRequestDate() == null ? 0 : this.getRequestDate().hashCode());
+		result = 37 * result + (getRequestStatus() == null ? 0 : this.getRequestStatus().hashCode());
+		result = 37 * result + (getRequestType() == null ? 0 : this.getRequestType().hashCode());
+
+		return result;
+	}
+
+}

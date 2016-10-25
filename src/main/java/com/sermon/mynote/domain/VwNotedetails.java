@@ -38,6 +38,7 @@ public class VwNotedetails implements java.io.Serializable {
 	private String subSectionKeywords;
 	private int groupId;
 	private String published;
+	private int organizationId;
 
 	public int getGroupId() {
 		return groupId;
@@ -69,7 +70,8 @@ public class VwNotedetails implements java.io.Serializable {
 
 	public VwNotedetails(int noteKey, int noteId, String author, String title, String subtitle, Date eventDate,
 			Time eventTime, String introduction, int sectionId, String sectionText, String sectionKeywords,
-			int subSectionId, String subSectionText, String subSectionKeywords, int groupId, String published) {
+			int subSectionId, String subSectionText, String subSectionKeywords, int groupId, String published,
+			int organizationId) {
 		this.noteKey = noteKey;
 		this.noteId = noteId;
 		this.author = author;
@@ -86,6 +88,7 @@ public class VwNotedetails implements java.io.Serializable {
 		this.subSectionKeywords = subSectionKeywords;
 		this.groupId = groupId;
 		this.published = published;
+		this.organizationId = organizationId;
 	}
 
 	@Id
@@ -202,6 +205,14 @@ public class VwNotedetails implements java.io.Serializable {
 		this.subSectionKeywords = subSectionKeywords;
 	}
 
+	public int getOrganizationId() {
+		return organizationId;
+	}
+
+	public void setOrganizationId(int organizationId) {
+		this.organizationId = organizationId;
+	}
+
 	public boolean equals(Object other) {
 		if ((this == other))
 			return true;
@@ -212,6 +223,7 @@ public class VwNotedetails implements java.io.Serializable {
 		VwNotedetails castOther = (VwNotedetails) other;
 
 		return (this.getNoteKey() == castOther.getNoteKey()) && (this.getNoteId() == castOther.getNoteId())
+				&& (this.getOrganizationId() == castOther.getOrganizationId())
 				&& ((this.getAuthor() == castOther.getAuthor()) || (this.getAuthor() != null
 						&& castOther.getAuthor() != null && this.getAuthor().equals(castOther.getAuthor())))
 				&& ((this.getTitle() == castOther.getTitle()) || (this.getTitle() != null
@@ -258,6 +270,7 @@ public class VwNotedetails implements java.io.Serializable {
 		result = 37 * result + this.getSubSectionId();
 		result = 37 * result + (getSubSectionText() == null ? 0 : this.getSubSectionText().hashCode());
 		result = 37 * result + (getSubSectionKeywords() == null ? 0 : this.getSubSectionKeywords().hashCode());
+		result = 37 * result + this.getOrganizationId();
 		return result;
 	}
 
