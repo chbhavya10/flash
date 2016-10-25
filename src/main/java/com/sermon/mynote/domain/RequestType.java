@@ -2,6 +2,8 @@ package com.sermon.mynote.domain;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,8 +12,13 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "RequestType")
-public class RequestType {
+public class RequestType implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private int requestTypeId;
 	private String requestType;
 	private String requestGroup;
