@@ -69,6 +69,12 @@ public class RequestController {
 	@ResponseBody
 	public StatusResponse updateRequest(@RequestBody Request request) {
 
+		if (request.getRequestStatus() == null || request.getRequestStatus().isEmpty()) {
+			
+			Request requestDetails = requestService.findById(request.getRequestId());
+			request.setRequestStatus(requestDetails.getRequestStatus());
+		}
+
 		int result = requestService.updateRequest(request.getRequestId(), request.getRequestUpdate(),
 				request.getRequestStatus());
 
