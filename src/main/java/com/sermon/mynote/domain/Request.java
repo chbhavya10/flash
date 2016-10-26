@@ -8,12 +8,24 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedStoredProcedureQueries;
+import javax.persistence.NamedStoredProcedureQuery;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 @Entity
+@NamedStoredProcedureQueries({
+
+		@NamedStoredProcedureQuery(name = "Request.update_request", procedureName = "update_request", parameters = {
+				@StoredProcedureParameter(mode = ParameterMode.IN, name = "requestId", type = Integer.class),
+				@StoredProcedureParameter(mode = ParameterMode.IN, name = "requestUpdate", type = String.class),
+				@StoredProcedureParameter(mode = ParameterMode.IN, name = "requestStatus", type = String.class)
+
+		}) })
 @Table(name = "Request")
 public class Request implements Serializable {
 

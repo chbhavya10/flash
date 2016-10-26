@@ -65,4 +65,22 @@ public class RequestController {
 
 	}
 
+	@RequestMapping(value = "/updateRequest", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public StatusResponse updateRequest(@RequestBody Request request) {
+
+		int result = requestService.updateRequest(request.getRequestId(), request.getRequestUpdate(),
+				request.getRequestStatus());
+
+		StatusResponse response = new StatusResponse();
+
+		if (result == 0)
+			response.setStatus(true);
+		else
+			response.setStatus(false);
+
+		return response;
+
+	}
+
 }

@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.StoredProcedureQuery;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,17 @@ public class RequestServiceImpl implements RequestService {
 	@Override
 	public Request findById(int id) {
 		return requestRepository.findOne(id);
+	}
+
+	@Override
+	public int updateRequest(int requestId, String requestUpdate, String requestStatus) {
+
+		StoredProcedureQuery proc = em.createNamedStoredProcedureQuery("Request.update_request");
+		proc.setParameter("requestId", requestId).setParameter("requestUpdate", requestUpdate)
+				.setParameter("requestStatus", requestStatus);
+
+		int result = proc.executeUpdate();
+		return result;
 	}
 
 }

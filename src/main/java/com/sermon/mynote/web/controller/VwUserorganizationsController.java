@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sermon.mynote.domain.UserOrgList;
-import com.sermon.mynote.domain.VwUserorganizations;
 import com.sermon.mynote.service.VwUserorganizationsService;
 
 @RequestMapping("/orglistuser")

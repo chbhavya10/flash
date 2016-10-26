@@ -13,4 +13,6 @@ public interface RequestService {
 
 	Request findById(int id);
 
+	int updateRequest(int requestId, String requestUpdate, String requestStatus);
+
 }
