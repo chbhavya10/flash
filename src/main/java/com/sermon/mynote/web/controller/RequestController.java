@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sermon.mynote.domain.Request;
+import com.sermon.mynote.domain.RequestDetails;
 import com.sermon.mynote.domain.RequestType;
 import com.sermon.mynote.domain.StatusResponse;
 import com.sermon.mynote.service.RequestService;
@@ -58,9 +59,9 @@ public class RequestController {
 
 	@RequestMapping(value = "/getRequest/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public Request getRequest(@PathVariable int id) {
+	public RequestDetails getRequest(@PathVariable int id) {
 
-		Request resultRequest = requestService.findById(id);
+		RequestDetails resultRequest = requestService.findById(id);
 		return resultRequest;
 
 	}
@@ -70,8 +71,8 @@ public class RequestController {
 	public StatusResponse updateRequest(@RequestBody Request request) {
 
 		if (request.getRequestStatus() == null || request.getRequestStatus().isEmpty()) {
-			
-			Request requestDetails = requestService.findById(request.getRequestId());
+
+			RequestDetails requestDetails = requestService.findById(request.getRequestId());
 			request.setRequestStatus(requestDetails.getRequestStatus());
 		}
 
