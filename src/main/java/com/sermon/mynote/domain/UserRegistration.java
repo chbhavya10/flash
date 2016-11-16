@@ -34,6 +34,19 @@ public class UserRegistration implements Serializable {
 	private String zipCode;
 	private Date DOB;
 	private String Gender;
+	private int organizationId;
+
+	public int getOrganizationId() {
+		return organizationId;
+	}
+
+	public void setOrganizationId(int organizationId) {
+		this.organizationId = organizationId;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 	public String getAddress1() {
 		return address1;

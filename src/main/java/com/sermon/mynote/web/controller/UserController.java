@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sermon.mynote.domain.ChangePassword;
 import com.sermon.mynote.domain.OrgValidation;
+import com.sermon.mynote.domain.OrganizationAuthors;
 import com.sermon.mynote.domain.OrganizationGroup;
 import com.sermon.mynote.domain.ResetPassword;
 import com.sermon.mynote.domain.StatusMsg;
@@ -26,6 +27,7 @@ import com.sermon.mynote.domain.User;
 import com.sermon.mynote.domain.UserProfile;
 import com.sermon.mynote.domain.UserRegistration;
 import com.sermon.mynote.domain.ValidateOrgKeyResponse;
+import com.sermon.mynote.service.OrganizationAuthorsService;
 import com.sermon.mynote.service.UserProfileService;
 import com.sermon.mynote.service.UserService;
 
@@ -47,6 +49,9 @@ public class UserController {
 
 	@Autowired
 	private UserProfileService userProfileService;
+
+	@Autowired
+	private OrganizationAuthorsService organizationAuthorService;
 
 	@RequestMapping(value = "/users", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
@@ -201,6 +206,13 @@ public class UserController {
 
 		if (resultUser != null) {
 
+			OrganizationAuthors authors = new OrganizationAuthors();
+			authors.setOrganizationId(user.getOrganizationId());
+			authors.setUserId(resultUser.getUserId());
+			OrganizationAuthors organizationAuthors = organizationAuthorService.save(authors);
+			logger.info("userId : " + organizationAuthors.getUserId() + "orgId : "
+					+ organizationAuthors.getOrganizationId());
+
 			String nickName = user.getNickName();
 
 			UserProfile profile = new UserProfile();
@@ -277,17 +289,15 @@ public class UserController {
 		return response;
 
 	}
-	
+
 	@RequestMapping(value = "/validateOrgKey", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public ValidateOrgKeyResponse validateOrgKey(@RequestBody OrgValidation orgValidation) {
 
 		ValidateOrgKeyResponse result = userService.validateOrgKey(orgValidation);
-		
+
 		return result;
-		
+
 	}
-	
-	
 
 }
