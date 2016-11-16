@@ -43,4 +43,6 @@ public interface UserService {
 
 	public ValidateOrgKeyResponse validateOrgKey(OrgValidation orgValidation);
 
+	public int getOrganizationId(int userId);
+
 }

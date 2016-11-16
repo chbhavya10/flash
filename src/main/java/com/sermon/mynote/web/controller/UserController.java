@@ -20,6 +20,7 @@ import com.sermon.mynote.domain.ChangePassword;
 import com.sermon.mynote.domain.OrgValidation;
 import com.sermon.mynote.domain.OrganizationAuthors;
 import com.sermon.mynote.domain.OrganizationGroup;
+import com.sermon.mynote.domain.OrganizationId;
 import com.sermon.mynote.domain.ResetPassword;
 import com.sermon.mynote.domain.StatusMsg;
 import com.sermon.mynote.domain.StatusResponse;
@@ -298,6 +299,19 @@ public class UserController {
 
 		return result;
 
+	}
+	
+	@RequestMapping(value = "/getOrgId/{userId}", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public OrganizationId getOrgId(@PathVariable int userId) {
+		logger.info("check username availability");
+
+		int result = userService.getOrganizationId(userId);
+
+		OrganizationId id=new OrganizationId();
+		id.setOrganizationId(result);
+
+		return id;
 	}
 
 }

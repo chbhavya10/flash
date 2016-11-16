@@ -405,4 +405,23 @@ public class UserServiceImpl implements UserService {
 		return keyResponse;
 	}
 
+	@Override
+	public int getOrganizationId(int userId) {
+
+		int orgId = 0;
+		try {
+			Query query = em
+					.createNativeQuery(
+							"select  OrganizationId returnvalue from OrganizationAuthors where UserId=:userId")
+					.setParameter("userId", userId);
+
+			if (query.getSingleResult() != null) {
+				orgId = (Integer) query.getSingleResult();
+			}
+		} catch (NoResultException e) {
+
+		}
+		return orgId;
+	}
+
 }
