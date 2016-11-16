@@ -79,6 +79,7 @@ public class User implements java.io.Serializable {
 	private DateTime createDt;
 	private DateTime updateDt;
 	private String userMobile;
+	private int userRoleId;
 
 	@Column(name = "UserPhone")
 	public String getUserMobile() {
@@ -100,7 +101,7 @@ public class User implements java.io.Serializable {
 	}
 
 	public User(String userName, String userEmail, String userPassword, String userStatus, DateTime createDt,
-			DateTime updateDt, String userMobile) {
+			DateTime updateDt, String userMobile, int userRoleId) {
 		this.userName = userName;
 		this.userEmail = userEmail;
 		this.userPassword = userPassword;
@@ -108,6 +109,7 @@ public class User implements java.io.Serializable {
 		this.createDt = createDt;
 		this.updateDt = updateDt;
 		this.userMobile = userMobile;
+		this.userRoleId = userRoleId;
 	}
 
 	@Id
@@ -176,6 +178,14 @@ public class User implements java.io.Serializable {
 
 	public void setUpdateDt(DateTime updateDt) {
 		this.updateDt = updateDt;
+	}
+
+	public int getUserRoleId() {
+		return userRoleId;
+	}
+
+	public void setUserRoleId(int userRoleId) {
+		this.userRoleId = userRoleId;
 	}
 
 }

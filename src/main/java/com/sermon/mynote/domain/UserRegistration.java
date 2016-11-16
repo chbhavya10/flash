@@ -35,6 +35,15 @@ public class UserRegistration implements Serializable {
 	private Date DOB;
 	private String Gender;
 	private int organizationId;
+	private int userRoleId;
+
+	public int getUserRoleId() {
+		return userRoleId;
+	}
+
+	public void setUserRoleId(int userRoleId) {
+		this.userRoleId = userRoleId;
+	}
 
 	public int getOrganizationId() {
 		return organizationId;

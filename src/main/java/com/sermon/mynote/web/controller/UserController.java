@@ -31,6 +31,7 @@ import com.sermon.mynote.domain.ValidateOrgKeyResponse;
 import com.sermon.mynote.service.OrganizationAuthorsService;
 import com.sermon.mynote.service.UserProfileService;
 import com.sermon.mynote.service.UserService;
+import com.sermon.util.AppConstants;
 
 /**
  * @author Clarence
@@ -201,6 +202,7 @@ public class UserController {
 		newUser.setUserName(user.getUserName());
 		newUser.setUserPassword(user.getUserPassword());
 		newUser.setUserMobile(user.getUserPhone());
+		newUser.setUserRoleId(AppConstants.NOTE_AUTHOR_ROLE_ID);
 
 		User resultUser = userService.save(newUser);
 		int result = 0;
@@ -300,7 +302,7 @@ public class UserController {
 		return result;
 
 	}
-	
+
 	@RequestMapping(value = "/getOrgId/{userId}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public OrganizationId getOrgId(@PathVariable int userId) {
@@ -308,7 +310,7 @@ public class UserController {
 
 		int result = userService.getOrganizationId(userId);
 
-		OrganizationId id=new OrganizationId();
+		OrganizationId id = new OrganizationId();
 		id.setOrganizationId(result);
 
 		return id;
