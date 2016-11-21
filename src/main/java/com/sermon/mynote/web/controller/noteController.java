@@ -278,4 +278,20 @@ public class noteController {
 		return note;
 	}
 
+	@RequestMapping(value = "/updatePublish", method = RequestMethod.POST, headers = {
+			"Content-type=application/json" })
+	public @ResponseBody StatusResponse updatePublish(@RequestBody PublishSchedule publishSchedule) {
+
+		int result = noteService.updatePublish(publishSchedule);
+
+		StatusResponse response = new StatusResponse();
+
+		if (result == 0)
+			response.setStatus(true);
+		else
+			response.setStatus(false);
+
+		return response;
+	}
+
 }

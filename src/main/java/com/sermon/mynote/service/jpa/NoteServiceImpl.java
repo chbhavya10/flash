@@ -175,7 +175,8 @@ public class NoteServiceImpl implements NoteService {
 								List<Integer> subSectionKeywords = subSection.getSubsectionKeyWords();
 								String newSubSectionKeyword = StringUtils.join(subSectionKeywords, ',');
 								noteSubSection.setSubsectionKeyWords(newSubSectionKeyword);
-								noteSubSection.setSubsectionText((subSection.getSubsectionText()).trim().replaceAll("\\s+", " "));
+								noteSubSection.setSubsectionText(
+										(subSection.getSubsectionText()).trim().replaceAll("\\s+", " "));
 
 								subsectionRepository.save(noteSubSection);
 							}
@@ -266,6 +267,18 @@ public class NoteServiceImpl implements NoteService {
 		addNote.setSubSections(addSubSections);
 
 		return addNote;
+	}
+
+	@Override
+	public int updatePublish(PublishSchedule publishSchedule) {
+
+		StoredProcedureQuery proc = em.createNamedStoredProcedureQuery("PublishSchedule.update_publish_schedule");
+		proc.setParameter("noteId", publishSchedule.getNoteId())
+				.setParameter("publishDate", publishSchedule.getPublishDate())
+				.setParameter("publishTime", publishSchedule.getPublishTime());
+
+		int result = proc.executeUpdate();
+		return result;
 	}
 
 }
