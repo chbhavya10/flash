@@ -308,12 +308,9 @@ public class UserController {
 	public OrganizationId getOrgId(@PathVariable int userId) {
 		logger.info("check username availability");
 
-		int result = userService.getOrganizationId(userId);
+		OrganizationId result = userService.getOrganizationId(userId);
 
-		OrganizationId id = new OrganizationId();
-		id.setOrganizationId(result);
-
-		return id;
+		return result;
 	}
 
 }

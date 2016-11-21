@@ -27,6 +27,7 @@ import com.google.common.collect.Lists;
 import com.sermon.mynote.components.EmailService;
 import com.sermon.mynote.domain.OrgValidation;
 import com.sermon.mynote.domain.OrganizationGroup;
+import com.sermon.mynote.domain.OrganizationId;
 import com.sermon.mynote.domain.User;
 import com.sermon.mynote.domain.UserVerificationTokens;
 import com.sermon.mynote.domain.ValidateOrgKeyResponse;
@@ -406,8 +407,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int getOrganizationId(int userId) {
+	public OrganizationId getOrganizationId(int userId) {
 
+		OrganizationId id = new OrganizationId();
 		int orgId = 0;
 		try {
 			Query query = em
@@ -417,11 +419,28 @@ public class UserServiceImpl implements UserService {
 
 			if (query.getSingleResult() != null) {
 				orgId = (Integer) query.getSingleResult();
+				id.setOrganizationId(orgId);
 			}
 		} catch (NoResultException e) {
 
 		}
-		return orgId;
+
+		String organizationName = null;
+		try {
+			Query query = em
+					.createNativeQuery(
+							"select OrganizationName returnvalue from organization where OrganizationId=:OrganizationId")
+					.setParameter("OrganizationId", orgId);
+
+			if (query.getSingleResult() != null) {
+				organizationName = (String) query.getSingleResult();
+				id.setOrganizationName(organizationName);
+			}
+		} catch (NoResultException e) {
+
+		}
+
+		return id;
 	}
 
 }

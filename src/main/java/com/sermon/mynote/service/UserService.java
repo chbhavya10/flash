@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.sermon.mynote.domain.OrgValidation;
 import com.sermon.mynote.domain.OrganizationGroup;
+import com.sermon.mynote.domain.OrganizationId;
 import com.sermon.mynote.domain.User;
 import com.sermon.mynote.domain.ValidateOrgKeyResponse;
 
@@ -21,7 +22,7 @@ public interface UserService {
 
 	public boolean createUser(String username, String useremail, String userpassword, Timestamp currentDate);
 
-	public int updateUserPassword(Integer userId, String newPassword,String oldPassword);
+	public int updateUserPassword(Integer userId, String newPassword, String oldPassword);
 
 	public Page<User> findAllByPage(Pageable pageable);
 
@@ -43,6 +44,6 @@ public interface UserService {
 
 	public ValidateOrgKeyResponse validateOrgKey(OrgValidation orgValidation);
 
-	public int getOrganizationId(int userId);
+	public OrganizationId getOrganizationId(int userId);
 
 }
