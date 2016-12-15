@@ -69,7 +69,7 @@ public class AddNote implements Serializable {
 		this.eventTime = eventTime;
 		this.categoryId = categoryId;
 		this.keywords = keywords;
-		OrganizationId = organizationId;
+		this.OrganizationId = organizationId;
 		this.groupId = groupId;
 		this.published = published;
 		this.sections = sections;

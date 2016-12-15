@@ -28,7 +28,7 @@
   
   <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
       <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-      <property name="url" value="jdbc:mysql://notedb.ckjfeircshnl.us-west-2.rds.amazonaws.com:3306/notedb" />
+      <property name="url" value="jdbc:mysql://sermonhub.c7bjavhgmzid.us-west-2.rds.amazonaws.com:3306/notedb" />
       <property name="username" value="snote" />
       <property name="password" value="sermonnote" />
    </bean>

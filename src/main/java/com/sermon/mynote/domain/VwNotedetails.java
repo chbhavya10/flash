@@ -39,6 +39,15 @@ public class VwNotedetails implements java.io.Serializable {
 	private int groupId;
 	private String published;
 	private int organizationId;
+	private String organizationName;
+
+	public String getOrganizationName() {
+		return organizationName;
+	}
+
+	public void setOrganizationName(String organizationName) {
+		this.organizationName = organizationName;
+	}
 
 	public int getGroupId() {
 		return groupId;
@@ -71,7 +80,7 @@ public class VwNotedetails implements java.io.Serializable {
 	public VwNotedetails(int noteKey, int noteId, String author, String title, String subtitle, Date eventDate,
 			Time eventTime, String introduction, int sectionId, String sectionText, String sectionKeywords,
 			int subSectionId, String subSectionText, String subSectionKeywords, int groupId, String published,
-			int organizationId) {
+			int organizationId, String organizationName) {
 		this.noteKey = noteKey;
 		this.noteId = noteId;
 		this.author = author;
@@ -89,6 +98,7 @@ public class VwNotedetails implements java.io.Serializable {
 		this.groupId = groupId;
 		this.published = published;
 		this.organizationId = organizationId;
+		this.organizationName = organizationName;
 	}
 
 	@Id
@@ -250,7 +260,10 @@ public class VwNotedetails implements java.io.Serializable {
 								&& this.getSubSectionText().equals(castOther.getSubSectionText())))
 				&& ((this.getSubSectionKeywords() == castOther.getSubSectionKeywords())
 						|| (this.getSubSectionKeywords() != null && castOther.getSubSectionKeywords() != null
-								&& this.getSubSectionKeywords().equals(castOther.getSubSectionKeywords())));
+								&& this.getSubSectionKeywords().equals(castOther.getSubSectionKeywords())))
+				&& ((this.getOrganizationName() == castOther.getOrganizationName())
+						|| (this.getOrganizationName() != null && castOther.getOrganizationName() != null
+								&& this.getOrganizationName().equals(castOther.getOrganizationName())));
 	}
 
 	public int hashCode() {
@@ -270,6 +283,7 @@ public class VwNotedetails implements java.io.Serializable {
 		result = 37 * result + this.getSubSectionId();
 		result = 37 * result + (getSubSectionText() == null ? 0 : this.getSubSectionText().hashCode());
 		result = 37 * result + (getSubSectionKeywords() == null ? 0 : this.getSubSectionKeywords().hashCode());
+		result = 37 * result + (getOrganizationName() == null ? 0 : this.getOrganizationName().hashCode());
 		result = 37 * result + this.getOrganizationId();
 		return result;
 	}
