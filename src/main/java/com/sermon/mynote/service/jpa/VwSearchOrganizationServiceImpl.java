@@ -96,7 +96,7 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 			try {
 				Query sermonQuery = em
 						.createNativeQuery(
-								"SELECT COUNT(*) AS sermonCount FROM `note` WHERE `OrganizationId`=:organizationId")
+								"SELECT COUNT(*) AS sermonCount FROM `note` WHERE `OrganizationId`=:organizationId AND `Published`='Y'")
 						.setParameter("organizationId", like.getOrganizationId());
 				System.out.println(sermonQuery);
 
