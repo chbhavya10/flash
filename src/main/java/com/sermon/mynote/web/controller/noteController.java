@@ -180,10 +180,10 @@ public class noteController {
 	@ResponseBody
 	public int createNote(@RequestBody AddNote note) {
 
-		int subSectionLength = note.getSubSections().size();
+		/*int subSectionLength = note.getSubSections().size();
 		for (int i = 0; i < subSectionLength; i++) {
 			logger.info(note.getSubSections().get(i).getSubsectionText());
-		}
+		}*/
 		int result = noteService.createNote(note);
 
 		return result;

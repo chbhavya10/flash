@@ -138,7 +138,7 @@ public class NoteServiceImpl implements NoteService {
 		note.setKeywords(sectionKeyword);
 		note.setOrganizationId(addNote.getOrganizationId());
 		note.setPublished(addNote.getPublished());
-		note.setSubTitle((addNote.getSubTitle()).trim().replaceAll("\\s+", " "));
+		note.setSubTitle(addNote.getSubTitle());
 		note.setTitle((addNote.getTitle()).trim().replaceAll("\\s+", " "));
 		note.setPreacherName(addNote.getPreacherName());
 
@@ -146,7 +146,7 @@ public class NoteServiceImpl implements NoteService {
 
 		List<AddSection> sections = addNote.getSections();
 
-		if (!sections.isEmpty()) {
+		if (sections != null && !sections.isEmpty()) {
 			for (AddSection section : sections) {
 				if (noteId == section.getNoteId()) {
 
@@ -165,7 +165,7 @@ public class NoteServiceImpl implements NoteService {
 
 					List<AddSubSection> subSections = addNote.getSubSections();
 
-					if (!subSections.isEmpty()) {
+					if (subSections != null && !subSections.isEmpty()) {
 						for (AddSubSection subSection : subSections) {
 							if (sectionId == subSection.getSectionId()) {
 
