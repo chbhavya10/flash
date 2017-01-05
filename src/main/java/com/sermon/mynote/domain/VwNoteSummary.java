@@ -29,6 +29,8 @@ public class VwNoteSummary implements java.io.Serializable {
 	private Date eventDate;
 	private Time eventTime;
 	private String introduction;
+	private int organizationId;
+	private String organizationName;
 
 	public VwNoteSummary() {
 	}
@@ -40,7 +42,7 @@ public class VwNoteSummary implements java.io.Serializable {
 	}
 
 	public VwNoteSummary(int noteId, String author, String title, String subtitle, Date eventDate, Time eventTime,
-			String introduction) {
+			String introduction, int organizationId, String organizationName) {
 		this.noteId = noteId;
 		this.author = author;
 		this.title = title;
@@ -48,6 +50,8 @@ public class VwNoteSummary implements java.io.Serializable {
 		this.eventDate = eventDate;
 		this.eventTime = eventTime;
 		this.introduction = introduction;
+		this.organizationId = organizationId;
+		this.organizationName = organizationName;
 	}
 
 	@Id
@@ -108,6 +112,22 @@ public class VwNoteSummary implements java.io.Serializable {
 		this.introduction = introduction;
 	}
 
+	public int getOrganizationId() {
+		return organizationId;
+	}
+
+	public void setOrganizationId(int organizationId) {
+		this.organizationId = organizationId;
+	}
+
+	public String getOrganizationName() {
+		return organizationName;
+	}
+
+	public void setOrganizationName(String organizationName) {
+		this.organizationName = organizationName;
+	}
+
 	public boolean equals(Object other) {
 		if ((this == other))
 			return true;
@@ -118,6 +138,7 @@ public class VwNoteSummary implements java.io.Serializable {
 		VwNoteSummary castOther = (VwNoteSummary) other;
 
 		return (this.getNoteId() == castOther.getNoteId())
+				&& (this.getOrganizationId() == castOther.getOrganizationId())
 				&& ((this.getAuthor() == castOther.getAuthor()) || (this.getAuthor() != null
 						&& castOther.getAuthor() != null && this.getAuthor().equals(castOther.getAuthor())))
 				&& ((this.getTitle() == castOther.getTitle()) || (this.getTitle() != null
@@ -130,7 +151,10 @@ public class VwNoteSummary implements java.io.Serializable {
 						&& castOther.getEventTime() != null && this.getEventTime().equals(castOther.getEventTime())))
 				&& ((this.getIntroduction() == castOther.getIntroduction())
 						|| (this.getIntroduction() != null && castOther.getIntroduction() != null
-								&& this.getIntroduction().equals(castOther.getIntroduction())));
+								&& this.getIntroduction().equals(castOther.getIntroduction())))
+				&& ((this.getOrganizationName() == castOther.getOrganizationName())
+						|| (this.getOrganizationName() != null && castOther.getOrganizationName() != null
+								&& this.getOrganizationName().equals(castOther.getOrganizationName())));
 	}
 
 	public int hashCode() {
@@ -143,6 +167,8 @@ public class VwNoteSummary implements java.io.Serializable {
 		result = 37 * result + (getEventDate() == null ? 0 : this.getEventDate().hashCode());
 		result = 37 * result + (getEventTime() == null ? 0 : this.getEventTime().hashCode());
 		result = 37 * result + (getIntroduction() == null ? 0 : this.getIntroduction().hashCode());
+		result = 37 * result + this.getOrganizationId();
+		result = 37 * result + (getOrganizationName() == null ? 0 : this.getOrganizationName().hashCode());
 		return result;
 	}
 
