@@ -38,7 +38,7 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 		TypedQuery<SearchOrganization> query = (TypedQuery<SearchOrganization>) em
 				.createNativeQuery(
 						"select o.OrganizationId,o.organizationName, o.Address1 AS Address1, o.Address2 AS Address2, c.CityName AS CityName,s.StateName AS StateName,cy.CountryName AS CountryName,o.ZipCode AS ZipCode from organization o join city c on ((o.CityID = c.CityId)) join state s on ((o.StateId = s.StateId)) join country cy on ((o.CountryID = cy.CountryID)) "
-								+ "WHERE (:organizationName ='All%' or o.organizationName like :organizationName) AND (:zipCode='All%' or o.ZipCode like :zipCode) AND (:city='All%' or c.CityName like :city)",
+								+ "WHERE `ValidationKey` IS NOT NULL AND (:organizationName ='All%' or o.organizationName like :organizationName) AND (:zipCode='All%' or o.ZipCode like :zipCode) AND (:city='All%' or c.CityName like :city)",
 						SearchOrganization.class)
 				.setParameter("organizationName", organizationName + "%").setParameter("zipCode", zipCode + "%")
 				.setParameter("city", city + "%");
