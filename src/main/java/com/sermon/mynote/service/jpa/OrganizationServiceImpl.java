@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.StoredProcedureQuery;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -30,6 +31,20 @@ public class OrganizationServiceImpl implements OrganizationService {
 	public List<Organization> findChurchesByOrganization() {
 
 		return Lists.newArrayList(organizationRepository.findChurchesByUser());
+
+	}
+
+	@Override
+	public int updateOrganization(int organizationId, String address1, String address2, int cityId, int stateId,
+			int countryID, String zipCode) {
+
+		StoredProcedureQuery proc = em.createNamedStoredProcedureQuery("Organization.update_organization");
+		proc.setParameter("organizationId", organizationId).setParameter("address1", address1)
+				.setParameter("address2", address2).setParameter("cityId", cityId).setParameter("stateId", stateId)
+				.setParameter("countryId", countryID).setParameter("zipCode", zipCode);
+
+		int result = proc.executeUpdate();
+		return result;
 
 	}
 

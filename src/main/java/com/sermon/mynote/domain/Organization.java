@@ -13,7 +13,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedStoredProcedureQueries;
+import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 
 // Generated May 7, 2015 9:40:59 PM by Hibernate Tools 4.0.0
@@ -23,6 +27,16 @@ import javax.persistence.Table;
  */
 @Entity
 @NamedQueries({ @NamedQuery(name = "Organization.findChurchesByUser", query = "SELECT o FROM Organization o ") })
+@NamedStoredProcedureQueries({
+
+		@NamedStoredProcedureQuery(name = "Organization.update_organization", procedureName = "update_organization", parameters = {
+				@StoredProcedureParameter(mode = ParameterMode.IN, name = "organizationId", type = Integer.class),
+				@StoredProcedureParameter(mode = ParameterMode.IN, name = "address1", type = String.class),
+				@StoredProcedureParameter(mode = ParameterMode.IN, name = "address2", type = String.class),
+				@StoredProcedureParameter(mode = ParameterMode.IN, name = "cityId", type = Integer.class),
+				@StoredProcedureParameter(mode = ParameterMode.IN, name = "stateId", type = Integer.class),
+				@StoredProcedureParameter(mode = ParameterMode.IN, name = "countryId", type = Integer.class),
+				@StoredProcedureParameter(mode = ParameterMode.IN, name = "zipCode", type = String.class) }) })
 @Table(name = "organization")
 public class Organization implements java.io.Serializable {
 

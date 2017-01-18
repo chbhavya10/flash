@@ -8,4 +8,7 @@ public interface VwOrganizationInfoService {
 
 	List<VwOrganizationInfo> findOrganizationInfoByOrgId(int orgId);
 
+	int updateOrgInfo(int organizationId, String website, String primaryEmail, String generalInfo, String hours,
+			String facebookLink);
+
 }
