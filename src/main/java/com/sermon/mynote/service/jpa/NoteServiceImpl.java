@@ -8,7 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.StoredProcedureQuery;
 
 import org.apache.commons.lang3.StringUtils;
@@ -370,14 +372,35 @@ public class NoteServiceImpl implements NoteService {
 
 	@Override
 	public String getNoteImage(int noteId) {
-		// TODO Auto-generated method stub
-		return null;
+		String noteImage = null;
+
+		try {
+			Query query = em.createNativeQuery("select noteImage returnvalue from note where NoteId=:NoteId")
+					.setParameter("NoteId", noteId);
+
+			if (query.getSingleResult() != null) {
+				noteImage = (String) query.getSingleResult();
+			}
+		} catch (NoResultException e) {
+
+		}
+		return noteImage;
 	}
 
 	@Override
-	public int saveImage(int noteId, String imgName) {
-		// TODO Auto-generated method stub
+	public int saveImage(int noteId, String docName) {
+		try {
+			Query query = em.createNativeQuery("update note set noteImage=:noteImage where NoteId=:noteId")
+					.setParameter("noteImage", docName).setParameter("noteId", noteId);
+
+			int result = query.executeUpdate();
+			return result;
+
+		} catch (NoResultException e) {
+
+		}
 		return 0;
+
 	}
 
 }
