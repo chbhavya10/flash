@@ -1,7 +1,9 @@
 package com.sermon.mynote.service;
 
+import java.io.InputStream;
 import java.util.List;
 
+import com.amazonaws.services.s3.transfer.Upload;
 import com.sermon.mynote.domain.AddNote;
 import com.sermon.mynote.domain.Note;
 import com.sermon.mynote.domain.PublishSchedule;
@@ -27,6 +29,12 @@ public interface NoteService {
 	public AddNote getNote(int id);
 
 	public int updatePublish(PublishSchedule publishSchedule);
+
+	public Upload upLoadNoteFiles(InputStream inputStream, String imgName, String imgToDelete, int noteId);
+
+	public String getNoteImage(int noteId);
+
+	public int saveImage(int noteId, String imgName);
 
 	/*
 	 * public void createNote(Integer authorId,String title,String

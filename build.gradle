@@ -42,6 +42,8 @@ exclude(module: 'commons-logging')
     compile 'org.apache.velocity:velocity:1.7'
     compile 'org.springframework:spring-context-support:3.2.0.RELEASE'
     
+    compile group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.10.15'
+    compile group: 'commons-fileupload', name: 'commons-fileupload', version: '1.2'
      
    
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.4.3'

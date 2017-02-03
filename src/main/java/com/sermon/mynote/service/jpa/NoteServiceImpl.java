@@ -1,5 +1,8 @@
 package com.sermon.mynote.service.jpa;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,10 +15,22 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.transfer.TransferManager;
+import com.amazonaws.services.s3.transfer.Upload;
+import com.amazonaws.util.IOUtils;
 import com.google.common.collect.Lists;
 import com.sermon.mynote.domain.AddNote;
 import com.sermon.mynote.domain.AddSection;
@@ -29,6 +44,7 @@ import com.sermon.mynote.repository.PublishRepository;
 import com.sermon.mynote.repository.SectionRepository;
 import com.sermon.mynote.repository.SubSectionRepository;
 import com.sermon.mynote.service.NoteService;
+import com.sermon.util.AppConstants;
 
 @Service("noteService")
 @Repository
@@ -51,6 +67,21 @@ public class NoteServiceImpl implements NoteService {
 
 	@Autowired
 	private SubSectionRepository subsectionRepository;
+
+	@Value("${s3.aws.access.key.id}")
+	private String awsAccessKeyId;
+
+	@Value("${s3.aws.access.secret.key}")
+	private String awsAccessSecretKey;
+
+	@Value("${s3.aws.bucket.name}")
+	private String s3BucketName;
+
+	@Value("${note.image.bucket.path}")
+	private String noteImageBucketPath;
+
+	@Value("${amazon.link}")
+	private String amazonLink;
 
 	int noteId;
 	int sectionId;
@@ -279,6 +310,74 @@ public class NoteServiceImpl implements NoteService {
 
 		int result = proc.executeUpdate();
 		return result;
+	}
+
+	@Override
+	public Upload upLoadNoteFiles(InputStream inputStream, String imgName, String imgToDelete, int noteId) {
+		Upload upload = null;
+
+		try {
+
+			AWSCredentials credentials = new BasicAWSCredentials(awsAccessKeyId, awsAccessSecretKey);
+			AmazonS3 s3client = new AmazonS3Client(credentials);
+
+			TransferManager manager = new TransferManager(credentials);
+			ObjectMetadata meta = new ObjectMetadata();
+
+			byte[] resultByte = IOUtils.toByteArray(inputStream);
+			ByteArrayInputStream bis = new ByteArrayInputStream(resultByte);
+			meta.setContentLength(resultByte.length);
+			meta.setContentType(bis.toString());
+
+			logger.info("length: {}", resultByte.length);
+			String filePath = AppConstants.NOTES_FOLDER + AppConstants.SLASH + noteId + AppConstants.SLASH + imgName;
+			s3client.deleteObject(s3BucketName, AppConstants.NOTES_FOLDER + AppConstants.SLASH + imgToDelete);
+
+			upload = manager.upload(s3BucketName, filePath, bis, meta);
+			s3client.setObjectAcl(s3BucketName, filePath, CannedAccessControlList.Private);
+
+			if (upload.isDone() == false) {
+				logger.info("Transfer: {}", upload.getDescription());
+				logger.info("  - State: {}", upload.getState());
+				logger.info("  - Transfer progress percentage: {}",
+						upload.getProgress().getTotalBytesToTransfer() + "%");
+				logger.info("  - Bytes Transfered: {}", upload.getProgress().getBytesTransferred());
+				Thread.sleep(200);
+			}
+			upload.waitForCompletion();
+			manager.shutdownNow();
+
+		} catch (AmazonServiceException ase) {
+			logger.error("Caught an AmazonServiceException, which " + "means your request made it "
+					+ "to Amazon S3, but was rejected with an error response" + " for some reason.");
+			logger.error("Error Message:    {}", ase.getMessage());
+			logger.error("HTTP Status Code: {}", ase.getStatusCode());
+			logger.error("AWS Error Code:   {}", ase.getErrorCode());
+			logger.error("Error Type:       {}", ase.getErrorType());
+			logger.error("Request ID:       {}", ase.getRequestId());
+		} catch (AmazonClientException ace) {
+			logger.error("Caught an AmazonClientException, which " + "means the client encountered "
+					+ "an internal error while trying to " + "communicate with S3, "
+					+ "such as not being able to access the network.");
+			logger.error("Error Message: {}", ace.getMessage());
+		} catch (IOException e) {
+			logger.error("Error {}", e.getMessage());
+		} catch (InterruptedException e) {
+			logger.error("Error {}", e.getMessage());
+		}
+		return upload;
+	}
+
+	@Override
+	public String getNoteImage(int noteId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int saveImage(int noteId, String imgName) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

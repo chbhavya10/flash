@@ -1,7 +1,11 @@
 package com.sermon.mynote.web.controller;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -14,15 +18,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.amazonaws.services.s3.transfer.Upload;
 import com.sermon.mynote.domain.AddNote;
 import com.sermon.mynote.domain.AddSection;
 import com.sermon.mynote.domain.AddSubSection;
 import com.sermon.mynote.domain.Note;
 import com.sermon.mynote.domain.PublishSchedule;
+import com.sermon.mynote.domain.StatusMsg;
 import com.sermon.mynote.domain.StatusResponse;
 import com.sermon.mynote.service.NoteService;
 import com.sermon.mynote.service.UserService;
+import com.sermon.util.AppConstants;
 
 @RequestMapping("/note")
 @Controller
@@ -180,10 +189,11 @@ public class noteController {
 	@ResponseBody
 	public int createNote(@RequestBody AddNote note) {
 
-		/*int subSectionLength = note.getSubSections().size();
-		for (int i = 0; i < subSectionLength; i++) {
-			logger.info(note.getSubSections().get(i).getSubsectionText());
-		}*/
+		/*
+		 * int subSectionLength = note.getSubSections().size(); for (int i = 0;
+		 * i < subSectionLength; i++) {
+		 * logger.info(note.getSubSections().get(i).getSubsectionText()); }
+		 */
 		int result = noteService.createNote(note);
 
 		return result;
@@ -292,6 +302,46 @@ public class noteController {
 			response.setStatus(false);
 
 		return response;
+	}
+
+	@RequestMapping(value = "/UploadNoteImage/{noteId}", method = RequestMethod.POST)
+	@ResponseBody
+	public StatusMsg continueFileUpload(@PathVariable int noteId, HttpServletRequest request,
+			HttpServletResponse response) {
+		MultipartHttpServletRequest mRequest;
+		MultipartFile mFile = null;
+		StatusMsg statusMsg = new StatusMsg();
+		String imgName = null;
+		logger.info("noteId : " + noteId);
+		try {
+			mRequest = (MultipartHttpServletRequest) request;
+			mRequest.getParameterMap();
+
+			Iterator<String> itr = mRequest.getFileNames();
+			while (itr.hasNext()) {
+				mFile = mRequest.getFile(itr.next());
+				imgName = mFile.getOriginalFilename();
+				logger.info("filename : " + imgName + " size : " + mFile.getSize());
+			}
+
+			String existingNoteImgName = noteService.getNoteImage(noteId);
+			String imgToDelete = null;
+			if (existingNoteImgName != null) {
+				imgToDelete = existingNoteImgName;
+			}
+
+			Upload myUpload = noteService.upLoadNoteFiles(mFile.getInputStream(), imgName, imgToDelete, noteId);
+
+			myUpload.waitForCompletion();
+			if (myUpload.isDone())
+				noteService.saveImage(noteId, imgName);
+
+			statusMsg.setStatus(AppConstants.FILES_UPLOAD);
+			return statusMsg;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }
