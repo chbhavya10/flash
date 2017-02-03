@@ -35,6 +35,7 @@ import com.sermon.mynote.repository.GroupRepository;
 import com.sermon.mynote.repository.UserRepository;
 import com.sermon.mynote.repository.UserVerificationTokenRepository;
 import com.sermon.mynote.service.UserService;
+import com.sermon.util.AppConstants;
 import com.sermon.util.AppUtil;
 
 @Service("userService")
@@ -323,8 +324,7 @@ public class UserServiceImpl implements UserService {
 
 			}
 
-			String resetPasswordUrl = "http://www.sermonhub.net/snote/resetpassword.html#/?passwordResetToken="
-					+ tokens.getVerificationToken();
+			String resetPasswordUrl = AppConstants.RESET_PASSWORD_PAGE + tokens.getVerificationToken();
 
 			emailService.forgotPassword(userEmail, resetPasswordUrl, userName);
 
