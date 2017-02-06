@@ -3,6 +3,7 @@ package com.sermon.mynote.service.jpa;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,11 +25,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
+import com.amazonaws.HttpMethod;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.Upload;
@@ -251,6 +254,15 @@ public class NoteServiceImpl implements NoteService {
 		addNote.setTitle(note.getTitle());
 		addNote.setPreacherName(note.getPreacherName());
 
+		String bucketName = s3BucketName + AppConstants.SLASH + noteImageBucketPath;
+		String noteImgPath = null;
+		String noteImg = note.getNoteImage();
+		if (noteImg != null) {
+			String s3Obj = note.getNoteId() + AppConstants.SLASH + noteImg;
+			noteImgPath = generatePreSignedURL(bucketName, s3Obj);
+			addNote.setNoteImage(noteImgPath);
+		}
+
 		List<AddSection> addSections = new ArrayList<AddSection>();
 
 		for (Section section : sections) {
@@ -258,14 +270,18 @@ public class NoteServiceImpl implements NoteService {
 			AddSection addSection = new AddSection();
 			addSection.setNoteId(section.getNoteId());
 			addSection.setSectionId(section.getSectionId());
-			List<String> sectionKeyWords = new ArrayList<String>(
-					Arrays.asList(section.getSectionKeyWords().split(",")));
+			List<String> sectionKeyWords = null;
 			List<Integer> list = new ArrayList<Integer>();
-			for (String s : sectionKeyWords) {
-				try {
-					list.add(Integer.valueOf(s));
-				} catch (NumberFormatException e) {
-					continue;
+			if (section.getSectionKeyWords() != null) {
+
+				sectionKeyWords = new ArrayList<String>(Arrays.asList(section.getSectionKeyWords().split(",")));
+
+				for (String s : sectionKeyWords) {
+					try {
+						list.add(Integer.valueOf(s));
+					} catch (NumberFormatException e) {
+						continue;
+					}
 				}
 			}
 			addSection.setSectionKeyWords(list);
@@ -282,14 +298,19 @@ public class NoteServiceImpl implements NoteService {
 			AddSubSection addSubSection = new AddSubSection();
 			addSubSection.setSectionId(subSection.getSectionId());
 			addSubSection.setSubsectionId(subSection.getSubsectionId());
-			List<String> subSectionKeyWords = new ArrayList<String>(
-					Arrays.asList(subSection.getSubsectionKeyWords().split(",")));
+			List<String> subSectionKeyWords = null;
 			List<Integer> list = new ArrayList<Integer>();
-			for (String s : subSectionKeyWords) {
-				try {
-					list.add(Integer.valueOf(s));
-				} catch (NumberFormatException ex) {
-					continue;
+
+			if (subSection.getSubsectionKeyWords() != null) {
+				subSectionKeyWords = new ArrayList<String>(
+						Arrays.asList(subSection.getSubsectionKeyWords().split(",")));
+
+				for (String s : subSectionKeyWords) {
+					try {
+						list.add(Integer.valueOf(s));
+					} catch (NumberFormatException ex) {
+						continue;
+					}
 				}
 			}
 			addSubSection.setSubsectionKeyWords(list);
@@ -333,7 +354,8 @@ public class NoteServiceImpl implements NoteService {
 
 			logger.info("length: {}", resultByte.length);
 			String filePath = AppConstants.NOTES_FOLDER + AppConstants.SLASH + noteId + AppConstants.SLASH + imgName;
-			s3client.deleteObject(s3BucketName, AppConstants.NOTES_FOLDER + AppConstants.SLASH + imgToDelete);
+			s3client.deleteObject(s3BucketName,
+					AppConstants.NOTES_FOLDER + AppConstants.SLASH + noteId + AppConstants.SLASH + imgToDelete);
 
 			upload = manager.upload(s3BucketName, filePath, bis, meta);
 			s3client.setObjectAcl(s3BucketName, filePath, CannedAccessControlList.Private);
@@ -401,6 +423,32 @@ public class NoteServiceImpl implements NoteService {
 		}
 		return 0;
 
+	}
+
+	private String generatePreSignedURL(String bucketName, String objectKey) {
+
+		java.util.Date expiration = new java.util.Date();
+		long milliSeconds = expiration.getTime();
+		milliSeconds += 100 * 24 * 60 * 60;
+		expiration.setTime(milliSeconds);
+
+		GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucketName,
+				objectKey);
+		generatePresignedUrlRequest.setMethod(HttpMethod.GET);
+		generatePresignedUrlRequest.setExpiration(expiration);
+		AmazonS3 ams3 = getAmazonS3Client();
+		ams3.setEndpoint(AppConstants.AMAZON_LINK);
+
+		URL url = ams3.generatePresignedUrl(generatePresignedUrlRequest);
+
+		return url.toString();
+
+	}
+
+	private AmazonS3 getAmazonS3Client() {
+
+		AWSCredentials credentials = new BasicAWSCredentials(awsAccessKeyId, awsAccessSecretKey);
+		return new AmazonS3Client(credentials);
 	}
 
 }
