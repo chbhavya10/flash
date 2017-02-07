@@ -19,12 +19,12 @@ public class VwSearchOrganizationController {
 	@Autowired
 	private VwSearchOrganizationService vwSearchOrganizationService;
 
-	@RequestMapping(value = "/search/{orgname}/{zipcode}/{city}", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/search/{orgname}/{zipcode}/{city}/{denomination}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public List<OrganizationLike> SearchOrganiz(@PathVariable String orgname, @PathVariable String zipcode,
-			@PathVariable String city) {
+			@PathVariable String city,@PathVariable String denomination) {
 
-		List<OrganizationLike> searchOrganization = vwSearchOrganizationService.SearchOrganiz(orgname, zipcode, city);
+		List<OrganizationLike> searchOrganization = vwSearchOrganizationService.SearchOrganiz(orgname, zipcode, city,denomination);
 		return searchOrganization;
 	}
 }

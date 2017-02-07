@@ -21,6 +21,7 @@ public class SearchOrganization implements java.io.Serializable {
 	private String stateName;
 	private String countryName;
 	private String zipcode;
+	private String denomination;
 
 	public SearchOrganization() {
 	}
@@ -35,6 +36,20 @@ public class SearchOrganization implements java.io.Serializable {
 		this.stateName = stateName;
 		this.countryName = countryName;
 		this.zipcode = zipcode;
+
+	}
+
+	public SearchOrganization(Integer organizationId, String organizationName, String address1, String address2,
+			String cityName, String stateName, String countryName, String zipcode, String denomination) {
+		this.organizationId = organizationId;
+		this.organizationName = organizationName;
+		this.address1 = address1;
+		this.address2 = address2;
+		this.cityName = cityName;
+		this.stateName = stateName;
+		this.countryName = countryName;
+		this.zipcode = zipcode;
+		this.denomination = denomination;
 
 	}
 
@@ -102,6 +117,14 @@ public class SearchOrganization implements java.io.Serializable {
 
 	public void setZipcode(String zipcode) {
 		this.zipcode = zipcode;
+	}
+
+	public String getDenomination() {
+		return denomination;
+	}
+
+	public void setDenomination(String denomination) {
+		this.denomination = denomination;
 	}
 
 }

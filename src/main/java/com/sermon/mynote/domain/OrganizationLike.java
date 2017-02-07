@@ -19,6 +19,15 @@ public class OrganizationLike implements Serializable {
 	private int likeCount;
 	private int downloadCount;
 	private int sermonCount;
+	private String denomination;
+
+	public String getDenomination() {
+		return denomination;
+	}
+
+	public void setDenomination(String denomination) {
+		this.denomination = denomination;
+	}
 
 	public int getDownloadCount() {
 		return downloadCount;

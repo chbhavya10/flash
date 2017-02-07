@@ -33,15 +33,16 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
-	public List<OrganizationLike> SearchOrganiz(String organizationName, String zipCode, String city) {
+	public List<OrganizationLike> SearchOrganiz(String organizationName, String zipCode, String city,
+			String denomination) {
 
 		TypedQuery<SearchOrganization> query = (TypedQuery<SearchOrganization>) em
 				.createNativeQuery(
-						"select o.OrganizationId,o.organizationName, o.Address1 AS Address1, o.Address2 AS Address2, c.CityName AS CityName,s.StateName AS StateName,cy.CountryName AS CountryName,o.ZipCode AS ZipCode from organization o join city c on ((o.CityID = c.CityId)) join state s on ((o.StateId = s.StateId)) join country cy on ((o.CountryID = cy.CountryID)) "
-								+ "WHERE `ValidationKey` IS NOT NULL AND (:organizationName ='All%' or o.organizationName like :organizationName) AND (:zipCode='All%' or o.ZipCode like :zipCode) AND (:city='All%' or c.CityName like :city)",
+						"select o.OrganizationId,o.organizationName, o.Address1 AS Address1, o.Address2 AS Address2, c.CityName AS CityName,s.StateName AS StateName,cy.CountryName AS CountryName,o.ZipCode AS ZipCode,d.Denomination AS Denomination from organization o join city c on ((o.CityID = c.CityId)) join state s on ((o.StateId = s.StateId)) join country cy on ((o.CountryID = cy.CountryID)) join Denomination d on ((o.DenominationId = d.DenominationID)) "
+								+ "WHERE `ValidationKey` IS NOT NULL AND (:organizationName ='All%' or o.organizationName like :organizationName) AND (:zipCode='All%' or o.ZipCode like :zipCode) AND (:city='All%' or c.CityName like :city) AND (:denomination='All%' or d.Denomination like :denomination)",
 						SearchOrganization.class)
 				.setParameter("organizationName", organizationName + "%").setParameter("zipCode", zipCode + "%")
-				.setParameter("city", city + "%");
+				.setParameter("city", city + "%").setParameter("denomination", denomination + "%");
 
 		List<SearchOrganization> results = (List<SearchOrganization>) query.getResultList();
 
@@ -59,6 +60,7 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 			like.setOrganizationName(organization.getOrganizationName());
 			like.setStateName(organization.getStateName());
 			like.setZipcode(organization.getZipcode());
+			like.setDenomination(organization.getDenomination());
 			Integer likeCount = 0;
 			try {
 				Query likeQuery = em
