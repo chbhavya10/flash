@@ -43,8 +43,6 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 				.setParameter("organizationName", organizationName + "%").setParameter("zipCode", zipCode + "%")
 				.setParameter("city", city + "%");
 
-		System.out.println(query.toString());
-
 		List<SearchOrganization> results = (List<SearchOrganization>) query.getResultList();
 
 		List<OrganizationLike> likes = new ArrayList<OrganizationLike>();
@@ -67,7 +65,6 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 						.createNativeQuery(
 								"SELECT COUNT(*) AS likedSermons FROM `note` n, `NoteLike` nl WHERE n.`NoteId`=nl.`NoteId` AND n.`OrganizationId`=:organizationId AND `LikeCount`=1")
 						.setParameter("organizationId", like.getOrganizationId());
-				System.out.println(likeQuery);
 
 				if (likeQuery.getSingleResult() != null) {
 					likeCount = ((BigInteger) likeQuery.getSingleResult()).intValue();
@@ -82,7 +79,6 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 						.createNativeQuery(
 								"SELECT COUNT(*) AS downloadedSermons FROM `note` n,`NoteDownload` nd WHERE n.`NoteId`=nd.`NoteId` AND n.`OrganizationId`=:organizationId")
 						.setParameter("organizationId", like.getOrganizationId());
-				System.out.println(downloadQuery);
 
 				if (downloadQuery.getSingleResult() != null) {
 					downloadCount = ((BigInteger) downloadQuery.getSingleResult()).intValue();
@@ -98,7 +94,6 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 						.createNativeQuery(
 								"SELECT COUNT(*) AS sermonCount FROM `note` WHERE `OrganizationId`=:organizationId AND `Published`='Y'")
 						.setParameter("organizationId", like.getOrganizationId());
-				System.out.println(sermonQuery);
 
 				if (sermonQuery.getSingleResult() != null) {
 					sermonCount = ((BigInteger) sermonQuery.getSingleResult()).intValue();

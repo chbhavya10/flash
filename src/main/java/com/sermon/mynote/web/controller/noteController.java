@@ -340,8 +340,9 @@ public class noteController {
 			return statusMsg;
 		} catch (Exception e) {
 			e.printStackTrace();
+			statusMsg.setStatus(AppConstants.ERROR_INTERNAL);
+			return statusMsg;
 		}
-		return null;
 	}
 
 }
