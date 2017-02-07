@@ -254,6 +254,9 @@ public class NoteServiceImpl implements NoteService {
 		addNote.setTitle(note.getTitle());
 		addNote.setPreacherName(note.getPreacherName());
 
+		String orgName = getOrganizationName(note.getOrganizationId());
+		addNote.setOrganizationName(orgName);
+
 		String bucketName = s3BucketName + AppConstants.SLASH + noteImageBucketPath;
 		String noteImgPath = null;
 		String noteImg = note.getNoteImage();
@@ -449,6 +452,24 @@ public class NoteServiceImpl implements NoteService {
 
 		AWSCredentials credentials = new BasicAWSCredentials(awsAccessKeyId, awsAccessSecretKey);
 		return new AmazonS3Client(credentials);
+	}
+
+	private String getOrganizationName(int orgId) {
+		String organizationName = null;
+
+		try {
+			Query query = em
+					.createNativeQuery(
+							"select OrganizationName returnvalue from organization where OrganizationId=:OrganizationId")
+					.setParameter("OrganizationId", orgId);
+
+			if (query.getSingleResult() != null) {
+				organizationName = (String) query.getSingleResult();
+			}
+		} catch (NoResultException e) {
+
+		}
+		return organizationName;
 	}
 
 }

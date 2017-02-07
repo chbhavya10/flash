@@ -25,6 +25,15 @@ public class AddNote implements Serializable {
 	private String published;
 	private String PreacherName;
 	private String noteImage;
+	private String organizationName;
+
+	public String getOrganizationName() {
+		return organizationName;
+	}
+
+	public void setOrganizationName(String organizationName) {
+		this.organizationName = organizationName;
+	}
 
 	public String getNoteImage() {
 		return noteImage;
@@ -67,7 +76,8 @@ public class AddNote implements Serializable {
 
 	public AddNote(Integer noteId, int authorId, String title, String subTitle, String introduction, Date eventDate,
 			Time eventTime, Integer categoryId, List<String> keywords, Integer organizationId, Integer groupId,
-			String published, List<AddSection> sections, List<AddSubSection> subSections, String noteImage) {
+			String published, List<AddSection> sections, List<AddSubSection> subSections, String noteImage,
+			String organizationName) {
 		super();
 		this.noteId = noteId;
 		this.authorId = authorId;
@@ -84,6 +94,7 @@ public class AddNote implements Serializable {
 		this.sections = sections;
 		this.subSections = subSections;
 		this.noteImage = noteImage;
+		this.organizationName = organizationName;
 	}
 
 	public Integer getNoteId() {
