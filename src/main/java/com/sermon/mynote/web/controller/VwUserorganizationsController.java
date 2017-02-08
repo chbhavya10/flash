@@ -21,7 +21,7 @@ public class VwUserorganizationsController {
 	@Autowired
 	private VwUserorganizationsService vwUserorganizationsService;
 
-	final Logger logger = LoggerFactory.getLogger(organizationController.class);
+	final Logger logger = LoggerFactory.getLogger(OrganizationController.class);
 
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody

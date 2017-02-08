@@ -17,9 +17,9 @@ import com.sermon.mynote.service.UserService;
 
 @RequestMapping("/userProfile")
 @Controller
-public class userProfileController {
+public class UserProfileController {
 
-	final Logger logger = LoggerFactory.getLogger(userProfileController.class);
+	final Logger logger = LoggerFactory.getLogger(UserProfileController.class);
 
 	@Autowired
 	MessageSource messageSource;

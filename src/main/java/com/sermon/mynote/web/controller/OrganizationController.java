@@ -15,12 +15,12 @@ import com.sermon.mynote.service.OrganizationService;
 
 @RequestMapping("/organization")
 @Controller
-public class organizationController {
+public class OrganizationController {
 
 	@Autowired
 	private OrganizationService organizationService;
 
-	final Logger logger = LoggerFactory.getLogger(organizationController.class);
+	final Logger logger = LoggerFactory.getLogger(OrganizationController.class);
 
 	@RequestMapping(value = "/users", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
