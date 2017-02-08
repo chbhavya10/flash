@@ -8,8 +8,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -38,13 +36,12 @@ import com.sermon.mynote.domain.StatusResponse;
 import com.sermon.mynote.service.NoteService;
 import com.sermon.mynote.service.UserService;
 import com.sermon.util.AppConstants;
-import com.sermon.util.AppUtil;
 
 @RequestMapping("/note")
 @Controller
-public class noteController {
+public class NoteController {
 
-	final Logger logger = LoggerFactory.getLogger(noteController.class);
+	final Logger logger = LoggerFactory.getLogger(NoteController.class);
 
 	@Autowired
 	MessageSource messageSource;

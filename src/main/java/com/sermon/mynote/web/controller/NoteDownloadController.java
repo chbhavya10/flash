@@ -17,7 +17,7 @@ import com.sermon.mynote.service.NoteDownloadService;
 @Controller
 public class NoteDownloadController {
 
-	final Logger logger = LoggerFactory.getLogger(noteController.class);
+	final Logger logger = LoggerFactory.getLogger(NoteController.class);
 
 	@Autowired
 	private NoteDownloadService noteDownloadService;
