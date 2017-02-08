@@ -1,12 +1,17 @@
 package com.sermon.mynote.web.controller;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.services.s3.transfer.Upload;
 import com.sermon.mynote.domain.AddNote;
 import com.sermon.mynote.domain.AddSection;
@@ -32,6 +38,7 @@ import com.sermon.mynote.domain.StatusResponse;
 import com.sermon.mynote.service.NoteService;
 import com.sermon.mynote.service.UserService;
 import com.sermon.util.AppConstants;
+import com.sermon.util.AppUtil;
 
 @RequestMapping("/note")
 @Controller
@@ -343,6 +350,38 @@ public class noteController {
 			statusMsg.setStatus(AppConstants.ERROR_INTERNAL);
 			return statusMsg;
 		}
+	}
+
+	@RequestMapping(value = "/getNoteImage/{id}", method = RequestMethod.GET, produces = "image/png")
+	@ResponseBody
+	public byte[] getSermonImage(@PathVariable int id) throws IOException {
+
+		InputStream inputStream = noteService.getUserDocumentAsStream(id);
+
+		byte[] bytes = null;
+		String extension = null;
+
+		S3ObjectInputStream s3InputStream = null;
+		if (inputStream != null) {
+			try {
+				s3InputStream = (S3ObjectInputStream) inputStream;
+				extension = s3InputStream.getHttpRequest().getURI().getPath();
+				extension = extension.substring(extension.lastIndexOf(".") + 1);
+				bytes = IOUtils.toByteArray(s3InputStream);
+				int size = bytes.length;
+				logger.info("image size : " + size);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				s3InputStream.close();
+			}
+			return bytes;
+		} else {
+			return bytes;
+		}
+
 	}
 
 }

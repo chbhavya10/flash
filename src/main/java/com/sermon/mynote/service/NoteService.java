@@ -36,6 +36,8 @@ public interface NoteService {
 
 	public int saveImage(int noteId, String imgName);
 
+	public InputStream getUserDocumentAsStream(int id);
+
 	/*
 	 * public void createNote(Integer authorId,String title,String
 	 * subTitle,String introduction, Date eventDate,Time eventTime,Integer

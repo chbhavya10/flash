@@ -32,7 +32,9 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.Upload;
 import com.amazonaws.util.IOUtils;
@@ -470,6 +472,49 @@ public class NoteServiceImpl implements NoteService {
 
 		}
 		return organizationName;
+	}
+
+	@Override
+	public InputStream getUserDocumentAsStream(int noteId) throws AmazonClientException, AmazonServiceException {
+
+		String imageName = null;
+
+		try {
+			Query query = em.createNativeQuery("select noteImage returnvalue from note where NoteId=:noteId")
+					.setParameter("noteId", noteId);
+
+			if (query.getSingleResult() != null) {
+				imageName = (String) query.getSingleResult();
+			}
+		} catch (NoResultException e) {
+
+		}
+
+		String folderPath = AppConstants.NOTES_FOLDER + AppConstants.SLASH + noteId + AppConstants.SLASH + imageName;
+		GetObjectRequest objectRequest = new GetObjectRequest(s3BucketName, folderPath);
+
+		InputStream s3IStream = null;
+		try {
+			S3Object s3object = getAmazonS3Client().getObject(objectRequest);
+			s3IStream = s3object.getObjectContent();
+
+		} catch (AmazonServiceException ase) {
+			logger.error("Caught an AmazonServiceException, which " + "means your request made it "
+					+ "to Amazon S3, but was rejected with an error response" + " for some reason.");
+			logger.error("Error Message:    {}", ase.getMessage());
+			logger.error("HTTP Status Code: {}", ase.getStatusCode());
+			logger.error("AWS Error Code:   {}", ase.getErrorCode());
+			logger.error("Error Type:       {}", ase.getErrorType());
+			logger.error("Request ID:       {}", ase.getRequestId());
+			return null;
+		} catch (AmazonClientException ace) {
+			logger.error("Caught an AmazonClientException, which " + "means the client encountered "
+					+ "an internal error while trying to " + "communicate with S3, "
+					+ "such as not being able to access the network.");
+			logger.error("Error Message: {}", ace.getMessage());
+			return null;
+		}
+		return s3IStream;
 	}
 
 }

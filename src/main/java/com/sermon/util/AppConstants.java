@@ -34,4 +34,10 @@ public class AppConstants {
 
 	public static final String AMAZON_LINK = "s3-us-west-2.amazonaws.com";
 
+	public static final String MIME_PDF = "application/pdf";
+
+	public static final String MIME_IMG_PNG = "image/png";
+
+	public static final String MIME_IMG_JPG = "image/jpg";
+
 }

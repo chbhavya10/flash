@@ -3,7 +3,7 @@ package com.sermon.util;
 import java.security.MessageDigest;
 
 public class AppUtil {
-	
+
 	public static String sha256(String base) {
 		try {
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -19,6 +19,16 @@ public class AppUtil {
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
+	}
+
+	public static String getFileExtension(String extension) {
+		if (extension.equals("pdf"))
+			return AppConstants.MIME_PDF;
+
+		else if (extension.equals("png"))
+			return AppConstants.MIME_IMG_PNG;
+		else
+			return AppConstants.MIME_IMG_JPG;
 	}
 
 }
