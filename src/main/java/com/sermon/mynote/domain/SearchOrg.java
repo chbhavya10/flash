@@ -1,5 +1,7 @@
 package com.sermon.mynote.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -7,8 +9,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "vw_organization")
-public class SearchOrg {
+public class SearchOrg implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Integer organizationId;
 	private String organizationName;
 	private String address1;

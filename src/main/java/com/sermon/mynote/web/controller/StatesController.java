@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sermon.mynote.domain.City;
 import com.sermon.mynote.domain.Country;
+import com.sermon.mynote.domain.Denomination;
 import com.sermon.mynote.domain.State;
+import com.sermon.mynote.service.DenominationService;
 import com.sermon.mynote.service.StatesService;
 
 @RequestMapping("/countries")
@@ -28,6 +30,9 @@ public class StatesController {
 
 	@Autowired
 	private StatesService statesService;
+	
+	@Autowired
+	private DenominationService denominationService;
 
 	@RequestMapping(value = "/getStates", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
@@ -54,6 +59,15 @@ public class StatesController {
 
 		List<City> Cities = statesService.findCityByStateId(state.getStateId());
 		return Cities;
+	}
+	
+	@RequestMapping(value = "/getDenominations", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public List<Denomination> getDenominations() {
+		logger.info("Listing Countries");
+
+		List<Denomination> denominations = denominationService.findAll();
+		return denominations;
 	}
 
 }
