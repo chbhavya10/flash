@@ -17,7 +17,7 @@ import com.sermon.mynote.service.NoteLikeService;
 @Controller
 public class NoteLikeController {
 
-	final Logger logger = LoggerFactory.getLogger(NoteController.class);
+	final Logger logger = LoggerFactory.getLogger(NoteLikeController.class);
 
 	@Autowired
 	private NoteLikeService noteLikeService;

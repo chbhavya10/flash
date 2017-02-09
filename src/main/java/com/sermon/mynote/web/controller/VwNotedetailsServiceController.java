@@ -21,7 +21,7 @@ public class VwNotedetailsServiceController {
 	@Autowired
 	private VwNotedetailsService vwNotedetailsService;
 
-	final Logger logger = LoggerFactory.getLogger(OrganizationController.class);
+	final Logger logger = LoggerFactory.getLogger(VwNotedetailsServiceController.class);
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
