@@ -8,4 +8,6 @@ public interface VwSearchOrganizationService {
 
 	public List<OrganizationLike> SearchOrganiz(String organizationName, String zipCode, String city,
 			String denomination);
+
+	public List<OrganizationLike> SearchOrganiz(String orgname, String zipcode, String city);
 }

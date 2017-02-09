@@ -22,9 +22,19 @@ public class VwSearchOrganizationController {
 	@RequestMapping(value = "/search/{orgname}/{zipcode}/{city}/{denomination}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public List<OrganizationLike> SearchOrganiz(@PathVariable String orgname, @PathVariable String zipcode,
-			@PathVariable String city,@PathVariable String denomination) {
+			@PathVariable String city, @PathVariable String denomination) {
 
-		List<OrganizationLike> searchOrganization = vwSearchOrganizationService.SearchOrganiz(orgname, zipcode, city,denomination);
+		List<OrganizationLike> searchOrganization = vwSearchOrganizationService.SearchOrganiz(orgname, zipcode, city,
+				denomination);
+		return searchOrganization;
+	}
+
+	@RequestMapping(value = "/search/{orgname}/{zipcode}/{city}", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public List<OrganizationLike> SearchOrganiz(@PathVariable String orgname, @PathVariable String zipcode,
+			@PathVariable String city) {
+
+		List<OrganizationLike> searchOrganization = vwSearchOrganizationService.SearchOrganiz(orgname, zipcode, city);
 		return searchOrganization;
 	}
 }
