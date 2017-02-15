@@ -422,7 +422,7 @@ public class NoteController {
 			Upload myUpload = noteService.upLoadNoteFiles(fis, imageName, imgToDelete, noteId);
 			myUpload.waitForCompletion();
 			if (myUpload.isDone())
-				noteService.saveImage(noteId, imgName);
+				noteService.saveImage(noteId, imageName);
 
 			statusMsg.setStatus(AppConstants.FILES_UPLOAD);
 			return statusMsg;
