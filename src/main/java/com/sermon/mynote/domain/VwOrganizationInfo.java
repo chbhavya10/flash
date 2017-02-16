@@ -25,13 +25,15 @@ public class VwOrganizationInfo {
 	private String Website;
 	private String PrimaryEmail;
 	private String FacebookLink;
+	private String OrgImage;
 
 	public VwOrganizationInfo() {
 	}
 
 	public VwOrganizationInfo(int organizationId, String organizationName, String address1, String address2, int cityId,
 			String cityName, int stateId, String stateName, int countryID, String countryName, String zipCode,
-			String hours, String generalInfo, String website, String primaryEmail, String facebookLink) {
+			String hours, String generalInfo, String website, String primaryEmail, String facebookLink,
+			String orgImage) {
 		OrganizationId = organizationId;
 		OrganizationName = organizationName;
 		Address1 = address1;
@@ -48,6 +50,7 @@ public class VwOrganizationInfo {
 		Website = website;
 		PrimaryEmail = primaryEmail;
 		FacebookLink = facebookLink;
+		OrgImage = orgImage;
 	}
 
 	@Id
@@ -178,6 +181,14 @@ public class VwOrganizationInfo {
 
 	public void setFacebookLink(String facebookLink) {
 		FacebookLink = facebookLink;
+	}
+
+	public String getOrgImage() {
+		return OrgImage;
+	}
+
+	public void setOrgImage(String orgImage) {
+		OrgImage = orgImage;
 	}
 
 }

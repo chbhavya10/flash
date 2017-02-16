@@ -39,5 +39,7 @@ public class AppConstants {
 	public static final String MIME_IMG_PNG = "image/png";
 
 	public static final String MIME_IMG_JPG = "image/jpg";
+	
+	public static final String ORGANIZATION_FOLDER = "organizations";
 
 }
