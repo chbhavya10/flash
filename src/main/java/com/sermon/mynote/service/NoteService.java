@@ -38,6 +38,8 @@ public interface NoteService {
 
 	public InputStream getUserDocumentAsStream(int id);
 
+	public Upload upLoadFiles(InputStream fis, String imageName, String imgToDelete, int noteId, int orgId);
+
 	/*
 	 * public void createNote(Integer authorId,String title,String
 	 * subTitle,String introduction, Date eventDate,Time eventTime,Integer

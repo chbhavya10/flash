@@ -39,6 +39,7 @@ import com.sermon.mynote.domain.StatusMsg;
 import com.sermon.mynote.domain.StatusResponse;
 import com.sermon.mynote.service.NoteService;
 import com.sermon.mynote.service.UserService;
+import com.sermon.mynote.service.VwOrganizationInfoService;
 import com.sermon.util.AppConstants;
 
 @RequestMapping("/note")
@@ -55,6 +56,9 @@ public class NoteController {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private VwOrganizationInfoService vwOrganizationInfoService;
 
 	@RequestMapping(value = "/addNote", method = RequestMethod.POST, headers = { "Content-type=application/json" })
 	public @ResponseBody Note PostNote(@RequestBody Note note) {
@@ -312,7 +316,7 @@ public class NoteController {
 		return response;
 	}
 
-	@RequestMapping(value = "/UploadNoteImage/{noteId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/UploadImage/{noteId}", method = RequestMethod.POST)
 	@ResponseBody
 	public StatusMsg continueFileUpload(@PathVariable int noteId, HttpServletRequest request,
 			HttpServletResponse response) {
@@ -338,11 +342,20 @@ public class NoteController {
 				imgToDelete = existingNoteImgName;
 			}
 
-			Upload myUpload = noteService.upLoadNoteFiles(mFile.getInputStream(), imgName, imgToDelete, noteId);
+			// convert image to jpg
+			BufferedImage image = ImageIO.read(mFile.getInputStream());
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(image, "jpg", baos);
+			InputStream fis = new ByteArrayInputStream(baos.toByteArray());
+
+			String temp = imgName.substring(0, imgName.lastIndexOf('.'));
+			String imageName = temp + ".jpg";
+
+			Upload myUpload = noteService.upLoadNoteFiles(fis, imageName, imgToDelete, noteId);
 
 			myUpload.waitForCompletion();
 			if (myUpload.isDone())
-				noteService.saveImage(noteId, imgName);
+				noteService.saveImage(noteId, imageName);
 
 			statusMsg.setStatus(AppConstants.FILES_UPLOAD);
 			return statusMsg;
@@ -385,14 +398,16 @@ public class NoteController {
 
 	}
 
-	@RequestMapping(value = "/UploadImage/{noteId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/uploadImage/{noteId}/{orgId}", method = RequestMethod.POST)
 	@ResponseBody
-	public StatusMsg FileUpload(@PathVariable int noteId, HttpServletRequest request, HttpServletResponse response) {
+	public StatusMsg FileUpload(@PathVariable int noteId, @PathVariable int orgId, HttpServletRequest request,
+			HttpServletResponse response) {
 		MultipartHttpServletRequest mRequest;
 		MultipartFile mFile = null;
 		StatusMsg statusMsg = new StatusMsg();
 		String imgName = null;
 		logger.info("noteId : " + noteId);
+		logger.info("orgId : " + orgId);
 		try {
 			mRequest = (MultipartHttpServletRequest) request;
 			mRequest.getParameterMap();
@@ -404,7 +419,14 @@ public class NoteController {
 				logger.info("filename : " + imgName + " size : " + mFile.getSize());
 			}
 
-			String existingNoteImgName = noteService.getNoteImage(noteId);
+			String existingNoteImgName = null;
+
+			if (noteId > 0) {
+				existingNoteImgName = noteService.getNoteImage(noteId);
+			} else if (orgId > 0) {
+				existingNoteImgName = vwOrganizationInfoService.getOrgImage(orgId);
+			}
+
 			String imgToDelete = null;
 			if (existingNoteImgName != null) {
 				imgToDelete = existingNoteImgName;
@@ -419,10 +441,16 @@ public class NoteController {
 			String temp = imgName.substring(0, imgName.lastIndexOf('.'));
 			String imageName = temp + ".jpg";
 
-			Upload myUpload = noteService.upLoadNoteFiles(fis, imageName, imgToDelete, noteId);
+			Upload myUpload = noteService.upLoadFiles(fis, imageName, imgToDelete, noteId, orgId);
 			myUpload.waitForCompletion();
-			if (myUpload.isDone())
-				noteService.saveImage(noteId, imageName);
+
+			if (myUpload.isDone()) {
+
+				if (noteId > 0)
+					noteService.saveImage(noteId, imageName);
+				else if (orgId > 0)
+					vwOrganizationInfoService.saveImage(orgId, imgName);
+			}
 
 			statusMsg.setStatus(AppConstants.FILES_UPLOAD);
 			return statusMsg;
