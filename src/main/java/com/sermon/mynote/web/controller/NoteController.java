@@ -461,4 +461,19 @@ public class NoteController {
 		}
 	}
 
+	@RequestMapping(value = "/deleteImage/{noteId}", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public StatusResponse deleteImage(@PathVariable int noteId) {
+
+		int result = noteService.deleteImage(noteId);
+		StatusResponse response = new StatusResponse();
+
+		if (result == 0)
+			response.setStatus(true);
+		else
+			response.setStatus(false);
+
+		return response;
+	}
+
 }

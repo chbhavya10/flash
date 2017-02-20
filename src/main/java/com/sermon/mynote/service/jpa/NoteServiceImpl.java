@@ -585,4 +585,56 @@ public class NoteServiceImpl implements NoteService {
 		return upload;
 	}
 
+	@Override
+	public int deleteImage(int noteId) {
+
+		try {
+
+			AWSCredentials credentials = new BasicAWSCredentials(awsAccessKeyId, awsAccessSecretKey);
+			AmazonS3 s3client = new AmazonS3Client(credentials);
+
+			TransferManager manager = new TransferManager(credentials);
+
+			String imageName = null;
+
+			try {
+				Query query = em.createNativeQuery("select noteImage returnvalue from note where NoteId=:noteId")
+						.setParameter("noteId", noteId);
+
+				if (query.getSingleResult() != null) {
+					imageName = (String) query.getSingleResult();
+				}
+			} catch (NoResultException e) {
+
+			}
+
+			if (noteId > 0) {
+
+				s3client.deleteObject(s3BucketName,
+						AppConstants.NOTES_FOLDER + AppConstants.SLASH + noteId + AppConstants.SLASH + imageName);
+			}
+
+			manager.shutdownNow();
+
+		} catch (AmazonServiceException ase) {
+			logger.error("Caught an AmazonServiceException, which " + "means your request made it "
+					+ "to Amazon S3, but was rejected with an error response" + " for some reason.");
+			logger.error("Error Message:    {}", ase.getMessage());
+			logger.error("HTTP Status Code: {}", ase.getStatusCode());
+			logger.error("AWS Error Code:   {}", ase.getErrorCode());
+			logger.error("Error Type:       {}", ase.getErrorType());
+			logger.error("Request ID:       {}", ase.getRequestId());
+		} catch (AmazonClientException ace) {
+			logger.error("Caught an AmazonClientException, which " + "means the client encountered "
+					+ "an internal error while trying to " + "communicate with S3, "
+					+ "such as not being able to access the network.");
+			logger.error("Error Message: {}", ace.getMessage());
+		}
+
+		String docName = null;
+		saveImage(noteId, docName);
+
+		return 0;
+	}
+
 }

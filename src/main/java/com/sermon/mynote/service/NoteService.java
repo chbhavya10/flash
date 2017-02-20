@@ -40,6 +40,8 @@ public interface NoteService {
 
 	public Upload upLoadFiles(InputStream fis, String imageName, String imgToDelete, int noteId, int orgId);
 
+	public int deleteImage(int noteId);
+
 	/*
 	 * public void createNote(Integer authorId,String title,String
 	 * subTitle,String introduction, Date eventDate,Time eventTime,Integer
