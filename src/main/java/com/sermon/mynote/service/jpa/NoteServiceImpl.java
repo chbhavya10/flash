@@ -266,6 +266,11 @@ public class NoteServiceImpl implements NoteService {
 			String s3Obj = note.getNoteId() + AppConstants.SLASH + noteImg;
 			noteImgPath = generatePreSignedURL(bucketName, s3Obj);
 			addNote.setNoteImage(noteImgPath);
+		} else {
+			String s3Obj = AppConstants.DEFAULT_ID + AppConstants.SLASH + AppConstants.DEFAULT_NOTE_IMAGE;
+			noteImgPath = generatePreSignedURL(bucketName, s3Obj);
+			addNote.setNoteImage(noteImgPath);
+
 		}
 
 		List<AddSection> addSections = new ArrayList<AddSection>();
@@ -489,8 +494,14 @@ public class NoteServiceImpl implements NoteService {
 		} catch (NoResultException e) {
 
 		}
+		String folderPath = null;
 
-		String folderPath = AppConstants.NOTES_FOLDER + AppConstants.SLASH + noteId + AppConstants.SLASH + imageName;
+		if (imageName != null) {
+			folderPath = AppConstants.NOTES_FOLDER + AppConstants.SLASH + noteId + AppConstants.SLASH + imageName;
+		} else {
+			folderPath = AppConstants.NOTES_FOLDER + AppConstants.SLASH + AppConstants.DEFAULT_ID + AppConstants.SLASH
+					+ AppConstants.DEFAULT_NOTE_IMAGE;
+		}
 		GetObjectRequest objectRequest = new GetObjectRequest(s3BucketName, folderPath);
 
 		InputStream s3IStream = null;
