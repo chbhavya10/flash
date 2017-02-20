@@ -75,7 +75,7 @@ public class VwOrganizationInfoController {
 
 		return status;
 	}
-	
+
 	@RequestMapping(value = "/UploadImage/{orgId}", method = RequestMethod.POST)
 	@ResponseBody
 	public StatusMsg FileUpload(@PathVariable int orgId, HttpServletRequest request, HttpServletResponse response) {
@@ -123,8 +123,7 @@ public class VwOrganizationInfoController {
 			return statusMsg;
 		}
 	}
-	
-	
+
 	@RequestMapping(value = "/getOrgImage/{id}", method = RequestMethod.GET, produces = "image/jpeg")
 	@ResponseBody
 	public byte[] getSermonImage(@PathVariable int id) throws IOException {
@@ -156,6 +155,38 @@ public class VwOrganizationInfoController {
 		}
 
 	}
-	
+
+	@RequestMapping(value = "/getDefaultOrgImage", method = RequestMethod.GET, produces = "image/jpeg")
+	@ResponseBody
+	public byte[] getOrgImage() throws IOException {
+
+		int id = AppConstants.DEFAULT_ID;
+		InputStream inputStream = vwOrganizationInfoService.getOrgImageAsStream(id);
+
+		byte[] bytes = null;
+		String extension = null;
+
+		S3ObjectInputStream s3InputStream = null;
+		if (inputStream != null) {
+			try {
+				s3InputStream = (S3ObjectInputStream) inputStream;
+				extension = s3InputStream.getHttpRequest().getURI().getPath();
+				extension = extension.substring(extension.lastIndexOf(".") + 1);
+				bytes = IOUtils.toByteArray(s3InputStream);
+				int size = bytes.length;
+				logger.info("image size : " + size);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				s3InputStream.close();
+			}
+			return bytes;
+		} else {
+			return bytes;
+		}
+
+	}
 
 }
