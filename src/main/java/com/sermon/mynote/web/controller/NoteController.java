@@ -475,5 +475,38 @@ public class NoteController {
 
 		return response;
 	}
+	
+	@RequestMapping(value = "/getDefaultNoteImage", method = RequestMethod.GET, produces = "image/jpeg")
+	@ResponseBody
+	public byte[] getNoteImage() throws IOException {
+
+		int id=AppConstants.DEFAULT_ID;
+		InputStream inputStream = noteService.getUserDocumentAsStream(id);
+
+		byte[] bytes = null;
+		String extension = null;
+
+		S3ObjectInputStream s3InputStream = null;
+		if (inputStream != null) {
+			try {
+				s3InputStream = (S3ObjectInputStream) inputStream;
+				extension = s3InputStream.getHttpRequest().getURI().getPath();
+				extension = extension.substring(extension.lastIndexOf(".") + 1);
+				bytes = IOUtils.toByteArray(s3InputStream);
+				int size = bytes.length;
+				logger.info("image size : " + size);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				s3InputStream.close();
+			}
+			return bytes;
+		} else {
+			return bytes;
+		}
+
+	}
 
 }
