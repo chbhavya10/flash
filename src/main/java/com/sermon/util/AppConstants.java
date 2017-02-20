@@ -41,5 +41,9 @@ public class AppConstants {
 	public static final String MIME_IMG_JPG = "image/jpg";
 	
 	public static final String ORGANIZATION_FOLDER = "organizations";
+	
+	public static final int DEFAULT_ORG_ID=0;
+	
+	public static final String DEFAULT_ORG_IMAGE="Sermonhub.jpg";
 
 }

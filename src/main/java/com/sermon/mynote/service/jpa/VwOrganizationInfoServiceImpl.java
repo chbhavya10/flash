@@ -88,6 +88,10 @@ public class VwOrganizationInfoServiceImpl implements VwOrganizationInfoService 
 				String s3Obj = info.getOrganizationId() + AppConstants.SLASH + orgImg;
 				orgImgPath = generatePreSignedURL(bucketName, s3Obj);
 				info.setOrgImage(orgImgPath);
+			} else {
+				String s3Obj = AppConstants.DEFAULT_ORG_ID + AppConstants.SLASH + AppConstants.DEFAULT_ORG_IMAGE;
+				orgImgPath = generatePreSignedURL(bucketName, s3Obj);
+				info.setOrgImage(orgImgPath);
 			}
 		}
 		return results;
@@ -246,10 +250,15 @@ public class VwOrganizationInfoServiceImpl implements VwOrganizationInfoService 
 				imageName = (String) query.getSingleResult();
 			}
 		} catch (NoResultException e) {
-
 		}
 
-		String folderPath = AppConstants.ORGANIZATION_FOLDER + AppConstants.SLASH + id + AppConstants.SLASH + imageName;
+		String folderPath = null;
+		if (imageName != null) {
+			folderPath = AppConstants.ORGANIZATION_FOLDER + AppConstants.SLASH + id + AppConstants.SLASH + imageName;
+		} else {
+			folderPath = AppConstants.ORGANIZATION_FOLDER + AppConstants.SLASH + AppConstants.DEFAULT_ORG_ID
+					+ AppConstants.SLASH + AppConstants.DEFAULT_ORG_IMAGE;
+		}
 		GetObjectRequest objectRequest = new GetObjectRequest(s3BucketName, folderPath);
 
 		InputStream s3IStream = null;
