@@ -20,6 +20,15 @@ public class OrganizationLike implements Serializable {
 	private int downloadCount;
 	private int sermonCount;
 	private String denomination;
+	private String orgImage;
+
+	public String getOrgImage() {
+		return orgImage;
+	}
+
+	public void setOrgImage(String orgImage) {
+		this.orgImage = orgImage;
+	}
 
 	public String getDenomination() {
 		return denomination;

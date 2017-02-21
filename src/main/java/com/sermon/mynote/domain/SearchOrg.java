@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "vw_organization")
-public class SearchOrg implements Serializable{
+public class SearchOrg implements Serializable {
 
 	/**
 	 * 
@@ -24,12 +24,13 @@ public class SearchOrg implements Serializable{
 	private String countryName;
 	private String zipcode;
 	private String denomination;
+	private String orgImage;
 
 	public SearchOrg() {
 	}
 
 	public SearchOrg(Integer organizationId, String organizationName, String address1, String address2, String cityName,
-			String stateName, String countryName, String zipcode, String denomination) {
+			String stateName, String countryName, String zipcode, String denomination, String orgImage) {
 		this.organizationId = organizationId;
 		this.organizationName = organizationName;
 		this.address1 = address1;
@@ -39,7 +40,7 @@ public class SearchOrg implements Serializable{
 		this.countryName = countryName;
 		this.zipcode = zipcode;
 		this.denomination = denomination;
-
+		this.orgImage = orgImage;
 	}
 
 	@Id
@@ -114,6 +115,14 @@ public class SearchOrg implements Serializable{
 
 	public void setDenomination(String denomination) {
 		this.denomination = denomination;
+	}
+
+	public String getOrgImage() {
+		return orgImage;
+	}
+
+	public void setOrgImage(String orgImage) {
+		this.orgImage = orgImage;
 	}
 
 }
