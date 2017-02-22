@@ -1,6 +1,5 @@
 package com.sermon.mynote.service.jpa;
 
-import java.net.URL;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,14 +8,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.amazonaws.HttpMethod;
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.sermon.mynote.domain.VwOrganizationNotes;
 import com.sermon.mynote.repository.VwOrganizationNotesRepository;
+import com.sermon.mynote.service.NoteService;
 import com.sermon.mynote.service.VwOrganizationNotesService;
 import com.sermon.util.AppConstants;
 
@@ -43,6 +37,9 @@ public class VwOrganizationNotesServiceImpl implements VwOrganizationNotesServic
 	@Value("${amazon.link}")
 	private String amazonLink;
 
+	@Autowired
+	private NoteService noteService;
+
 	@Transactional(readOnly = true)
 	public List<VwOrganizationNotes> findAll() {
 
@@ -59,11 +56,11 @@ public class VwOrganizationNotesServiceImpl implements VwOrganizationNotesServic
 			if (noteImg != null) {
 
 				String s3Obj = notes.getNoteId() + AppConstants.SLASH + noteImg;
-				noteImgPath = generatePreSignedURL(bucketName, s3Obj);
+				noteImgPath = noteService.generatePreSignedURL(bucketName, s3Obj);
 				notes.setNoteImage(noteImgPath);
 			} else {
 				String s3Obj = AppConstants.DEFAULT_ID + AppConstants.SLASH + AppConstants.DEFAULT_NOTE_IMAGE;
-				noteImgPath = generatePreSignedURL(bucketName, s3Obj);
+				noteImgPath = noteService.generatePreSignedURL(bucketName, s3Obj);
 				notes.setNoteImage(noteImgPath);
 			}
 
@@ -86,43 +83,17 @@ public class VwOrganizationNotesServiceImpl implements VwOrganizationNotesServic
 			if (noteImg != null) {
 
 				String s3Obj = notes.getNoteId() + AppConstants.SLASH + noteImg;
-				noteImgPath = generatePreSignedURL(bucketName, s3Obj);
+				noteImgPath = noteService.generatePreSignedURL(bucketName, s3Obj);
 				notes.setNoteImage(noteImgPath);
 			} else {
 				String s3Obj = AppConstants.DEFAULT_ID + AppConstants.SLASH + AppConstants.DEFAULT_NOTE_IMAGE;
-				noteImgPath = generatePreSignedURL(bucketName, s3Obj);
+				noteImgPath = noteService.generatePreSignedURL(bucketName, s3Obj);
 				notes.setNoteImage(noteImgPath);
 			}
 
 		}
 
 		return vwOrganizationNotes;
-	}
-
-	private String generatePreSignedURL(String bucketName, String objectKey) {
-
-		java.util.Date expiration = new java.util.Date();
-		long milliSeconds = expiration.getTime();
-		milliSeconds += AppConstants.EXPIRY_SECONDS;
-		expiration.setTime(milliSeconds);
-
-		GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucketName,
-				objectKey);
-		generatePresignedUrlRequest.setMethod(HttpMethod.GET);
-		generatePresignedUrlRequest.setExpiration(expiration);
-		AmazonS3 ams3 = getAmazonS3Client();
-		ams3.setEndpoint(AppConstants.AMAZON_LINK);
-
-		URL url = ams3.generatePresignedUrl(generatePresignedUrlRequest);
-
-		return url.toString();
-
-	}
-
-	private AmazonS3 getAmazonS3Client() {
-
-		AWSCredentials credentials = new BasicAWSCredentials(awsAccessKeyId, awsAccessSecretKey);
-		return new AmazonS3Client(credentials);
 	}
 
 }

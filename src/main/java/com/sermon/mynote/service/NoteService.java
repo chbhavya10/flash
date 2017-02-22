@@ -42,6 +42,8 @@ public interface NoteService {
 
 	public int deleteImage(int noteId);
 
+	public String generatePreSignedURL(String bucketName, String objectKey);
+
 	/*
 	 * public void createNote(Integer authorId,String title,String
 	 * subTitle,String introduction, Date eventDate,Time eventTime,Integer

@@ -435,7 +435,8 @@ public class NoteServiceImpl implements NoteService {
 
 	}
 
-	private String generatePreSignedURL(String bucketName, String objectKey) {
+	@Override
+	public String generatePreSignedURL(String bucketName, String objectKey) {
 
 		java.util.Date expiration = new java.util.Date();
 		long milliSeconds = expiration.getTime();

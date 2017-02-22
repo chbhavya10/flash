@@ -1,7 +1,6 @@
 package com.sermon.mynote.service.jpa;
 
 import java.math.BigInteger;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,16 +15,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.amazonaws.HttpMethod;
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.google.common.collect.Lists;
 import com.sermon.mynote.domain.UserOrgList;
 import com.sermon.mynote.domain.VwUserorganizations;
 import com.sermon.mynote.repository.VwUserorganizationsRepository;
+import com.sermon.mynote.service.NoteService;
 import com.sermon.mynote.service.VwUserorganizationsService;
 import com.sermon.util.AppConstants;
 
@@ -54,6 +48,9 @@ public class VwUserorganizationsServiceImpl implements VwUserorganizationsServic
 
 	@Value("${amazon.link}")
 	private String amazonLink;
+
+	@Autowired
+	private NoteService noteService;
 
 	@Transactional(readOnly = true)
 	public List<UserOrgList> findOrganizationsByUser(int userid) {
@@ -84,11 +81,11 @@ public class VwUserorganizationsServiceImpl implements VwUserorganizationsServic
 			if (orgImg != null) {
 
 				String s3Obj = org.getorganizationId() + AppConstants.SLASH + orgImg;
-				orgImgPath = generatePreSignedURL(bucketName, s3Obj);
+				orgImgPath = noteService.generatePreSignedURL(bucketName, s3Obj);
 				list.setOrgImage(orgImgPath);
 			} else {
 				String s3Obj = AppConstants.DEFAULT_ID + AppConstants.SLASH + AppConstants.DEFAULT_ORG_IMAGE;
-				orgImgPath = generatePreSignedURL(bucketName, s3Obj);
+				orgImgPath = noteService.generatePreSignedURL(bucketName, s3Obj);
 				list.setOrgImage(orgImgPath);
 			}
 
@@ -144,31 +141,4 @@ public class VwUserorganizationsServiceImpl implements VwUserorganizationsServic
 		return userOrgLists;
 
 	}
-
-	private String generatePreSignedURL(String bucketName, String objectKey) {
-
-		java.util.Date expiration = new java.util.Date();
-		long milliSeconds = expiration.getTime();
-		milliSeconds += AppConstants.EXPIRY_SECONDS;
-		expiration.setTime(milliSeconds);
-
-		GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucketName,
-				objectKey);
-		generatePresignedUrlRequest.setMethod(HttpMethod.GET);
-		generatePresignedUrlRequest.setExpiration(expiration);
-		AmazonS3 ams3 = getAmazonS3Client();
-		ams3.setEndpoint(AppConstants.AMAZON_LINK);
-
-		URL url = ams3.generatePresignedUrl(generatePresignedUrlRequest);
-
-		return url.toString();
-
-	}
-
-	private AmazonS3 getAmazonS3Client() {
-
-		AWSCredentials credentials = new BasicAWSCredentials(awsAccessKeyId, awsAccessSecretKey);
-		return new AmazonS3Client(credentials);
-	}
-
 }

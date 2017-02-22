@@ -1,7 +1,6 @@
 package com.sermon.mynote.service.jpa;
 
 import java.math.BigInteger;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,20 +10,16 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.amazonaws.HttpMethod;
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.sermon.mynote.domain.OrganizationLike;
 import com.sermon.mynote.domain.SearchOrg;
 import com.sermon.mynote.domain.SearchOrganization;
+import com.sermon.mynote.service.NoteService;
 import com.sermon.mynote.service.VwSearchOrganizationService;
 import com.sermon.util.AppConstants;
 
@@ -55,6 +50,9 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 
 	@Value("${amazon.link}")
 	private String amazonLink;
+
+	@Autowired
+	private NoteService noteService;
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
@@ -95,11 +93,11 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 			if (orgImg != null) {
 
 				String s3Obj = organization.getOrganizationId() + AppConstants.SLASH + orgImg;
-				orgImgPath = generatePreSignedURL(bucketName, s3Obj);
+				orgImgPath = noteService.generatePreSignedURL(bucketName, s3Obj);
 				like.setOrgImage(orgImgPath);
 			} else {
 				String s3Obj = AppConstants.DEFAULT_ID + AppConstants.SLASH + AppConstants.DEFAULT_ORG_IMAGE;
-				orgImgPath = generatePreSignedURL(bucketName, s3Obj);
+				orgImgPath = noteService.generatePreSignedURL(bucketName, s3Obj);
 				like.setOrgImage(orgImgPath);
 			}
 
@@ -191,11 +189,11 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 			if (orgImg != null) {
 
 				String s3Obj = organization.getOrganizationId() + AppConstants.SLASH + orgImg;
-				orgImgPath = generatePreSignedURL(bucketName, s3Obj);
+				orgImgPath = noteService.generatePreSignedURL(bucketName, s3Obj);
 				like.setOrgImage(orgImgPath);
 			} else {
 				String s3Obj = AppConstants.DEFAULT_ID + AppConstants.SLASH + AppConstants.DEFAULT_ORG_IMAGE;
-				orgImgPath = generatePreSignedURL(bucketName, s3Obj);
+				orgImgPath = noteService.generatePreSignedURL(bucketName, s3Obj);
 				like.setOrgImage(orgImgPath);
 			}
 
@@ -247,32 +245,6 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 		}
 
 		return likes;
-	}
-
-	private String generatePreSignedURL(String bucketName, String objectKey) {
-
-		java.util.Date expiration = new java.util.Date();
-		long milliSeconds = expiration.getTime();
-		milliSeconds += AppConstants.EXPIRY_SECONDS;
-		expiration.setTime(milliSeconds);
-
-		GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucketName,
-				objectKey);
-		generatePresignedUrlRequest.setMethod(HttpMethod.GET);
-		generatePresignedUrlRequest.setExpiration(expiration);
-		AmazonS3 ams3 = getAmazonS3Client();
-		ams3.setEndpoint(AppConstants.AMAZON_LINK);
-
-		URL url = ams3.generatePresignedUrl(generatePresignedUrlRequest);
-
-		return url.toString();
-
-	}
-
-	private AmazonS3 getAmazonS3Client() {
-
-		AWSCredentials credentials = new BasicAWSCredentials(awsAccessKeyId, awsAccessSecretKey);
-		return new AmazonS3Client(credentials);
 	}
 
 }

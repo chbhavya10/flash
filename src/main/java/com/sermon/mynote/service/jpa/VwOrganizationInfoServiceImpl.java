@@ -3,7 +3,6 @@ package com.sermon.mynote.service.jpa;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -15,6 +14,7 @@ import javax.persistence.TypedQuery;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -22,13 +22,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
-import com.amazonaws.HttpMethod;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
@@ -36,6 +34,7 @@ import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.Upload;
 import com.amazonaws.util.IOUtils;
 import com.sermon.mynote.domain.VwOrganizationInfo;
+import com.sermon.mynote.service.NoteService;
 import com.sermon.mynote.service.VwOrganizationInfoService;
 import com.sermon.util.AppConstants;
 
@@ -62,6 +61,9 @@ public class VwOrganizationInfoServiceImpl implements VwOrganizationInfoService 
 	@Value("${amazon.link}")
 	private String amazonLink;
 
+	@Autowired
+	private NoteService noteService;
+
 	final Logger logger = LoggerFactory.getLogger(VwOrganizationInfoServiceImpl.class);
 
 	@Override
@@ -86,11 +88,11 @@ public class VwOrganizationInfoServiceImpl implements VwOrganizationInfoService 
 			if (orgImg != null) {
 
 				String s3Obj = info.getOrganizationId() + AppConstants.SLASH + orgImg;
-				orgImgPath = generatePreSignedURL(bucketName, s3Obj);
+				orgImgPath = noteService.generatePreSignedURL(bucketName, s3Obj);
 				info.setOrgImage(orgImgPath);
 			} else {
 				String s3Obj = AppConstants.DEFAULT_ID + AppConstants.SLASH + AppConstants.DEFAULT_ORG_IMAGE;
-				orgImgPath = generatePreSignedURL(bucketName, s3Obj);
+				orgImgPath = noteService.generatePreSignedURL(bucketName, s3Obj);
 				info.setOrgImage(orgImgPath);
 			}
 		}
@@ -110,26 +112,6 @@ public class VwOrganizationInfoServiceImpl implements VwOrganizationInfoService 
 		int result = proc.executeUpdate();
 
 		return result;
-	}
-
-	private String generatePreSignedURL(String bucketName, String objectKey) {
-
-		java.util.Date expiration = new java.util.Date();
-		long milliSeconds = expiration.getTime();
-		milliSeconds += AppConstants.EXPIRY_SECONDS;
-		expiration.setTime(milliSeconds);
-
-		GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucketName,
-				objectKey);
-		generatePresignedUrlRequest.setMethod(HttpMethod.GET);
-		generatePresignedUrlRequest.setExpiration(expiration);
-		AmazonS3 ams3 = getAmazonS3Client();
-		ams3.setEndpoint(AppConstants.AMAZON_LINK);
-
-		URL url = ams3.generatePresignedUrl(generatePresignedUrlRequest);
-
-		return url.toString();
-
 	}
 
 	private AmazonS3 getAmazonS3Client() {
