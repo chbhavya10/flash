@@ -15,7 +15,6 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
-import com.google.common.collect.Lists;
 import com.sermon.mynote.domain.VwOrganizationNotes;
 import com.sermon.mynote.repository.VwOrganizationNotesRepository;
 import com.sermon.mynote.service.VwOrganizationNotesService;
@@ -46,7 +45,30 @@ public class VwOrganizationNotesServiceImpl implements VwOrganizationNotesServic
 
 	@Transactional(readOnly = true)
 	public List<VwOrganizationNotes> findAll() {
-		return Lists.newArrayList(vwOrganizationNotesRepository.findAll());
+
+		List<VwOrganizationNotes> vwOrganizationNotes = (List<VwOrganizationNotes>) vwOrganizationNotesRepository
+				.findAll();
+
+		String bucketName = s3BucketName + AppConstants.SLASH + noteImageBucketPath;
+
+		for (VwOrganizationNotes notes : vwOrganizationNotes) {
+
+			String noteImgPath = null;
+			String noteImg = notes.getNoteImage();
+
+			if (noteImg != null) {
+
+				String s3Obj = notes.getNoteId() + AppConstants.SLASH + noteImg;
+				noteImgPath = generatePreSignedURL(bucketName, s3Obj);
+				notes.setNoteImage(noteImgPath);
+			} else {
+				String s3Obj = AppConstants.DEFAULT_ID + AppConstants.SLASH + AppConstants.DEFAULT_NOTE_IMAGE;
+				noteImgPath = generatePreSignedURL(bucketName, s3Obj);
+				notes.setNoteImage(noteImgPath);
+			}
+
+		}
+		return vwOrganizationNotes;
 	}
 
 	@Transactional(readOnly = true)

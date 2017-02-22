@@ -2,13 +2,13 @@ package com.sermon.mynote.domain;
 
 import java.io.Serializable;
 
-public class UserOrgList implements Serializable{
+public class UserOrgList implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private int orgUserId;
 	private int organizationId;
 	private int userId;
@@ -21,6 +21,15 @@ public class UserOrgList implements Serializable{
 	private int likeCount;
 	private int downloadCount;
 	private int sermonCount;
+	private String orgImage;
+
+	public String getOrgImage() {
+		return orgImage;
+	}
+
+	public void setOrgImage(String orgImage) {
+		this.orgImage = orgImage;
+	}
 
 	public int getOrgUserId() {
 		return orgUserId;

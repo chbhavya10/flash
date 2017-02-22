@@ -1,6 +1,7 @@
 package com.sermon.mynote.service.jpa;
 
 import java.math.BigInteger;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,15 +11,23 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.amazonaws.HttpMethod;
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.google.common.collect.Lists;
 import com.sermon.mynote.domain.UserOrgList;
 import com.sermon.mynote.domain.VwUserorganizations;
 import com.sermon.mynote.repository.VwUserorganizationsRepository;
 import com.sermon.mynote.service.VwUserorganizationsService;
+import com.sermon.util.AppConstants;
 
 @Service("vworganizationService")
 @Repository
@@ -31,6 +40,21 @@ public class VwUserorganizationsServiceImpl implements VwUserorganizationsServic
 	@PersistenceContext
 	private EntityManager em;
 
+	@Value("${s3.aws.access.key.id}")
+	private String awsAccessKeyId;
+
+	@Value("${s3.aws.access.secret.key}")
+	private String awsAccessSecretKey;
+
+	@Value("${s3.aws.bucket.name}")
+	private String s3BucketName;
+
+	@Value("${org.image.bucket.path}")
+	private String orgImageBucketPath;
+
+	@Value("${amazon.link}")
+	private String amazonLink;
+
 	@Transactional(readOnly = true)
 	public List<UserOrgList> findOrganizationsByUser(int userid) {
 
@@ -38,6 +62,7 @@ public class VwUserorganizationsServiceImpl implements VwUserorganizationsServic
 				.newArrayList(vwUserorganizationsRepository.findOrganizationsByUser(userid));
 
 		List<UserOrgList> userOrgLists = new ArrayList<>();
+		String bucketName = s3BucketName + AppConstants.SLASH + orgImageBucketPath;
 
 		for (VwUserorganizations org : orgList) {
 
@@ -52,6 +77,20 @@ public class VwUserorganizationsServiceImpl implements VwUserorganizationsServic
 			list.setUserId(org.getUserid());
 			list.setUserName(org.getUsername());
 			list.setZipCode(org.getZipcode());
+
+			String orgImgPath = null;
+			String orgImg = org.getOrgImage();
+
+			if (orgImg != null) {
+
+				String s3Obj = org.getorganizationId() + AppConstants.SLASH + orgImg;
+				orgImgPath = generatePreSignedURL(bucketName, s3Obj);
+				list.setOrgImage(orgImgPath);
+			} else {
+				String s3Obj = AppConstants.DEFAULT_ID + AppConstants.SLASH + AppConstants.DEFAULT_ORG_IMAGE;
+				orgImgPath = generatePreSignedURL(bucketName, s3Obj);
+				list.setOrgImage(orgImgPath);
+			}
 
 			Integer likeCount = 0;
 			try {
@@ -103,7 +142,33 @@ public class VwUserorganizationsServiceImpl implements VwUserorganizationsServic
 			userOrgLists.add(list);
 		}
 		return userOrgLists;
-		
+
+	}
+
+	private String generatePreSignedURL(String bucketName, String objectKey) {
+
+		java.util.Date expiration = new java.util.Date();
+		long milliSeconds = expiration.getTime();
+		milliSeconds += AppConstants.EXPIRY_SECONDS;
+		expiration.setTime(milliSeconds);
+
+		GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucketName,
+				objectKey);
+		generatePresignedUrlRequest.setMethod(HttpMethod.GET);
+		generatePresignedUrlRequest.setExpiration(expiration);
+		AmazonS3 ams3 = getAmazonS3Client();
+		ams3.setEndpoint(AppConstants.AMAZON_LINK);
+
+		URL url = ams3.generatePresignedUrl(generatePresignedUrlRequest);
+
+		return url.toString();
+
+	}
+
+	private AmazonS3 getAmazonS3Client() {
+
+		AWSCredentials credentials = new BasicAWSCredentials(awsAccessKeyId, awsAccessSecretKey);
+		return new AmazonS3Client(credentials);
 	}
 
 }

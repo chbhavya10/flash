@@ -31,6 +31,7 @@ public class VwUserorganizations implements java.io.Serializable {
 	private String stateName;
 	private String countryName;
 	private String zipcode;
+	private String orgImage;
 
 	public VwUserorganizations() {
 	}
@@ -46,7 +47,7 @@ public class VwUserorganizations implements java.io.Serializable {
 	}
 
 	public VwUserorganizations(int userid, String username, String organizationName, String cityName, String stateName,
-			String countryName, String zipcode, int organizationId) {
+			String countryName, String zipcode, int organizationId, String orgImage) {
 		this.userid = userid;
 		this.username = username;
 		this.organizationName = organizationName;
@@ -55,6 +56,7 @@ public class VwUserorganizations implements java.io.Serializable {
 		this.countryName = countryName;
 		this.zipcode = zipcode;
 		this.organizationId = organizationId;
+		this.orgImage = orgImage;
 	}
 
 	@Id
@@ -131,6 +133,14 @@ public class VwUserorganizations implements java.io.Serializable {
 		this.organizationId = organizationId;
 	}
 
+	public String getOrgImage() {
+		return orgImage;
+	}
+
+	public void setOrgImage(String orgImage) {
+		this.orgImage = orgImage;
+	}
+
 	public boolean equals(Object other) {
 		if ((this == other))
 			return true;
@@ -155,7 +165,8 @@ public class VwUserorganizations implements java.io.Serializable {
 								&& this.getCountryName().equals(castOther.getCountryName())))
 				&& ((this.getZipcode() == castOther.getZipcode()) || (this.getZipcode() != null
 						&& castOther.getZipcode() != null && this.getZipcode().equals(castOther.getZipcode())))
-
+				&& ((this.getOrgImage() == castOther.getOrgImage()) || (this.getOrgImage() != null
+						&& castOther.getOrgImage() != null && this.getOrgImage().equals(castOther.getOrgImage())))
 				&& (this.getorganizationId() == castOther.getorganizationId());
 	}
 
@@ -169,7 +180,7 @@ public class VwUserorganizations implements java.io.Serializable {
 		result = 37 * result + (getStateName() == null ? 0 : this.getStateName().hashCode());
 		result = 37 * result + (getCountryName() == null ? 0 : this.getCountryName().hashCode());
 		result = 37 * result + (getZipcode() == null ? 0 : this.getZipcode().hashCode());
-
+		result = 37 * result + (getOrgImage() == null ? 0 : this.getOrgImage().hashCode());
 		result = 37 * result + this.getorganizationId();
 
 		return result;
