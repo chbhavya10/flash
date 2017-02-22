@@ -40,6 +40,15 @@ public class VwNotedetails implements java.io.Serializable {
 	private String published;
 	private int organizationId;
 	private String organizationName;
+	private String noteImage;
+
+	public String getNoteImage() {
+		return noteImage;
+	}
+
+	public void setNoteImage(String noteImage) {
+		this.noteImage = noteImage;
+	}
 
 	public String getOrganizationName() {
 		return organizationName;
@@ -80,7 +89,7 @@ public class VwNotedetails implements java.io.Serializable {
 	public VwNotedetails(int noteKey, int noteId, String author, String title, String subtitle, Date eventDate,
 			Time eventTime, String introduction, int sectionId, String sectionText, String sectionKeywords,
 			int subSectionId, String subSectionText, String subSectionKeywords, int groupId, String published,
-			int organizationId, String organizationName) {
+			int organizationId, String organizationName, String noteImage) {
 		this.noteKey = noteKey;
 		this.noteId = noteId;
 		this.author = author;
@@ -99,6 +108,7 @@ public class VwNotedetails implements java.io.Serializable {
 		this.published = published;
 		this.organizationId = organizationId;
 		this.organizationName = organizationName;
+		this.noteImage = noteImage;
 	}
 
 	@Id
@@ -263,7 +273,9 @@ public class VwNotedetails implements java.io.Serializable {
 								&& this.getSubSectionKeywords().equals(castOther.getSubSectionKeywords())))
 				&& ((this.getOrganizationName() == castOther.getOrganizationName())
 						|| (this.getOrganizationName() != null && castOther.getOrganizationName() != null
-								&& this.getOrganizationName().equals(castOther.getOrganizationName())));
+								&& this.getOrganizationName().equals(castOther.getOrganizationName())))
+				&& ((this.getNoteImage() == castOther.getNoteImage()) || (this.getNoteImage() != null
+						&& castOther.getNoteImage() != null && this.getNoteImage().equals(castOther.getNoteImage())));
 	}
 
 	public int hashCode() {
@@ -285,6 +297,7 @@ public class VwNotedetails implements java.io.Serializable {
 		result = 37 * result + (getSubSectionKeywords() == null ? 0 : this.getSubSectionKeywords().hashCode());
 		result = 37 * result + (getOrganizationName() == null ? 0 : this.getOrganizationName().hashCode());
 		result = 37 * result + this.getOrganizationId();
+		result = 37 * result + (getNoteImage() == null ? 0 : this.getNoteImage().hashCode());
 		return result;
 	}
 
