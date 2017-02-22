@@ -32,6 +32,15 @@ public class VwOrganizationNotes implements java.io.Serializable {
 	private Time eventTime;
 	private String published;
 	private String subTitle;
+	private String noteImage;
+
+	public String getNoteImage() {
+		return noteImage;
+	}
+
+	public void setNoteImage(String noteImage) {
+		this.noteImage = noteImage;
+	}
 
 	public String getSubTitle() {
 		return subTitle;
@@ -60,7 +69,7 @@ public class VwOrganizationNotes implements java.io.Serializable {
 	}
 
 	public VwOrganizationNotes(int noteId, int organizationid, String organizationName, String author, String title,
-			Date eventDate, Time eventTime, String published, String subTitle) {
+			Date eventDate, Time eventTime, String published, String subTitle, String noteImage) {
 		this.noteId = noteId;
 		this.organizationid = organizationid;
 		this.organizationName = organizationName;
@@ -70,6 +79,7 @@ public class VwOrganizationNotes implements java.io.Serializable {
 		this.eventTime = eventTime;
 		this.published = published;
 		this.subTitle = subTitle;
+		this.noteImage = noteImage;
 	}
 
 	@Id

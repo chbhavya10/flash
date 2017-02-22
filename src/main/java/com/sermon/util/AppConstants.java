@@ -48,4 +48,6 @@ public class AppConstants {
 
 	public static final String DEFAULT_NOTE_IMAGE = "default-sermon.jpg";
 
+	public static final int EXPIRY_SECONDS = 100 * 24 * 60 * 60;
+
 }

@@ -116,7 +116,7 @@ public class VwOrganizationInfoServiceImpl implements VwOrganizationInfoService 
 
 		java.util.Date expiration = new java.util.Date();
 		long milliSeconds = expiration.getTime();
-		milliSeconds += 100 * 24 * 60 * 60;
+		milliSeconds += AppConstants.EXPIRY_SECONDS;
 		expiration.setTime(milliSeconds);
 
 		GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucketName,
