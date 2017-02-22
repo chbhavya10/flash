@@ -36,20 +36,11 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 	@PersistenceContext
 	private EntityManager em;
 
-	@Value("${s3.aws.access.key.id}")
-	private String awsAccessKeyId;
-
-	@Value("${s3.aws.access.secret.key}")
-	private String awsAccessSecretKey;
-
 	@Value("${s3.aws.bucket.name}")
 	private String s3BucketName;
 
 	@Value("${org.image.bucket.path}")
 	private String orgImageBucketPath;
-
-	@Value("${amazon.link}")
-	private String amazonLink;
 
 	@Autowired
 	private NoteService noteService;

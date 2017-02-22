@@ -22,20 +22,11 @@ public class VwOrganizationNotesServiceImpl implements VwOrganizationNotesServic
 	@Autowired
 	private VwOrganizationNotesRepository vwOrganizationNotesRepository;
 
-	@Value("${s3.aws.access.key.id}")
-	private String awsAccessKeyId;
-
-	@Value("${s3.aws.access.secret.key}")
-	private String awsAccessSecretKey;
-
 	@Value("${s3.aws.bucket.name}")
 	private String s3BucketName;
 
 	@Value("${note.image.bucket.path}")
 	private String noteImageBucketPath;
-
-	@Value("${amazon.link}")
-	private String amazonLink;
 
 	@Autowired
 	private NoteService noteService;

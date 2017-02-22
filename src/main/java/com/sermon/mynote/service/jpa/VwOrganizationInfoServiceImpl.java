@@ -58,9 +58,6 @@ public class VwOrganizationInfoServiceImpl implements VwOrganizationInfoService 
 	@Value("${org.image.bucket.path}")
 	private String orgImageBucketPath;
 
-	@Value("${amazon.link}")
-	private String amazonLink;
-
 	@Autowired
 	private NoteService noteService;
 
