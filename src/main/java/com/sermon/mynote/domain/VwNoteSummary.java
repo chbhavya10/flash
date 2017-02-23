@@ -31,6 +31,7 @@ public class VwNoteSummary implements java.io.Serializable {
 	private String introduction;
 	private int organizationId;
 	private String organizationName;
+	private String noteImage;
 
 	public VwNoteSummary() {
 	}
@@ -42,7 +43,7 @@ public class VwNoteSummary implements java.io.Serializable {
 	}
 
 	public VwNoteSummary(int noteId, String author, String title, String subtitle, Date eventDate, Time eventTime,
-			String introduction, int organizationId, String organizationName) {
+			String introduction, int organizationId, String organizationName, String noteImage) {
 		this.noteId = noteId;
 		this.author = author;
 		this.title = title;
@@ -52,6 +53,7 @@ public class VwNoteSummary implements java.io.Serializable {
 		this.introduction = introduction;
 		this.organizationId = organizationId;
 		this.organizationName = organizationName;
+		this.noteImage = noteImage;
 	}
 
 	@Id
@@ -128,6 +130,14 @@ public class VwNoteSummary implements java.io.Serializable {
 		this.organizationName = organizationName;
 	}
 
+	public String getNoteImage() {
+		return noteImage;
+	}
+
+	public void setNoteImage(String noteImage) {
+		this.noteImage = noteImage;
+	}
+
 	public boolean equals(Object other) {
 		if ((this == other))
 			return true;
@@ -154,7 +164,9 @@ public class VwNoteSummary implements java.io.Serializable {
 								&& this.getIntroduction().equals(castOther.getIntroduction())))
 				&& ((this.getOrganizationName() == castOther.getOrganizationName())
 						|| (this.getOrganizationName() != null && castOther.getOrganizationName() != null
-								&& this.getOrganizationName().equals(castOther.getOrganizationName())));
+								&& this.getOrganizationName().equals(castOther.getOrganizationName())))
+				&& ((this.getNoteImage() == castOther.getNoteImage()) || (this.getNoteImage() != null
+						&& castOther.getNoteImage() != null && this.getNoteImage().equals(castOther.getNoteImage())));
 	}
 
 	public int hashCode() {
@@ -169,6 +181,7 @@ public class VwNoteSummary implements java.io.Serializable {
 		result = 37 * result + (getIntroduction() == null ? 0 : this.getIntroduction().hashCode());
 		result = 37 * result + this.getOrganizationId();
 		result = 37 * result + (getOrganizationName() == null ? 0 : this.getOrganizationName().hashCode());
+		result = 37 * result + (getNoteImage() == null ? 0 : this.getNoteImage().hashCode());
 		return result;
 	}
 
