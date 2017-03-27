@@ -2,7 +2,9 @@ package com.sermon.mynote.service.jpa;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -16,11 +18,15 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sermon.mynote.domain.City;
+import com.sermon.mynote.domain.Country;
+import com.sermon.mynote.domain.Denomination;
 import com.sermon.mynote.domain.LimitParameters;
 import com.sermon.mynote.domain.OrganizationLike;
 import com.sermon.mynote.domain.SearchOrg;
 import com.sermon.mynote.domain.SearchOrganization;
 import com.sermon.mynote.domain.SearchOrganizationResult;
+import com.sermon.mynote.domain.State;
 import com.sermon.mynote.service.NoteService;
 import com.sermon.mynote.service.VwSearchOrganizationService;
 import com.sermon.util.AppConstants;
@@ -55,7 +61,7 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 
 		TypedQuery<SearchOrg> query = (TypedQuery<SearchOrg>) em
 				.createNativeQuery(
-						"select o.OrganizationId,o.organizationName, o.Address1 AS Address1, o.Address2 AS Address2, c.CityName AS CityName,s.StateName AS StateName,cy.CountryName AS CountryName,o.ZipCode AS ZipCode,d.Denomination AS Denomination,o.OrgImage AS OrgImage from organization o join city c on ((o.CityID = c.CityId)) join state s on ((o.StateId = s.StateId)) join country cy on ((o.CountryID = cy.CountryID)) join Denomination d on ((o.DenominationId = d.DenominationID)) "
+						"select o.OrganizationId,o.organizationName, o.Address1 AS Address1, o.Address2 AS Address2, c.CityName AS CityName, c.CityId AS CityId, s.StateName AS StateName, s.StateId AS StateId, cy.CountryName AS CountryName, cy.CountryID AS CountryID, o.ZipCode AS ZipCode,d.Denomination AS Denomination,d.DenominationID AS DenominationID,o.OrgImage AS OrgImage,oi.Phone AS Phone from organization o join city c on ((o.CityID = c.CityId)) join state s on ((o.StateId = s.StateId)) join country cy on ((o.CountryID = cy.CountryID)) join Denomination d on ((o.DenominationId = d.DenominationID)) join OrganizationInfo oi on ((o.OrganizationId = oi.OrganizationId)) "
 								+ "WHERE `ValidationKey` IS NOT NULL AND (:organizationName ='All%' or o.organizationName like :organizationName) AND (:zipCode='All%' or o.ZipCode like :zipCode) AND (:city='All%' or c.CityName like :city) AND (:denomination='All%' or d.Denomination like :denomination)",
 						SearchOrg.class)
 				.setParameter("organizationName", organizationName + "%").setParameter("zipCode", zipCode + "%")
@@ -79,6 +85,11 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 			like.setStateName(organization.getStateName());
 			like.setZipcode(organization.getZipcode());
 			like.setDenomination(organization.getDenomination());
+			like.setCityId(organization.getCityId());
+			like.setStateId(organization.getStateId());
+			like.setCountryId(organization.getCountryId());
+			like.setDenominationId(organization.getDenominationId());
+			like.setPhone(organization.getPhone());
 
 			String orgImg = organization.getOrgImage();
 			String orgImgPath = null;
@@ -157,7 +168,7 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 
 		TypedQuery<SearchOrganization> query = (TypedQuery<SearchOrganization>) em
 				.createNativeQuery(
-						"select o.OrganizationId,o.organizationName, o.Address1 AS Address1, o.Address2 AS Address2, c.CityName AS CityName,s.StateName AS StateName,cy.CountryName AS CountryName,o.ZipCode AS ZipCode,o.OrgImage AS OrgImage from organization o join city c on ((o.CityID = c.CityId)) join state s on ((o.StateId = s.StateId)) join country cy on ((o.CountryID = cy.CountryID)) "
+						"select o.OrganizationId,o.organizationName, o.Address1 AS Address1, o.Address2 AS Address2, c.CityName AS CityName, c.CityId AS CityId,s.StateName AS StateName,s.StateId AS StateId,cy.CountryName AS CountryName,cy.CountryID AS CountryID,o.ZipCode AS ZipCode,o.OrgImage AS OrgImage from organization o join city c on ((o.CityID = c.CityId)) join state s on ((o.StateId = s.StateId)) join country cy on ((o.CountryID = cy.CountryID)) "
 								+ "WHERE (:organizationName ='All%' or o.organizationName like :organizationName) AND (:zipCode='All%' or o.ZipCode like :zipCode) AND (:city='All%' or c.CityName like :city) order by o.OrganizationId limit :start,:length",
 						SearchOrganization.class)
 				.setParameter("organizationName", orgname + "%").setParameter("zipCode", zipcode + "%")
@@ -200,6 +211,9 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 			like.setOrganizationName(organization.getOrganizationName());
 			like.setStateName(organization.getStateName());
 			like.setZipcode(organization.getZipcode());
+			like.setCityId(organization.getCityId());
+			like.setStateId(organization.getStateId());
+			like.setCountryId(organization.getCountryId());
 
 			String orgImg = organization.getOrgImage();
 			String orgImgPath = null;
@@ -275,7 +289,7 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 	public List<OrganizationLike> SearchOrganization(String orgname, String zipcode, String city) {
 		TypedQuery<SearchOrganization> query = (TypedQuery<SearchOrganization>) em
 				.createNativeQuery(
-						"select o.OrganizationId,o.organizationName, o.Address1 AS Address1, o.Address2 AS Address2, c.CityName AS CityName,s.StateName AS StateName,cy.CountryName AS CountryName,o.ZipCode AS ZipCode,o.OrgImage AS OrgImage from organization o join city c on ((o.CityID = c.CityId)) join state s on ((o.StateId = s.StateId)) join country cy on ((o.CountryID = cy.CountryID)) "
+						"select o.OrganizationId,o.organizationName, o.Address1 AS Address1, o.Address2 AS Address2, c.CityName AS CityName,c.CityId AS CityId, s.StateName AS StateName, s.StateId AS StateId, cy.CountryName AS CountryName,cy.CountryID AS CountryID, o.ZipCode AS ZipCode,o.OrgImage AS OrgImage from organization o join city c on ((o.CityID = c.CityId)) join state s on ((o.StateId = s.StateId)) join country cy on ((o.CountryID = cy.CountryID)) "
 								+ "WHERE `ValidationKey` IS NOT NULL AND (:organizationName ='All%' or o.organizationName like :organizationName) AND (:zipCode='All%' or o.ZipCode like :zipCode) AND (:city='All%' or c.CityName like :city)",
 						SearchOrganization.class)
 				.setParameter("organizationName", orgname + "%").setParameter("zipCode", zipcode + "%")
@@ -298,6 +312,9 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 			like.setOrganizationName(organization.getOrganizationName());
 			like.setStateName(organization.getStateName());
 			like.setZipcode(organization.getZipcode());
+			like.setCityId(organization.getCityId());
+			like.setStateId(organization.getStateId());
+			like.setCountryId(organization.getCountryId());
 
 			String orgImg = organization.getOrgImage();
 			String orgImgPath = null;
@@ -375,11 +392,11 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 
 		TypedQuery<SearchOrg> query = (TypedQuery<SearchOrg>) em
 				.createNativeQuery(
-						"select o.OrganizationId,o.organizationName, o.Address1 AS Address1, o.Address2 AS Address2, c.CityName AS CityName,s.StateName AS StateName,cy.CountryName AS CountryName,o.ZipCode AS ZipCode,d.Denomination AS Denomination,o.OrgImage AS OrgImage from organization o join city c on ((o.CityID = c.CityId)) join state s on ((o.StateId = s.StateId)) join country cy on ((o.CountryID = cy.CountryID)) join Denomination d on ((o.DenominationId = d.DenominationID)) "
-								+ "WHERE (:organizationName ='All%' or o.organizationName like :organizationName) AND (:zipCode='All%' or o.ZipCode like :zipCode) AND (:city='All%' or c.CityName like :city) AND (:denomination='All%' or d.Denomination like :denomination) order by o.OrganizationId limit :start,:length",
+						"select o.OrganizationId,o.organizationName, o.Address1 AS Address1, o.Address2 AS Address2, c.CityName AS CityName,c.CityId AS CityId,s.StateName AS StateName,s.StateId AS StateId,cy.CountryName AS CountryName,cy.CountryID AS CountryID,o.ZipCode AS ZipCode,d.Denomination AS Denomination,d.DenominationID AS DenominationID,o.OrgImage AS OrgImage,oi.Phone AS Phone from organization o left outer join city c on ((o.CityID = c.CityId)) left outer join state s on ((o.StateId = s.StateId)) left outer join country cy on ((o.CountryID = cy.CountryID)) left outer join Denomination d on ((o.DenominationId = d.DenominationID)) left outer join OrganizationInfo oi on ((o.OrganizationId = oi.OrganizationId)) "
+								+ "WHERE (:organizationName ='%All%' or o.organizationName like :organizationName) AND (:zipCode='%All%' or o.ZipCode like :zipCode) AND (:city='%All%' or c.CityName like :city) AND (:denomination='%All%' or d.Denomination like :denomination) order by o.OrganizationId limit :start,:length",
 						SearchOrg.class)
-				.setParameter("organizationName", orgname + "%").setParameter("zipCode", zipcode + "%")
-				.setParameter("city", city + "%").setParameter("denomination", denomination + "%")
+				.setParameter("organizationName", "%" + orgname + "%").setParameter("zipCode", "%" + zipcode + "%")
+				.setParameter("city", "%" + city + "%").setParameter("denomination", "%" + denomination + "%")
 				.setParameter("start", limitParameters.getStart()).setParameter("length", limitParameters.getLength());
 
 		List<SearchOrg> results = (List<SearchOrg>) query.getResultList();
@@ -389,10 +406,10 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 		try {
 			Query totalCount = em
 					.createNativeQuery(
-							"select count(*) AS count from organization o join city c on ((o.CityID = c.CityId)) join state s on ((o.StateId = s.StateId)) join country cy on ((o.CountryID = cy.CountryID)) join Denomination d on ((o.DenominationId = d.DenominationID)) "
-									+ "WHERE (:organizationName ='All%' or o.organizationName like :organizationName) AND (:zipCode='All%' or o.ZipCode like :zipCode) AND (:city='All%' or c.CityName like :city) AND (:denomination='All%' or d.Denomination like :denomination)")
-					.setParameter("organizationName", orgname + "%").setParameter("zipCode", zipcode + "%")
-					.setParameter("city", city + "%").setParameter("denomination", denomination + "%");
+							"select count(*) AS count from organization o left outer join city c on ((o.CityID = c.CityId)) left outer join state s on ((o.StateId = s.StateId)) left outer join country cy on ((o.CountryID = cy.CountryID)) left outer join Denomination d on ((o.DenominationId = d.DenominationID)) "
+									+ "WHERE (:organizationName ='%All%' or o.organizationName like :organizationName) AND (:zipCode='%All%' or o.ZipCode like :zipCode) AND (:city='%All%' or c.CityName like :city) AND (:denomination='%All%' or d.Denomination like :denomination)")
+					.setParameter("organizationName", "%" + orgname + "%").setParameter("zipCode", "%" + zipcode + "%")
+					.setParameter("city", "%" + city + "%").setParameter("denomination", "%" + denomination + "%");
 
 			if (totalCount.getSingleResult() != null) {
 				totalOrgCount = (BigInteger) totalCount.getSingleResult();
@@ -404,11 +421,42 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 		System.out.println("total count : " + totalOrgCount);
 
 		List<OrganizationLike> likes = new ArrayList<OrganizationLike>();
+		Set<Country> countries = new HashSet<>();
+		Set<State> states = new HashSet<>();
+		Set<City> cities = new HashSet<>();
+		Set<Denomination> denominations = new HashSet<>();
+
 		String bucketName = s3BucketName + AppConstants.SLASH + orgImageBucketPath;
 
 		for (SearchOrg organization : results) {
 
 			OrganizationLike like = new OrganizationLike();
+			Denomination denominatio = new Denomination();
+			City citi = new City();
+			State state = new State();
+			Country country = new Country();
+
+			if (organization.getCountryId() != null) {
+				country.setCountryId(organization.getCountryId());
+				country.setCountryName(organization.getCountryName());
+			}
+
+			if (organization.getStateId() != null) {
+				state.setStateId(organization.getStateId());
+				state.setStateName(organization.getStateName());
+				state.setCountryId(organization.getCountryId());
+			}
+
+			if (organization.getCityId() != null) {
+				citi.setCityId(organization.getCityId());
+				citi.setCityName(organization.getCityName());
+				citi.setStateId(organization.getStateId());
+			}
+
+			if (organization.getDenominationId() != null) {
+				denominatio.setDenominationId(organization.getDenominationId());
+				denominatio.setDenomination(organization.getDenomination());
+			}
 
 			like.setAddress1(organization.getAddress1());
 			like.setAddress2(organization.getAddress2());
@@ -419,6 +467,11 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 			like.setStateName(organization.getStateName());
 			like.setZipcode(organization.getZipcode());
 			like.setDenomination(organization.getDenomination());
+			like.setCityId(organization.getCityId());
+			like.setStateId(organization.getStateId());
+			like.setCountryId(organization.getCountryId());
+			like.setDenominationId(organization.getDenominationId());
+			like.setPhone(organization.getPhone());
 
 			String orgImg = organization.getOrgImage();
 			String orgImgPath = null;
@@ -479,11 +532,24 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 			like.setSermonCount(sermonCount);
 
 			likes.add(like);
+			denominations.add(denominatio);
+			cities.add(citi);
+			states.add(state);
+			countries.add(country);
 		}
-
+		
+		countries.remove(null);
+		states.remove(null);
+		cities.remove(null);
+		denominations.remove(null);
+		
 		SearchOrganizationResult result = new SearchOrganizationResult();
 		result.setTotalCount(totalOrgCount);
 		result.setResult(likes);
+		result.setCountries(countries);
+		result.setStates(states);
+		result.setCities(cities);
+		result.setDenominations(denominations);
 
 		return result;
 	}

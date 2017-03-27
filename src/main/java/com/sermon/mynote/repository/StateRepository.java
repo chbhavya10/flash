@@ -10,4 +10,6 @@ public interface StateRepository extends PagingAndSortingRepository<State, Integ
 
 	List<State> findStateByCountryId(Integer countryId);
 
+	List<State> findStateByStateName(String stateName);
+
 }

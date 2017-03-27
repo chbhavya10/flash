@@ -1,5 +1,6 @@
 package com.sermon.mynote.web.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -30,7 +31,7 @@ public class StatesController {
 
 	@Autowired
 	private StatesService statesService;
-	
+
 	@Autowired
 	private DenominationService denominationService;
 
@@ -39,7 +40,17 @@ public class StatesController {
 	public List<State> getStates(@RequestBody Country country) {
 		logger.info("Listing States");
 
-		List<State> states = statesService.findStateByCountryId(country.getCountryId());
+		List<State> states = new ArrayList<State>();
+
+		states = statesService.findStateByCountryId(country.getCountryId());
+
+		if (states == null || states.isEmpty()) {
+			List<Country> countries = statesService.findCountryIdByCountryName(country.getCountryName());
+			if (countries.get(0).getCountryId() > 0) {
+				states = statesService.findStateByCountryId(countries.get(0).getCountryId());
+			}
+		}
+
 		return states;
 	}
 
@@ -57,10 +68,18 @@ public class StatesController {
 	public List<City> getCities(@RequestBody State state) {
 		logger.info("Listing Cities");
 
-		List<City> Cities = statesService.findCityByStateId(state.getStateId());
+		List<City> Cities = new ArrayList<>();
+		Cities = statesService.findCityByStateId(state.getStateId());
+
+		if (Cities == null || Cities.isEmpty()) {
+			List<State> states = statesService.findStateIdByStateName(state.getStateName());
+			if (states.get(0).getStateId() > 0) {
+				Cities = statesService.findCityByStateId(states.get(0).getStateId());
+			}
+		}
 		return Cities;
 	}
-	
+
 	@RequestMapping(value = "/getDenominations", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public List<Denomination> getDenominations() {

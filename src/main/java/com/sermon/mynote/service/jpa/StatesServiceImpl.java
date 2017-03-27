@@ -51,4 +51,14 @@ public class StatesServiceImpl implements StatesService {
 		return Lists.newArrayList(cityRepository.findCityByStateId(stateId));
 	}
 
+	@Override
+	public List<Country> findCountryIdByCountryName(String countryName) {
+		return Lists.newArrayList(countryRepository.findCountryIdByCountryName(countryName));
+	}
+
+	@Override
+	public List<State> findStateIdByStateName(String stateName) {
+		return Lists.newArrayList(stateRepository.findStateByStateName(stateName));
+	}
+
 }

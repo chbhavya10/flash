@@ -26,31 +26,34 @@ public class VwOrganizationInfo {
 	private String PrimaryEmail;
 	private String FacebookLink;
 	private String OrgImage;
+	private String Denomination;
 
 	public VwOrganizationInfo() {
 	}
 
 	public VwOrganizationInfo(int organizationId, String organizationName, String address1, String address2, int cityId,
 			String cityName, int stateId, String stateName, int countryID, String countryName, String zipCode,
-			String hours, String generalInfo, String website, String primaryEmail, String facebookLink,
-			String orgImage) {
-		OrganizationId = organizationId;
-		OrganizationName = organizationName;
-		Address1 = address1;
-		Address2 = address2;
-		CityId = cityId;
-		CityName = cityName;
-		StateId = stateId;
-		StateName = stateName;
-		CountryID = countryID;
-		CountryName = countryName;
-		ZipCode = zipCode;
-		Hours = hours;
-		GeneralInfo = generalInfo;
-		Website = website;
-		PrimaryEmail = primaryEmail;
-		FacebookLink = facebookLink;
-		OrgImage = orgImage;
+			String hours, String generalInfo, String website, String primaryEmail, String facebookLink, String orgImage,
+			String Denomination) {
+
+		this.OrganizationId = organizationId;
+		this.OrganizationName = organizationName;
+		this.Address1 = address1;
+		this.Address2 = address2;
+		this.CityId = cityId;
+		this.CityName = cityName;
+		this.StateId = stateId;
+		this.StateName = stateName;
+		this.CountryID = countryID;
+		this.CountryName = countryName;
+		this.ZipCode = zipCode;
+		this.Hours = hours;
+		this.GeneralInfo = generalInfo;
+		this.Website = website;
+		this.PrimaryEmail = primaryEmail;
+		this.FacebookLink = facebookLink;
+		this.OrgImage = orgImage;
+		this.Denomination = Denomination;
 	}
 
 	@Id
@@ -189,6 +192,14 @@ public class VwOrganizationInfo {
 
 	public void setOrgImage(String orgImage) {
 		OrgImage = orgImage;
+	}
+
+	public String getDenomination() {
+		return Denomination;
+	}
+
+	public void setDenomination(String denomination) {
+		Denomination = denomination;
 	}
 
 }

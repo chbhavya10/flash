@@ -14,4 +14,8 @@ public interface StatesService {
 
 	public List<City> findCityByStateId(Integer stateId);
 
+	public List<Country> findCountryIdByCountryName(String countryName);
+
+	public List<State> findStateIdByStateName(String stateName);
+
 }

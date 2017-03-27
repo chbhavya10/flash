@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
@@ -14,8 +15,9 @@ import javax.persistence.Table;
  */
 
 @Entity
+@NamedQueries({
+		@NamedQuery(name = "VwOrganizationNotes.findSermonsByOrgId", query = "SELECT o FROM VwOrganizationNotes o  WHERE o.organizationid = (?1)") })
 
-@NamedQuery(name = "VwOrganizationNotes.findSermonsByOrgId", query = "SELECT o FROM VwOrganizationNotes o  WHERE o.organizationid = (?1)")
 @Table(name = "vw_OrganizationNotes")
 public class VwOrganizationNotes implements java.io.Serializable {
 
@@ -33,6 +35,15 @@ public class VwOrganizationNotes implements java.io.Serializable {
 	private String published;
 	private String subTitle;
 	private String noteImage;
+	private String introduction;
+
+	public String getIntroduction() {
+		return introduction;
+	}
+
+	public void setIntroduction(String introduction) {
+		this.introduction = introduction;
+	}
 
 	public String getNoteImage() {
 		return noteImage;
@@ -69,7 +80,7 @@ public class VwOrganizationNotes implements java.io.Serializable {
 	}
 
 	public VwOrganizationNotes(int noteId, int organizationid, String organizationName, String author, String title,
-			Date eventDate, Time eventTime, String published, String subTitle, String noteImage) {
+			Date eventDate, Time eventTime, String published, String subTitle, String noteImage, String introduction) {
 		this.noteId = noteId;
 		this.organizationid = organizationid;
 		this.organizationName = organizationName;
@@ -80,6 +91,7 @@ public class VwOrganizationNotes implements java.io.Serializable {
 		this.published = published;
 		this.subTitle = subTitle;
 		this.noteImage = noteImage;
+		this.introduction = introduction;
 	}
 
 	@Id

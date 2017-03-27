@@ -21,6 +21,51 @@ public class OrganizationLike implements Serializable {
 	private int sermonCount;
 	private String denomination;
 	private String orgImage;
+	private Integer cityId;
+	private Integer stateId;
+	private Integer countryId;
+	private Integer denominationId;
+	private String phone;
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public Integer getDenominationId() {
+		return denominationId;
+	}
+
+	public void setDenominationId(Integer denominationId) {
+		this.denominationId = denominationId;
+	}
+
+	public Integer getCityId() {
+		return cityId;
+	}
+
+	public void setCityId(Integer cityId) {
+		this.cityId = cityId;
+	}
+
+	public Integer getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Integer stateId) {
+		this.stateId = stateId;
+	}
+
+	public Integer getCountryId() {
+		return countryId;
+	}
+
+	public void setCountryId(Integer countryId) {
+		this.countryId = countryId;
+	}
 
 	public String getOrgImage() {
 		return orgImage;

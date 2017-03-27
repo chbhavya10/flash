@@ -25,12 +25,18 @@ public class SearchOrg implements Serializable {
 	private String zipcode;
 	private String denomination;
 	private String orgImage;
+	private Integer cityId;
+	private Integer stateId;
+	private Integer countryId;
+	private Integer denominationId;
+	private String phone;
 
 	public SearchOrg() {
 	}
 
 	public SearchOrg(Integer organizationId, String organizationName, String address1, String address2, String cityName,
-			String stateName, String countryName, String zipcode, String denomination, String orgImage) {
+			String stateName, String countryName, String zipcode, String denomination, String orgImage, Integer cityId,
+			Integer stateId, Integer countryId, Integer denominationId, String phone) {
 		this.organizationId = organizationId;
 		this.organizationName = organizationName;
 		this.address1 = address1;
@@ -41,6 +47,29 @@ public class SearchOrg implements Serializable {
 		this.zipcode = zipcode;
 		this.denomination = denomination;
 		this.orgImage = orgImage;
+		this.cityId = cityId;
+		this.stateId = stateId;
+		this.countryId = countryId;
+		this.denominationId = denominationId;
+		this.phone = phone;
+	}
+
+	public SearchOrg(Integer organizationId, String organizationName, String address1, String cityName,
+			String stateName, String countryName, String denomination, String orgImage, Integer cityId, Integer stateId,
+			Integer countryId, Integer denominationId, String phone) {
+		this.organizationId = organizationId;
+		this.organizationName = organizationName;
+		this.address1 = address1;
+		this.cityName = cityName;
+		this.stateName = stateName;
+		this.countryName = countryName;
+		this.denomination = denomination;
+		this.orgImage = orgImage;
+		this.cityId = cityId;
+		this.stateId = stateId;
+		this.countryId = countryId;
+		this.denominationId = denominationId;
+		this.phone = phone;
 	}
 
 	@Id
@@ -123,6 +152,46 @@ public class SearchOrg implements Serializable {
 
 	public void setOrgImage(String orgImage) {
 		this.orgImage = orgImage;
+	}
+
+	public Integer getCityId() {
+		return cityId;
+	}
+
+	public void setCityId(Integer cityId) {
+		this.cityId = cityId;
+	}
+
+	public Integer getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Integer stateId) {
+		this.stateId = stateId;
+	}
+
+	public Integer getCountryId() {
+		return countryId;
+	}
+
+	public void setCountryId(Integer countryId) {
+		this.countryId = countryId;
+	}
+
+	public Integer getDenominationId() {
+		return denominationId;
+	}
+
+	public void setDenominationId(Integer denominationId) {
+		this.denominationId = denominationId;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.sermon.mynote.web.controller;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -26,7 +27,7 @@ public class VwOrganizationNotesController {
 	@RequestMapping(value = "/organization/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public List<VwOrganizationNotes> getChurchesByOrganization(@PathVariable int id) {
-		logger.info("Listing getChurchesByOrganization");
+		logger.info("Listing getNotesByOrganization");
 
 		List<VwOrganizationNotes> vwOrganizationNotes = vwOrganizationNotesService.findSermonsByOrgId(id);
 		return vwOrganizationNotes;
@@ -38,6 +39,22 @@ public class VwOrganizationNotesController {
 		logger.info("Listing getAllNoteSermons()");
 
 		List<VwOrganizationNotes> vwOrganizationNotes = vwOrganizationNotesService.findAll();
+		return vwOrganizationNotes;
+	}
+
+	@RequestMapping(value = "/org/{id}", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public List<VwOrganizationNotes> getNotesByOrganization(@PathVariable int id) {
+		logger.info("Listing getPublishedNotesByOrganization");
+
+		List<VwOrganizationNotes> vwOrganizationNotes = vwOrganizationNotesService.findSermonsByOrgId(id);
+
+		for (Iterator<VwOrganizationNotes> iterator = vwOrganizationNotes.iterator(); iterator.hasNext();) {
+			VwOrganizationNotes notes = iterator.next();
+			if (!notes.getPublished().equals("Y")) {
+				iterator.remove();
+			}
+		}
 		return vwOrganizationNotes;
 	}
 }
