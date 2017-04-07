@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sermon.mynote.domain.ChangePassword;
+import com.sermon.mynote.domain.LoginSuccess;
 import com.sermon.mynote.domain.OrgValidation;
 import com.sermon.mynote.domain.OrganizationAuthors;
 import com.sermon.mynote.domain.OrganizationGroup;
@@ -311,6 +312,15 @@ public class UserController {
 		OrganizationId result = userService.getOrganizationId(userId);
 
 		return result;
+	}
+	
+	@RequestMapping(value = "/authenticateUser/{username}/{password}", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public LoginSuccess authenticateUser(@PathVariable String username, @PathVariable String password) {
+		logger.info("Validating user");
+
+		return userService.authenticateUser(username, password);
+
 	}
 
 }

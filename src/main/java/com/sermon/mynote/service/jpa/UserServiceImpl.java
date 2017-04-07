@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
 import com.sermon.mynote.components.EmailService;
+import com.sermon.mynote.domain.LoginSuccess;
 import com.sermon.mynote.domain.OrgValidation;
 import com.sermon.mynote.domain.OrganizationGroup;
 import com.sermon.mynote.domain.OrganizationId;
@@ -441,6 +442,46 @@ public class UserServiceImpl implements UserService {
 		}
 
 		return id;
+	}
+
+	@Override
+	public LoginSuccess authenticateUser(String username, String password) {
+		String encryptPassword = AppUtil.sha256(password);
+		LoginSuccess loginSuccess = new LoginSuccess();
+		Integer userId = null;
+		Integer roleId = null;
+		try {
+			Query query = em
+					.createNativeQuery(
+							"select userid returnvalue from user where username=:username and userpassword=:password")
+					.setParameter("username", username).setParameter("password", encryptPassword);
+			System.out.println(query);
+			query.setParameter("username", username);
+
+			if (query.getSingleResult() != null) {
+				userId = (Integer) query.getSingleResult();
+				loginSuccess.setUserId(userId);
+			}
+		} catch (NoResultException e) {
+
+		}
+		try {
+			Query query = em
+					.createNativeQuery(
+							"select UserRoleId returnvalue from user where username=:username and userpassword=:password")
+					.setParameter("username", username).setParameter("password", encryptPassword);
+			System.out.println(query);
+			query.setParameter("username", username);
+
+			if (query.getSingleResult() != null) {
+				roleId = (Integer) query.getSingleResult();
+				loginSuccess.setRoleId(roleId);
+			}
+		} catch (NoResultException e) {
+
+		}
+		return loginSuccess;
+
 	}
 
 }
