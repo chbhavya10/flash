@@ -1,5 +1,6 @@
 package com.sermon.mynote.web.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sermon.mynote.domain.User;
 import com.sermon.mynote.domain.VwUserprofile;
+import com.sermon.mynote.service.UserService;
 import com.sermon.mynote.service.VwUserprofileService;
 
 @RequestMapping("/findUserProfile")
@@ -27,12 +30,28 @@ public class VwUserProfileController {
 	@Autowired
 	private VwUserprofileService vwUserProfileService;
 
+	@Autowired
+	private UserService userService;
+
 	@RequestMapping(value = "/searchByUserId/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public List<VwUserprofile> getUserProfileByUserId(@PathVariable int id) {
 		logger.info("Listing contacts");
 
-		List<VwUserprofile> vwUserprofile = vwUserProfileService.findUserProfileByUserId(id);
+		List<VwUserprofile> vwUserprofile = new ArrayList<>();
+		vwUserprofile = vwUserProfileService.findUserProfileByUserId(id);
+
+		if (vwUserprofile == null || vwUserprofile.isEmpty()) {
+			User user = userService.findById(id);
+
+			VwUserprofile profile = new VwUserprofile();
+			profile.setUserEmail(user.getUserEmail());
+			profile.setUserName(user.getUserName());
+			profile.setUserPhone(user.getUserMobile());
+			profile.setUserId(user.getUserId());
+
+			vwUserprofile.add(profile);
+		}
 		return vwUserprofile;
 	}
 
