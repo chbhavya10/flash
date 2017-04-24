@@ -27,6 +27,8 @@ public class VwOrganizationInfo {
 	private String FacebookLink;
 	private String OrgImage;
 	private String Denomination;
+	private String Pastor1Bio;
+	private String Pastor2Bio;
 
 	public VwOrganizationInfo() {
 	}
@@ -34,7 +36,7 @@ public class VwOrganizationInfo {
 	public VwOrganizationInfo(int organizationId, String organizationName, String address1, String address2, int cityId,
 			String cityName, int stateId, String stateName, int countryID, String countryName, String zipCode,
 			String hours, String generalInfo, String website, String primaryEmail, String facebookLink, String orgImage,
-			String Denomination) {
+			String Denomination, String Pastor1Bio, String Pastor2Bio) {
 
 		this.OrganizationId = organizationId;
 		this.OrganizationName = organizationName;
@@ -54,6 +56,8 @@ public class VwOrganizationInfo {
 		this.FacebookLink = facebookLink;
 		this.OrgImage = orgImage;
 		this.Denomination = Denomination;
+		this.Pastor1Bio = Pastor1Bio;
+		this.Pastor2Bio = Pastor2Bio;
 	}
 
 	@Id
@@ -200,6 +204,22 @@ public class VwOrganizationInfo {
 
 	public void setDenomination(String denomination) {
 		Denomination = denomination;
+	}
+
+	public String getPastor1Bio() {
+		return Pastor1Bio;
+	}
+
+	public void setPastor1Bio(String pastor1Bio) {
+		Pastor1Bio = pastor1Bio;
+	}
+
+	public String getPastor2Bio() {
+		return Pastor2Bio;
+	}
+
+	public void setPastor2Bio(String pastor2Bio) {
+		Pastor2Bio = pastor2Bio;
 	}
 
 }
