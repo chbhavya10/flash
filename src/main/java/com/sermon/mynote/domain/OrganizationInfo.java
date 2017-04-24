@@ -18,7 +18,9 @@ import javax.persistence.Table;
 		@StoredProcedureParameter(mode = ParameterMode.IN, name = "primaryEmail", type = String.class),
 		@StoredProcedureParameter(mode = ParameterMode.IN, name = "generalInfo", type = String.class),
 		@StoredProcedureParameter(mode = ParameterMode.IN, name = "hours", type = String.class),
-		@StoredProcedureParameter(mode = ParameterMode.IN, name = "facebookLink", type = String.class) })
+		@StoredProcedureParameter(mode = ParameterMode.IN, name = "facebookLink", type = String.class),
+		@StoredProcedureParameter(mode = ParameterMode.IN, name = "pastor1Bio", type = String.class),
+		@StoredProcedureParameter(mode = ParameterMode.IN, name = "pastor2Bio", type = String.class) })
 
 @Table(name = "OrganizationInfo")
 public class OrganizationInfo {
@@ -34,13 +36,15 @@ public class OrganizationInfo {
 	private String longitude;
 	private String hours;
 	private String facebookLink;
+	private String pastor1Bio;
+	private String pastor2Bio;
 
 	public OrganizationInfo() {
 	}
 
 	public OrganizationInfo(int organizationId, String website, String phone, String primaryEmail,
 			String secondaryEmail, String generalInfo, String latitude, String longitude, String hours,
-			String facebookLink) {
+			String facebookLink, String pastor1Bio, String pastor2Bio) {
 		this.organizationId = organizationId;
 		this.website = website;
 		this.phone = phone;
@@ -51,6 +55,8 @@ public class OrganizationInfo {
 		this.longitude = longitude;
 		this.hours = hours;
 		this.facebookLink = facebookLink;
+		this.pastor1Bio = pastor1Bio;
+		this.pastor2Bio = pastor2Bio;
 	}
 
 	@Id
@@ -142,6 +148,22 @@ public class OrganizationInfo {
 
 	public void setFacebookLink(String facebookLink) {
 		this.facebookLink = facebookLink;
+	}
+
+	public String getPastor1Bio() {
+		return pastor1Bio;
+	}
+
+	public void setPastor1Bio(String pastor1Bio) {
+		this.pastor1Bio = pastor1Bio;
+	}
+
+	public String getPastor2Bio() {
+		return pastor2Bio;
+	}
+
+	public void setPastor2Bio(String pastor2Bio) {
+		this.pastor2Bio = pastor2Bio;
 	}
 
 }

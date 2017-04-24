@@ -98,13 +98,14 @@ public class VwOrganizationInfoServiceImpl implements VwOrganizationInfoService 
 
 	@Override
 	public int updateOrgInfo(int organizationId, String website, String primaryEmail, String generalInfo, String hours,
-			String facebookLink) {
+			String facebookLink, String pastor1Bio, String pastor2Bio) {
 
 		StoredProcedureQuery proc = em.createNamedStoredProcedureQuery("OrganizationInfo.update_orgInfo");
 
 		proc.setParameter("organizationId", organizationId).setParameter("website", website)
 				.setParameter("primaryEmail", primaryEmail).setParameter("generalInfo", generalInfo)
-				.setParameter("hours", hours).setParameter("facebookLink", facebookLink);
+				.setParameter("hours", hours).setParameter("facebookLink", facebookLink)
+				.setParameter("pastor1Bio", pastor1Bio).setParameter("pastor2Bio", pastor2Bio);
 
 		int result = proc.executeUpdate();
 

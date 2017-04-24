@@ -11,7 +11,7 @@ public interface VwOrganizationInfoService {
 	List<VwOrganizationInfo> findOrganizationInfoByOrgId(int orgId);
 
 	int updateOrgInfo(int organizationId, String website, String primaryEmail, String generalInfo, String hours,
-			String facebookLink);
+			String facebookLink, String pastor1Bio, String pastor2Bio);
 
 	String getOrgImage(int orgId);
 

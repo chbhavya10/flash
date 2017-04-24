@@ -60,7 +60,8 @@ public class VwOrganizationInfoController {
 	public StatusResponse updateOrgInfo(@RequestBody VwOrganizationInfo orgInfo) {
 
 		int result = vwOrganizationInfoService.updateOrgInfo(orgInfo.getOrganizationId(), orgInfo.getWebsite(),
-				orgInfo.getPrimaryEmail(), orgInfo.getGeneralInfo(), orgInfo.getHours(), orgInfo.getFacebookLink());
+				orgInfo.getPrimaryEmail(), orgInfo.getGeneralInfo(), orgInfo.getHours(), orgInfo.getFacebookLink(),
+				orgInfo.getPastor1Bio(), orgInfo.getPastor2Bio());
 
 		organizationService.updateOrganization(orgInfo.getOrganizationId(), orgInfo.getAddress1(),
 				orgInfo.getAddress2(), orgInfo.getCityId(), orgInfo.getStateId(), orgInfo.getCountryID(),
