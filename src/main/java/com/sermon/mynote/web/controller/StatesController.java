@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sermon.mynote.domain.City;
 import com.sermon.mynote.domain.Country;
 import com.sermon.mynote.domain.Denomination;
+import com.sermon.mynote.domain.EventType;
 import com.sermon.mynote.domain.State;
 import com.sermon.mynote.service.DenominationService;
+import com.sermon.mynote.service.EventTypeService;
 import com.sermon.mynote.service.StatesService;
 
 @RequestMapping("/countries")
@@ -34,6 +36,9 @@ public class StatesController {
 
 	@Autowired
 	private DenominationService denominationService;
+
+	@Autowired
+	private EventTypeService eventTypeService;
 
 	@RequestMapping(value = "/getStates", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
@@ -83,10 +88,19 @@ public class StatesController {
 	@RequestMapping(value = "/getDenominations", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public List<Denomination> getDenominations() {
-		logger.info("Listing Countries");
+		logger.info("Listing Denominations");
 
 		List<Denomination> denominations = denominationService.findAll();
 		return denominations;
+	}
+
+	@RequestMapping(value = "/getEventTypes", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public List<EventType> getEventTypes() {
+		logger.info("Listing Event types");
+
+		List<EventType> eventTypes = eventTypeService.findAll();
+		return eventTypes;
 	}
 
 }
