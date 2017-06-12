@@ -28,6 +28,9 @@ public class AppConstants {
 
 	public static final String NOTES_FOLDER = "sermons";
 
+	public static final String EVENTS_FOLDER = "events";
+
+	
 	public static final String NAME_PARM = "name";
 
 	public static final String NOTEID = "noteId";

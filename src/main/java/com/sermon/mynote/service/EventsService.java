@@ -27,8 +27,12 @@ public interface EventsService {
 	Event save(Event event);
 	
 	String getEventImage(int noteId);
-	
+		
+	Upload upLoadNoteFiles(InputStream inputStream, String imgName, String imgToDelete, int noteId);
+
 	StatusResponse deleteEvent(int eventId);
+	
+
 
 
 

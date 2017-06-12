@@ -1,25 +1,39 @@
 package com.sermon.mynote.web.controller;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.util.Iterator;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.amazonaws.services.s3.transfer.Upload;
 import com.sermon.mynote.domain.Event;
 import com.sermon.mynote.domain.EventDetails;
 import com.sermon.mynote.domain.EventInput;
 import com.sermon.mynote.domain.EventType;
+import com.sermon.mynote.domain.StatusMsg;
 import com.sermon.mynote.domain.StatusResponse;
 import com.sermon.mynote.service.EventsService;
+import com.sermon.util.AppConstants;
 
 @RequestMapping("/event")
 @Controller
@@ -83,7 +97,7 @@ public class EventControlller {
 	/* update */
 	@RequestMapping(value = "/updateEvent", method = RequestMethod.POST, produces = "application/json", consumes="application/json")
 	@ResponseBody
-	public StatusResponse updateNote(@RequestBody Event event) {
+	public StatusResponse updateEvent(@RequestBody Event event) {
 
 		Event eventTemp = new Event();
 		/*
@@ -142,6 +156,59 @@ public class EventControlller {
 		
 		return eventService.deleteEvent(eventInput.getEventId());
 	}
+	
+	
+	@RequestMapping(value = "/UploadImage/{eventId}", method = RequestMethod.POST)
+	@ResponseBody
+	public StatusMsg continueFileUpload(@PathVariable int eventId, HttpServletRequest request,
+			HttpServletResponse response) {
+		MultipartHttpServletRequest mRequest;
+		MultipartFile mFile = null;
+		StatusMsg statusMsg = new StatusMsg();
+		String imgName = null;
+		logger.info("noteId : " + eventId);
+		try {
+			mRequest = (MultipartHttpServletRequest) request;
+			mRequest.getParameterMap();
+
+			Iterator<String> itr = mRequest.getFileNames();
+			while (itr.hasNext()) {
+				mFile = mRequest.getFile(itr.next());
+				imgName = mFile.getOriginalFilename();
+				logger.info("filename : " + imgName + " size : " + mFile.getSize());
+			}
+
+			String existingNoteImgName = eventService.getEventImage(eventId);
+			String imgToDelete = null;
+			if (existingNoteImgName != null) {
+				imgToDelete = existingNoteImgName;
+			}
+
+			// convert image to jpg
+			BufferedImage image = ImageIO.read(mFile.getInputStream());
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(image, "jpg", baos);
+			InputStream fis = new ByteArrayInputStream(baos.toByteArray());
+
+			String temp = imgName.substring(0, imgName.lastIndexOf('.'));
+			String imageName = temp + ".jpg";
+
+			Upload myUpload = eventService.upLoadNoteFiles(fis, imageName, imgToDelete, eventId);
+
+			myUpload.waitForCompletion();
+			if (myUpload.isDone())
+				eventService.saveImage(eventId, imageName);
+
+			statusMsg.setStatus(AppConstants.FILES_UPLOAD);
+			return statusMsg;
+		} catch (Exception e) {
+			e.printStackTrace();
+			statusMsg.setStatus(AppConstants.ERROR_INTERNAL);
+			return statusMsg;
+		}
+	}
+	
+	
 	
 	
 	
