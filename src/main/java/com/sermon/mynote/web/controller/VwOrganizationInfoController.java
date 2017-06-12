@@ -29,6 +29,7 @@ import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.services.s3.transfer.Upload;
 import com.sermon.mynote.domain.StatusMsg;
 import com.sermon.mynote.domain.StatusResponse;
+import com.sermon.mynote.domain.VwOrgInfo;
 import com.sermon.mynote.domain.VwOrganizationInfo;
 import com.sermon.mynote.service.OrganizationService;
 import com.sermon.mynote.service.VwOrganizationInfoService;
@@ -48,10 +49,19 @@ public class VwOrganizationInfoController {
 
 	@RequestMapping(value = "/searchByOrgId/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public List<VwOrganizationInfo> getOrganizationInfoByOrgId(@PathVariable int id) {
+	public List<VwOrgInfo> getOrganizationInfoByOrgId(@PathVariable int id) {
 		logger.info("Listing contacts");
 
-		List<VwOrganizationInfo> vwOrgInfo = vwOrganizationInfoService.findOrganizationInfoByOrgId(id);
+		List<VwOrgInfo> vwOrgInfo = vwOrganizationInfoService.findOrganizationInfoByOrgId(id);
+		
+		  for(int i =0 ; i < vwOrgInfo.size() ; i++){
+	          
+			    vwOrgInfo.get(i).setLikeCount(vwOrganizationInfoService.getLikeCount(id));
+			    vwOrgInfo.get(i).setDownloadCount(vwOrganizationInfoService.getDownloadCount(id));
+			    vwOrgInfo.get(i).setSermonCount(vwOrganizationInfoService.getSermonCount(id));
+
+			  }
+		  
 		return vwOrgInfo;
 	}
 
@@ -73,6 +83,8 @@ public class VwOrganizationInfoController {
 		} else {
 			status.setStatus(false);
 		}
+		
+		
 
 		return status;
 	}

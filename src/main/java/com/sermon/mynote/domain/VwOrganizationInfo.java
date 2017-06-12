@@ -29,6 +29,7 @@ public class VwOrganizationInfo {
 	private String Denomination;
 	private String Pastor1Bio;
 	private String Pastor2Bio;
+	 private String Phone;
 
 	public VwOrganizationInfo() {
 	}
@@ -58,6 +59,16 @@ public class VwOrganizationInfo {
 		this.Denomination = Denomination;
 		this.Pastor1Bio = Pastor1Bio;
 		this.Pastor2Bio = Pastor2Bio;
+	}
+
+	
+	
+	public String getPhone() {
+		return Phone;
+	}
+
+	public void setPhone(String phone) {
+		Phone = phone;
 	}
 
 	@Id

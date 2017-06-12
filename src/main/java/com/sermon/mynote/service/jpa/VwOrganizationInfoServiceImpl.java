@@ -3,7 +3,9 @@ package com.sermon.mynote.service.jpa;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
+import java.math.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -33,6 +35,7 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.Upload;
 import com.amazonaws.util.IOUtils;
+import com.sermon.mynote.domain.VwOrgInfo;
 import com.sermon.mynote.domain.VwOrganizationInfo;
 import com.sermon.mynote.service.NoteService;
 import com.sermon.mynote.service.VwOrganizationInfoService;
@@ -65,7 +68,7 @@ public class VwOrganizationInfoServiceImpl implements VwOrganizationInfoService 
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<VwOrganizationInfo> findOrganizationInfoByOrgId(int orgId) {
+	public List<VwOrgInfo> findOrganizationInfoByOrgId(int orgId) {
 
 		@SuppressWarnings("unchecked")
 		TypedQuery<VwOrganizationInfo> query = (TypedQuery<VwOrganizationInfo>) em.createNativeQuery(
@@ -75,6 +78,7 @@ public class VwOrganizationInfoServiceImpl implements VwOrganizationInfoService 
 		System.out.println(query.toString());
 
 		List<VwOrganizationInfo> results = (List<VwOrganizationInfo>) query.getResultList();
+		 List<VwOrgInfo> vwOrgInfos = new ArrayList<VwOrgInfo>();
 
 		for (VwOrganizationInfo info : results) {
 
@@ -92,8 +96,37 @@ public class VwOrganizationInfoServiceImpl implements VwOrganizationInfoService 
 				orgImgPath = noteService.generatePreSignedURL(bucketName, s3Obj);
 				info.setOrgImage(orgImgPath);
 			}
+			
+			   
+		    VwOrgInfo orgInfo = new VwOrgInfo();
+
+		    orgInfo.setAddress1(info.getAddress1());
+		    orgInfo.setAddress2(info.getAddress2());
+		    orgInfo.setCityId(info.getCityId());
+		    orgInfo.setCityName(info.getCityName());
+		    orgInfo.setCountryID(info.getCountryID());
+		    orgInfo.setCountryName(info.getCountryName());
+		    orgInfo.setDenomination(info.getDenomination());
+		    orgInfo.setFacebookLink(info.getFacebookLink());
+		    orgInfo.setGeneralInfo(info.getGeneralInfo());
+		    orgInfo.setHours(info.getHours());
+		    orgInfo.setOrganizationId(info.getOrganizationId());
+		    orgInfo.setOrganizationName(info.getOrganizationName());
+		    orgInfo.setOrgImage(info.getOrgImage());
+		    orgInfo.setPastor1Bio(info.getPastor1Bio());
+		    orgInfo.setPastor2Bio(info.getPastor2Bio());
+		    orgInfo.setPhone(info.getPhone());
+		    orgInfo.setPrimaryEmail(info.getPrimaryEmail());
+		    orgInfo.setStateId(info.getStateId());
+		    orgInfo.setStateName(info.getStateName());
+		    orgInfo.setWebsite(info.getWebsite());
+		    orgInfo.setZipCode(info.getZipCode());
+
+		    vwOrgInfos.add(orgInfo);
+		 
+		    
 		}
-		return results;
+		return vwOrgInfos;
 	}
 
 	@Override
@@ -264,4 +297,62 @@ public class VwOrganizationInfoServiceImpl implements VwOrganizationInfoService 
 		}
 		return s3IStream;
 	}
+	
+	 @Override
+	 public int getLikeCount(int orgId) {
+	  Integer likeCount = 0;
+	  try {
+	   Query likeQuery = em
+	     .createNativeQuery(
+	       "SELECT COUNT(*) AS likedSermons FROM `note` n, `NoteLike` nl WHERE n.`NoteId`=nl.`NoteId` AND n.`OrganizationId`=:organizationId AND `LikeCount`=1")
+	     .setParameter("organizationId", orgId);
+
+	   if (likeQuery.getSingleResult() != null) {
+	    likeCount = ((BigInteger) likeQuery.getSingleResult()).intValue();
+	   }
+	  } catch (NoResultException e) {
+
+	  }
+	  return likeCount;  
+	 }
+
+
+	 @Override
+	 public int getDownloadCount(int orgId) {
+	  Integer downloadCount = 0;
+	  try {
+	   Query downloadQuery = em
+	     .createNativeQuery(
+	       "SELECT COUNT(*) AS downloadedSermons FROM `note` n,`NoteDownload` nd WHERE n.`NoteId`=nd.`NoteId` AND n.`OrganizationId`=:organizationId")
+	     .setParameter("organizationId", orgId);
+
+	   if (downloadQuery.getSingleResult() != null) {
+	    downloadCount = ((BigInteger) downloadQuery.getSingleResult()).intValue();
+	   }
+	  } catch (NoResultException e) {
+
+	  }
+	  return downloadCount;
+	 }
+
+
+	 @Override
+	 public int getSermonCount(int orgId) {
+	  Integer sermonCount = 0;
+	  try {
+	   Query sermonQuery = em
+	     .createNativeQuery(
+	       "SELECT COUNT(*) AS sermonCount FROM `note` WHERE `OrganizationId`=:organizationId AND `Published`='Y'")
+	     .setParameter("organizationId", orgId);
+
+	   if (sermonQuery.getSingleResult() != null) {
+	    sermonCount = ((BigInteger) sermonQuery.getSingleResult()).intValue();
+	   }
+	  } catch (NoResultException e) {
+
+	  }
+	  return sermonCount;  
+
+	 }
+	 
 }
