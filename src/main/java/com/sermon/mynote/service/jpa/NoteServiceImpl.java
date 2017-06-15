@@ -401,6 +401,65 @@ public class NoteServiceImpl implements NoteService {
 		}
 		return upload;
 	}
+	
+	@Override
+	public Upload upLoadEventFiles(InputStream inputStream, String imgName, String imgToDelete, int eventId) {
+		Upload upload = null;
+
+		try {
+
+			AWSCredentials credentials = new BasicAWSCredentials(awsAccessKeyId, awsAccessSecretKey);
+			AmazonS3 s3client = new AmazonS3Client(credentials);
+
+			TransferManager manager = new TransferManager(credentials);
+			ObjectMetadata meta = new ObjectMetadata();
+
+			byte[] resultByte = IOUtils.toByteArray(inputStream);
+			ByteArrayInputStream bis = new ByteArrayInputStream(resultByte);
+			meta.setContentLength(resultByte.length);
+			meta.setContentType(bis.toString());
+
+			logger.info("length: {}", resultByte.length);
+			String filePath = AppConstants.EVENTS_FOLDER + AppConstants.SLASH + eventId + AppConstants.SLASH + imgName;
+			s3client.deleteObject(s3BucketName,
+					AppConstants.EVENTS_FOLDER + AppConstants.SLASH + eventId + AppConstants.SLASH + imgToDelete);
+
+			upload = manager.upload(s3BucketName, filePath, bis, meta);
+			s3client.setObjectAcl(s3BucketName, filePath, CannedAccessControlList.Private);
+
+			if (upload.isDone() == false) {
+				logger.info("Transfer: {}", upload.getDescription());
+				logger.info("  - State: {}", upload.getState());
+				logger.info("  - Transfer progress percentage: {}",
+						upload.getProgress().getTotalBytesToTransfer() + "%");
+				logger.info("  - Bytes Transfered: {}", upload.getProgress().getBytesTransferred());
+				Thread.sleep(200);
+			}
+			upload.waitForCompletion();
+			manager.shutdownNow();
+
+		} catch (AmazonServiceException ase) {
+			logger.error("Caught an AmazonServiceException, which " + "means your request made it "
+					+ "to Amazon S3, but was rejected with an error response" + " for some reason.");
+			logger.error("Error Message:    {}", ase.getMessage());
+			logger.error("HTTP Status Code: {}", ase.getStatusCode());
+			logger.error("AWS Error Code:   {}", ase.getErrorCode());
+			logger.error("Error Type:       {}", ase.getErrorType());
+			logger.error("Request ID:       {}", ase.getRequestId());
+		} catch (AmazonClientException ace) {
+			logger.error("Caught an AmazonClientException, which " + "means the client encountered "
+					+ "an internal error while trying to " + "communicate with S3, "
+					+ "such as not being able to access the network.");
+			logger.error("Error Message: {}", ace.getMessage());
+		} catch (IOException e) {
+			logger.error("Error {}", e.getMessage());
+		} catch (InterruptedException e) {
+			logger.error("Error {}", e.getMessage());
+		}
+		return upload;
+	}
+
+	
 
 	@Override
 	public String getNoteImage(int noteId) {
@@ -418,6 +477,24 @@ public class NoteServiceImpl implements NoteService {
 		}
 		return noteImage;
 	}
+	
+	@Override
+	public String getEventImage(int eventId) {
+		String noteImage = null;
+
+		try {
+			Query query = em.createNativeQuery("select EventImage from Event where EventId=:EventId")
+					.setParameter("EventId", eventId);
+
+			if (query.getSingleResult() != null) {
+				noteImage = (String) query.getSingleResult();
+			}
+		} catch (NoResultException e) {
+
+		}
+		return noteImage;
+	}
+	
 
 	@Override
 	public int saveImage(int noteId, String docName) {
@@ -434,6 +511,22 @@ public class NoteServiceImpl implements NoteService {
 		return 0;
 
 	}
+	
+	@Override
+	public int saveEventImage(int eventId, String docName) {
+		try {
+			Query query = em.createNativeQuery("update Event set EventImage=:EventImage where EventId=:EventId")
+					.setParameter("EventImage", docName).setParameter("EventId", eventId);
+			int result = query.executeUpdate();
+			return result;
+
+		} catch (NoResultException e) {
+
+		}
+		return 0;
+
+	}
+	
 
 	@Override
 	public String generatePreSignedURL(String bucketName, String objectKey) {

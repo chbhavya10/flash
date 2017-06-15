@@ -40,6 +40,7 @@ public class Event implements Serializable {
 	String ModifiedDate;
 	String startTime;
 	String endTime;
+	
 
 	/**
 	 * @return the startTime

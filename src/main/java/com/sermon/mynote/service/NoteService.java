@@ -31,10 +31,18 @@ public interface NoteService {
 	public int updatePublish(PublishSchedule publishSchedule);
 
 	public Upload upLoadNoteFiles(InputStream inputStream, String imgName, String imgToDelete, int noteId);
+	
+	public Upload upLoadEventFiles(InputStream inputStream, String imgName, String imgToDelete, int eventId);
 
 	public String getNoteImage(int noteId);
+	
+	public String getEventImage(int eventImage);
+
 
 	public int saveImage(int noteId, String imgName);
+	
+	public int saveEventImage(int noteId, String imgName);
+
 
 	public InputStream getUserDocumentAsStream(int id);
 

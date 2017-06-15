@@ -316,15 +316,15 @@ public class NoteController {
 		return response;
 	}
 
-	@RequestMapping(value = "/UploadImage/{noteId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/UploadImage/{eventId}/{noteId}", method = RequestMethod.POST)
 	@ResponseBody
-	public StatusMsg continueFileUpload(@PathVariable int noteId, HttpServletRequest request,
+	public StatusMsg continueFileUpload(@PathVariable int noteId, @PathVariable int eventId, HttpServletRequest request,
 			HttpServletResponse response) {
 		MultipartHttpServletRequest mRequest;
 		MultipartFile mFile = null;
 		StatusMsg statusMsg = new StatusMsg();
 		String imgName = null;
-		logger.info("noteId : " + noteId);
+		logger.info(eventId + " noteId : " + noteId);
 		try {
 			mRequest = (MultipartHttpServletRequest) request;
 			mRequest.getParameterMap();
@@ -335,8 +335,13 @@ public class NoteController {
 				imgName = mFile.getOriginalFilename();
 				logger.info("filename : " + imgName + " size : " + mFile.getSize());
 			}
+			String existingNoteImgName = null;
+			if (eventId == 0)
+				existingNoteImgName = noteService.getNoteImage(noteId);
+			else
+				existingNoteImgName = noteService.getEventImage(eventId);
 
-			String existingNoteImgName = noteService.getNoteImage(noteId);
+			
 			String imgToDelete = null;
 			if (existingNoteImgName != null) {
 				imgToDelete = existingNoteImgName;
@@ -351,12 +356,23 @@ public class NoteController {
 			String temp = imgName.substring(0, imgName.lastIndexOf('.'));
 			String imageName = temp + ".jpg";
 
-			Upload myUpload = noteService.upLoadNoteFiles(fis, imageName, imgToDelete, noteId);
+			Upload myUpload;
+			if (eventId == 0)
+				myUpload = noteService.upLoadNoteFiles(fis, imageName, imgToDelete, noteId);
+			else 
+				myUpload = noteService.upLoadEventFiles(fis, imageName, imgToDelete, eventId);
+
+			
 
 			myUpload.waitForCompletion();
-			if (myUpload.isDone())
-				noteService.saveImage(noteId, imageName);
+			if (myUpload.isDone()){
+				if (eventId == 0)
+				 noteService.saveImage(noteId, imageName);
+				else
+				 noteService.saveEventImage(eventId, imageName);
 
+			}
+			
 			statusMsg.setStatus(AppConstants.FILES_UPLOAD);
 			return statusMsg;
 		} catch (Exception e) {
@@ -475,12 +491,12 @@ public class NoteController {
 
 		return response;
 	}
-	
+
 	@RequestMapping(value = "/getDefaultNoteImage", method = RequestMethod.GET, produces = "image/jpeg")
 	@ResponseBody
 	public byte[] getNoteImage() throws IOException {
 
-		int id=AppConstants.DEFAULT_ID;
+		int id = AppConstants.DEFAULT_ID;
 		InputStream inputStream = noteService.getUserDocumentAsStream(id);
 
 		byte[] bytes = null;
