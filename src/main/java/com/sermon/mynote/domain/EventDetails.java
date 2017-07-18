@@ -37,6 +37,17 @@ public class EventDetails implements Serializable {
 	String organizationName;
 	String startTime;
 	String endTime;
+	String EventImage;
+	
+	
+
+	public String getEventImage() {
+		return EventImage;
+	}
+
+	public void setEventImage(String eventImage) {
+		EventImage = eventImage;
+	}
 
 	/**
 	 * @return the startTime

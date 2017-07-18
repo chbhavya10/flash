@@ -1,5 +1,7 @@
 package com.sermon.mynote.service.jpa;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sermon.mynote.domain.Organization;
 import com.sermon.mynote.domain.UserProfile;
 import com.sermon.mynote.repository.UserProfileRepository;
 import com.sermon.mynote.service.UserProfileService;
@@ -55,4 +58,5 @@ public class UserProfileServiceImpl implements UserProfileService {
 
 	}
 
+	
 }

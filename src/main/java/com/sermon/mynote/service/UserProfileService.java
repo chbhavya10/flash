@@ -1,5 +1,8 @@
 package com.sermon.mynote.service;
 
+import java.util.List;
+
+import com.sermon.mynote.domain.Organization;
 import com.sermon.mynote.domain.UserProfile;
 
 public interface UserProfileService {
@@ -10,5 +13,6 @@ public interface UserProfileService {
 
 	public int updateUserProfile(Integer userId, String firstName, String lastName, String nickName, String address1,
 			String address2, int cityId, int stateId, int countryId, String zipCode);
+	
 
 }

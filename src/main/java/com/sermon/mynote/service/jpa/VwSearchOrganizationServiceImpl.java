@@ -71,11 +71,23 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 
 		List<OrganizationLike> likes = new ArrayList<OrganizationLike>();
 		String bucketName = s3BucketName + AppConstants.SLASH + orgImageBucketPath;
-
+		Integer eventCount=0;
 		for (SearchOrg organization : results) {
-
 			OrganizationLike like = new OrganizationLike();
 
+			try {
+				Query getEventCount = em.createNativeQuery("SELECT COUNT(*) FROM `organization` WHERE `OrganizationId`="
+						+ organization.getOrganizationId());
+
+				 eventCount = ((BigInteger)getEventCount.getSingleResult()).intValue();
+				// return eventCount;
+
+			} catch (NoResultException e) {
+				e.printStackTrace();
+			}
+			// return 0;
+
+			like.setEventCount(eventCount);
 			like.setAddress1(organization.getAddress1());
 			like.setAddress2(organization.getAddress2());
 			like.setCityName(organization.getCityName());
@@ -145,7 +157,6 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 					sermonCount = ((BigInteger) sermonQuery.getSingleResult()).intValue();
 				}
 			} catch (NoResultException e) {
-
 			}
 			like.setSermonCount(sermonCount);
 
@@ -537,12 +548,12 @@ public class VwSearchOrganizationServiceImpl implements VwSearchOrganizationServ
 			states.add(state);
 			countries.add(country);
 		}
-		
+
 		countries.remove(null);
 		states.remove(null);
 		cities.remove(null);
 		denominations.remove(null);
-		
+
 		SearchOrganizationResult result = new SearchOrganizationResult();
 		result.setTotalCount(totalOrgCount);
 		result.setResult(likes);

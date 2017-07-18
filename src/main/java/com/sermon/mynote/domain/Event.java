@@ -40,7 +40,15 @@ public class Event implements Serializable {
 	String ModifiedDate;
 	String startTime;
 	String endTime;
-	
+	String EventImage;
+
+	public String getEventImage() {
+		return EventImage;
+	}
+
+	public void setEventImage(String eventImage) {
+		EventImage = eventImage;
+	}
 
 	/**
 	 * @return the startTime

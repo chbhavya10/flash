@@ -52,6 +52,11 @@ public class Note implements java.io.Serializable {
 	private String published;
 	private String PreacherName;
 	private String noteImage;
+	
+	
+	public void setNoteId(int noteId) {
+		this.noteId = noteId;
+	}
 
 	public String getNoteImage() {
 		return noteImage;

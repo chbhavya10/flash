@@ -6,6 +6,7 @@ import java.util.List;
 import com.amazonaws.services.s3.transfer.Upload;
 import com.sermon.mynote.domain.AddNote;
 import com.sermon.mynote.domain.Note;
+import com.sermon.mynote.domain.NotePublish;
 import com.sermon.mynote.domain.PublishSchedule;
 
 public interface NoteService {
@@ -18,7 +19,7 @@ public interface NoteService {
 
 	public int delete(Note note);
 
-	public List<Note> findNotesByAuthorId(int id);
+	public List<NotePublish> findNotesByAuthorId(int id);
 
 	public PublishSchedule publishLater(PublishSchedule publishSchedule);
 

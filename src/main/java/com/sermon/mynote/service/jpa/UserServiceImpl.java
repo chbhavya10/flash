@@ -14,6 +14,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.StoredProcedureQuery;
+import javax.persistence.TypedQuery;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
 import com.sermon.mynote.components.EmailService;
+import com.sermon.mynote.domain.Event;
 import com.sermon.mynote.domain.LoginSuccess;
 import com.sermon.mynote.domain.OrgValidation;
+import com.sermon.mynote.domain.Organization;
 import com.sermon.mynote.domain.OrganizationGroup;
 import com.sermon.mynote.domain.OrganizationId;
 import com.sermon.mynote.domain.User;
@@ -482,6 +485,17 @@ public class UserServiceImpl implements UserService {
 		}
 		return loginSuccess;
 
+	}
+
+	@Override
+	public List<Organization> getOrganizationByCityId(int cityId) {
+
+		TypedQuery<Organization> query = (TypedQuery<Organization>) em
+				.createNativeQuery("SELECT * FROM organization WHERE CityId ="+cityId, Organization.class);
+
+		List<Organization> results = (List<Organization>) query.getResultList();
+		
+		return results;
 	}
 
 }

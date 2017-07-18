@@ -34,6 +34,7 @@ import com.sermon.mynote.domain.AddNote;
 import com.sermon.mynote.domain.AddSection;
 import com.sermon.mynote.domain.AddSubSection;
 import com.sermon.mynote.domain.Note;
+import com.sermon.mynote.domain.NotePublish;
 import com.sermon.mynote.domain.PublishSchedule;
 import com.sermon.mynote.domain.StatusMsg;
 import com.sermon.mynote.domain.StatusResponse;
@@ -159,10 +160,10 @@ public class NoteController {
 
 	@RequestMapping(value = "/getNotesListByAuthorId/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public List<Note> getChurchesByOrganization(@PathVariable int id) {
+	public List<NotePublish> getChurchesByOrganization(@PathVariable int id) {
 		logger.info("Listing getListOfNotesForGivenAuthorId");
 
-		List<Note> noteList = noteService.findNotesByAuthorId(id);
+		List<NotePublish> noteList = noteService.findNotesByAuthorId(id);
 		return noteList;
 	}
 

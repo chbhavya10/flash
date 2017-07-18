@@ -18,6 +18,8 @@ public interface EventsService {
 	
 	EventDetails getEventDetails(int eventId);
 	
+	List<Event> getEventsByOrg(int organizationId);
+	
 	List<Event> getEventsList();
 	
 	int saveImage(int eventId, String imgName);

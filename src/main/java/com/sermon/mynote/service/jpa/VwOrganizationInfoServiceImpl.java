@@ -308,6 +308,7 @@ public class VwOrganizationInfoServiceImpl implements VwOrganizationInfoService 
 	     .setParameter("organizationId", orgId);
 
 	   if (likeQuery.getSingleResult() != null) {
+		  
 	    likeCount = ((BigInteger) likeQuery.getSingleResult()).intValue();
 	   }
 	  } catch (NoResultException e) {

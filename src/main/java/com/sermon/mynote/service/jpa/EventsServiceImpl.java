@@ -3,6 +3,7 @@ package com.sermon.mynote.service.jpa;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,11 +23,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
+import com.amazonaws.HttpMethod;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
@@ -39,6 +42,7 @@ import com.sermon.mynote.domain.EventDetails;
 import com.sermon.mynote.domain.EventType;
 import com.sermon.mynote.domain.EventsList;
 import com.sermon.mynote.domain.Organization;
+import com.sermon.mynote.domain.PublishSchedule;
 import com.sermon.mynote.domain.StatusResponse;
 import com.sermon.mynote.repository.EventRepository;
 import com.sermon.mynote.repository.EventTypeRepository;
@@ -63,6 +67,9 @@ public class EventsServiceImpl implements EventsService {
 	@Autowired
 	private EventTypeRepository eventTypeRepository;
 
+	@Value("${note.image.bucket.path}")
+	private String noteImageBucketPath;
+	
 	@Value("${s3.aws.access.key.id}")
 	private String awsAccessKeyId;
 
@@ -95,6 +102,8 @@ public class EventsServiceImpl implements EventsService {
 				EventType.class);
 
 		List<EventType> results = (List<EventType>) query.getResultList();
+		
+	
 
 		return results;
 
@@ -128,6 +137,21 @@ public class EventsServiceImpl implements EventsService {
 			Organization organizationName = (Organization) organizationQuery.getSingleResult();
 			System.out.println(" Organization Name " + organizationName.getOrganizationName());
 
+			String bucketName = s3BucketName + AppConstants.SLASH + noteImageBucketPath;
+			String noteImgPath = null;
+			String eventImage = eventDetails.get(0).getEventImage();
+			if (eventImage != null) {
+				String s3Obj = eventDetails.get(0).getEventId() + AppConstants.SLASH + eventImage;
+				noteImgPath = generatePreSignedURL(bucketName, s3Obj);
+				eventDetailsRes.setEventImage(noteImgPath);
+			} else {
+				/*String s3Obj = AppConstants.DEFAULT_ID + AppConstants.SLASH + AppConstants.DEFAULT_NOTE_IMAGE;
+				noteImgPath = generatePreSignedURL(bucketName, s3Obj);
+				eventDetailsRes.setEventImage(noteImgPath);*/
+				eventDetailsRes.setEventImage(eventDetails.get(0).getEventImage());
+
+			}
+			
 			eventDetailsRes.setAddress1(eventDetails.get(0).getAddress1());
 			eventDetailsRes.setAddress2(eventDetails.get(0).getAddress2());
 			eventDetailsRes.setCityId(eventDetails.get(0).getCityId());
@@ -160,10 +184,43 @@ public class EventsServiceImpl implements EventsService {
 		}
 	}
 
+	
+	public List<Event> getEventsByOrg(int organizationId){
+		
+		TypedQuery<Event> query = (TypedQuery<Event>) em
+				.createNativeQuery("SELECT * FROM `Event` WHERE `OrganizationID`="+organizationId, Event.class);
+
+		List<Event> results = (List<Event>) query.getResultList();
+		
+		
+		return results;
+	}
+	
+	
+	public String generatePreSignedURL(String bucketName, String objectKey) {
+
+		java.util.Date expiration = new java.util.Date();
+		long milliSeconds = expiration.getTime();
+		milliSeconds += AppConstants.EXPIRY_SECONDS;
+		expiration.setTime(milliSeconds);
+
+		GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucketName,
+				objectKey);
+		generatePresignedUrlRequest.setMethod(HttpMethod.GET);
+		generatePresignedUrlRequest.setExpiration(expiration);
+		AmazonS3 ams3 = getAmazonS3Client();
+		ams3.setEndpoint(AppConstants.AMAZON_LINK);
+
+		URL url = ams3.generatePresignedUrl(generatePresignedUrlRequest);
+
+		return url.toString();
+
+	}
+	
 	@Override
 	public List<Event> getEventsList() {
 
-		List<EventsList> eventLists = new ArrayList<EventsList>();
+		//List<EventsList> eventLists = new ArrayList<EventsList>();
 		TypedQuery<Event> query = (TypedQuery<Event>) em
 				.createNativeQuery(" SELECT * FROM Event WHERE  ToDate > NOW() OR ToDate = NOW()", Event.class);
 

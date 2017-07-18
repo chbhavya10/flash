@@ -85,6 +85,17 @@ public class EventControlller {
 		return eventService.getEventDetails(eventInput.getEventId());
 	}
 	
+	
+	@RequestMapping(value = "/getEventDetailsBasedOnOrg/{organizationId}", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public List<Event> getEventDetailsBasedOnOrg(@PathVariable int organizationId) {
+        System.out.println("GET EVENT DETAILS");
+		
+		return eventService.getEventsByOrg(organizationId);
+		//eventService.getEventDetails(eventInput.getEventId());
+	}
+	
+	
 	@RequestMapping(value = "/getEvents", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public List<Event> getEventsList() {
@@ -92,9 +103,6 @@ public class EventControlller {
 		
 		return eventService.getEventsList();
 	}
-	
-	
-
 	
 	
 	/* update */

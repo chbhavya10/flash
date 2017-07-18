@@ -13,6 +13,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.StoredProcedureQuery;
+import javax.persistence.TypedQuery;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -43,6 +44,7 @@ import com.sermon.mynote.domain.AddNote;
 import com.sermon.mynote.domain.AddSection;
 import com.sermon.mynote.domain.AddSubSection;
 import com.sermon.mynote.domain.Note;
+import com.sermon.mynote.domain.NotePublish;
 import com.sermon.mynote.domain.PublishSchedule;
 import com.sermon.mynote.domain.Section;
 import com.sermon.mynote.domain.SubSection;
@@ -131,9 +133,56 @@ public class NoteServiceImpl implements NoteService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<Note> findNotesByAuthorId(int authorId) {
+	public List<NotePublish> findNotesByAuthorId(int authorId) {
+		
+		List<NotePublish> notePublishList = new ArrayList<NotePublish>();
+		
+		List<Note> noteList = Lists.newArrayList(noteRepository.findNotesByAuthorId(authorId));
+		
+		System.out.println("Note List "+noteList.size());
+		for(int i =0;i<noteList.size();i++){
+			TypedQuery<PublishSchedule> publishSchedule = (TypedQuery<PublishSchedule>) em
+					.createNativeQuery("SELECT * FROM PublishSchedule WHERE NoteId ="+noteList.get(i).getNoteId(), PublishSchedule.class);
 
-		return Lists.newArrayList(noteRepository.findNotesByAuthorId(authorId));
+			NotePublish notePublish = new NotePublish();
+			
+			notePublish.setAuthorId(noteList.get(i).getAuthorId());
+			notePublish.setCategoryId(noteList.get(i).getCategoryId());
+			notePublish.setEventDate(noteList.get(i).getEventDate());
+			notePublish.setEventTime(noteList.get(i).getEventTime());
+			notePublish.setGroupId(noteList.get(i).getGroupId());
+			notePublish.setIntroduction(noteList.get(i).getIntroduction());
+			notePublish.setKeywords(noteList.get(i).getKeywords());
+			notePublish.setNoteId(noteList.get(i).getNoteId());
+			notePublish.setNoteImage(noteList.get(i).getNoteImage());
+			notePublish.setOrganizationId(noteList.get(i).getOrganizationId());
+			notePublish.setPreacherName(noteList.get(i).getPreacherName());
+			notePublish.setPublished(noteList.get(i).getPublished());
+			notePublish.setSubTitle(noteList.get(i).getSubTitle());
+			notePublish.setTitle(noteList.get(i).getTitle());
+			
+			try{
+			PublishSchedule organizationName = (PublishSchedule) publishSchedule.getSingleResult();
+			
+		
+			
+			
+			notePublish.setPublishDate(organizationName.getPublishDate().toString());
+			notePublish.setPublishTime(organizationName.getPublishTime().toString());
+			notePublish.setPublishScheduleId(organizationName.getPublishScheduleId());
+			}catch(NoResultException exception){
+				
+			}
+			notePublishList.add(notePublish);
+
+			
+		}
+		
+	
+		
+		
+
+		return notePublishList;
 	}
 
 	@Override

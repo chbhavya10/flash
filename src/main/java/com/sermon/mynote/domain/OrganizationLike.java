@@ -26,6 +26,18 @@ public class OrganizationLike implements Serializable {
 	private Integer countryId;
 	private Integer denominationId;
 	private String phone;
+	private Integer eventCount;
+	
+	
+
+
+	public Integer getEventCount() {
+		return eventCount;
+	}
+
+	public void setEventCount(Integer eventCount) {
+		this.eventCount = eventCount;
+	}
 
 	public String getPhone() {
 		return phone;

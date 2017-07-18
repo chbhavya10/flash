@@ -2,6 +2,7 @@
 package com.sermon.mynote.web.controller;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,9 +20,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sermon.mynote.domain.ChangePassword;
 import com.sermon.mynote.domain.LoginSuccess;
 import com.sermon.mynote.domain.OrgValidation;
+import com.sermon.mynote.domain.Organization;
 import com.sermon.mynote.domain.OrganizationAuthors;
 import com.sermon.mynote.domain.OrganizationGroup;
 import com.sermon.mynote.domain.OrganizationId;
+import com.sermon.mynote.domain.RegisterUserResponse;
 import com.sermon.mynote.domain.ResetPassword;
 import com.sermon.mynote.domain.StatusMsg;
 import com.sermon.mynote.domain.StatusResponse;
@@ -193,12 +196,13 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/registerUser", method = RequestMethod.POST, headers = { "Content-type=application/json" })
-	public @ResponseBody StatusResponse registerUser(@RequestBody UserRegistration user) {
+	public @ResponseBody RegisterUserResponse registerUser(@RequestBody UserRegistration user) {
 
 		System.out.println("user:--" + user.getUserName());
 
 		User newUser = new User();
-
+		List<Organization> organizationsList = new ArrayList<Organization>();
+		
 		newUser.setUserEmail(user.getUserEmail());
 		newUser.setUserName(user.getUserName());
 		newUser.setUserPassword(user.getUserPassword());
@@ -246,12 +250,17 @@ public class UserController {
 			// profile.getDOB(),
 			// profile.getGender()
 			);
+			
+			organizationsList = userService.getOrganizationByCityId(user.getCityId());
+			
 
 		}
 
-		StatusResponse statusResponse = new StatusResponse();
+		RegisterUserResponse statusResponse = new RegisterUserResponse();
 		if (result == 0) {
 			statusResponse.setStatus(true);
+			statusResponse.setOrganizations(organizationsList);
+			System.out.println("Organization Count " + organizationsList.size());
 		} else {
 			statusResponse.setStatus(false);
 		}
