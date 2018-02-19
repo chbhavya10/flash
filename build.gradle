@@ -1,9 +1,23 @@
 apply plugin: 'java'
 apply plugin: 'war'
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+  dependencies {
+    classpath "com.bmuschko:gradle-tomcat-plugin:2.4.2"
+  }
+}
+
+apply plugin: 'com.bmuschko.tomcat'
  
 // Uses JDK 8
 sourceCompatibility = 1.8
-targetCompatibility = 1.8  
+targetCompatibility = 1.8
+
+  
  
 repositories {
     flatDir { dirs "src/main/webapp/WEB-INF/lib" }
@@ -15,6 +29,7 @@ dependencies {
     compile(group: 'org.springframework', name: 'spring-context', version:'4.1.0.RELEASE') {
 exclude(module: 'commons-logging')
     }
+    compile group: 'javax.el', name: 'javax.el-api', version:'2.2.5'
     compile group: 'org.springframework', name: 'spring-webmvc', version:'4.1.0.RELEASE'
     compile group: 'org.aspectj', name: 'aspectjrt', version:'1.6.9'
     compile group: 'org.slf4j', name: 'slf4j-api', version:'1.7.2'
@@ -41,7 +56,8 @@ exclude(module: 'commons-logging')
     compile 'javax.mail:mail:1.4'
     compile 'org.apache.velocity:velocity:1.7'
     compile 'org.springframework:spring-context-support:3.2.0.RELEASE'
-    
+    compile 'com.stripe:stripe-java:5.26.0'
+    compile group: 'org.springframework.security', name: 'spring-security-core', version: '4.0.2.RELEASE'
     compile group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.10.15'
     compile group: 'commons-fileupload', name: 'commons-fileupload', version: '1.2'
      
@@ -55,10 +71,15 @@ exclude(module: 'commons-logging')
     compile group: 'org.springframework.security', name: 'spring-security-config', version:'3.1.0.RELEASE'
     compile group: 'org.springframework.security', name: 'spring-security-taglibs', version:'3.1.0.RELEASE'
     runtime group: 'org.slf4j', name: 'jcl-over-slf4j', version:'1.5.10'
-  
+    runtime("log4j:log4j:1.2.16")
     testCompile group: 'junit', name: 'junit', version:'4.7'
     providedCompile group: 'javax', name: 'javaee-web-api', version:'7.0'
     providedCompile group: 'javax.servlet.jsp', name: 'jsp-api', version:'2.1'
+    
+    def tomcatVersion = '7.0.59'
+    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+           "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}",
+           "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}"
 }
 
  
@@ -72,7 +93,9 @@ war {
 task deploy (dependsOn: war){
 copy {
     from "build/libs"
-     into "C/Program Files/Apache Software Foundation/Tomcat 7.0/webapps"
+     into "/Users/govind/apache-tomcat-7.0.65/webapps"
        include "*.war"
 }
 }
+
+
