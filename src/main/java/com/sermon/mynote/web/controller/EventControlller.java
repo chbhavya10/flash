@@ -31,8 +31,10 @@ import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.services.s3.transfer.Upload;
 import com.sermon.mynote.domain.Event;
 import com.sermon.mynote.domain.EventDetails;
+import com.sermon.mynote.domain.UserFavorateEvents;
 import com.sermon.mynote.domain.EventInput;
 import com.sermon.mynote.domain.EventType;
+import com.sermon.mynote.domain.OrganizationUsers;
 import com.sermon.mynote.domain.StatusMsg;
 import com.sermon.mynote.domain.StatusResponse;
 import com.sermon.mynote.service.EventsService;
@@ -77,6 +79,16 @@ public class EventControlller {
 	}
 	
 	
+	@RequestMapping(value = "/createFavorateEvent", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public Event createFavorateEvent(@RequestBody Event eventInput) {
+
+		
+		return eventService.createEvent(eventInput);
+	}
+	
+
+	
 	@RequestMapping(value = "/getEventDetails", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public EventDetails getEventDetails(@RequestBody EventInput eventInput) {
@@ -89,19 +101,18 @@ public class EventControlller {
 	@RequestMapping(value = "/getEventDetailsBasedOnOrg/{organizationId}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public List<Event> getEventDetailsBasedOnOrg(@PathVariable int organizationId) {
-        System.out.println("GET EVENT DETAILS");
 		
 		return eventService.getEventsByOrg(organizationId);
 		//eventService.getEventDetails(eventInput.getEventId());
 	}
 	
 	
-	@RequestMapping(value = "/getEvents", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/getEvents/{userId}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public List<Event> getEventsList() {
+	public List<EventDetails> getEventsList(@PathVariable int userId) {
         System.out.println("GET EVENT DETAILS");
 		
-		return eventService.getEventsList();
+		return eventService.getEventsList(userId);
 	}
 	
 	
@@ -117,8 +128,6 @@ public class EventControlller {
 		 * Timestamp(date.getTime()));
 		 */
 
-		eventTemp = eventService.findById(event.getEventId());
-		
 		eventTemp.setAddress1(event.getAddress1());
 		eventTemp.setAddress2(event.getAddress2());
 		eventTemp.setCityId(event.getCityId());
@@ -159,7 +168,8 @@ public class EventControlller {
 		return response;
 
 	}
-
+	
+	
 	
 	@RequestMapping(value = "/deleteEvent", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
@@ -222,7 +232,7 @@ public class EventControlller {
 	
 	@RequestMapping(value = "/getEventImage/{id}", method = RequestMethod.GET, produces = "image/jpeg")
 	@ResponseBody
-	public byte[] getSermonImage(@PathVariable int id) throws IOException {
+	public byte[] getEventImage(@PathVariable int id) throws IOException {
 
 		InputStream inputStream = eventService.getEventImageAsStream(id);
 
@@ -250,6 +260,40 @@ public class EventControlller {
 			return bytes;
 		}
 
+	}
+	
+	
+
+	@RequestMapping(value = "/favorateEvent", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	private StatusResponse favorateOrUnfavorateEvent(@RequestBody UserFavorateEvents favorateEvent) {
+		
+		return eventService.favorateEvent(favorateEvent);
+	}
+	
+	
+	@RequestMapping(value = "/unfavorateEvent", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	private StatusResponse unfavorateOrUnfavorateEvent(@RequestBody UserFavorateEvents favorateEvent) {
+		
+		return eventService.unfavorateEvent(favorateEvent);
+	}
+	
+	
+	/*@RequestMapping(value = "/getFavorateEvents", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	private StatusResponse getFavorateEvent(@RequestBody EventFavourite favorateEvent) {
+		
+		return eventService.getUserFavorateEvents(favorateEvent);
+	}*/
+	
+	@RequestMapping(value = "/getFavorateEvents/{userId}", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public List<Event> getOrgUsrById(@PathVariable int userId) {
+		logger.info("Listing user favorite");
+
+		List<Event> userFavorites = eventService.getUserFavorateEvents(userId);
+		return userFavorites;
 	}
 	
 	

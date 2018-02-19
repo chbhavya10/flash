@@ -11,8 +11,7 @@ public interface VwOrganizationInfoService {
 
 	List<VwOrgInfo> findOrganizationInfoByOrgId(int orgId);
 
-	int updateOrgInfo(int organizationId, String website, String primaryEmail, String generalInfo, String hours,
-			String facebookLink, String pastor1Bio, String pastor2Bio);
+	int updateOrgInfo(VwOrganizationInfo orgInfo);
 	
 	 int getLikeCount(int orgId);
 	 

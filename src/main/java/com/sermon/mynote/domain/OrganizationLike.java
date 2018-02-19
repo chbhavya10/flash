@@ -27,9 +27,20 @@ public class OrganizationLike implements Serializable {
 	private Integer denominationId;
 	private String phone;
 	private Integer eventCount;
+	private boolean isFavorate;
+	
+	
 	
 	
 
+
+	public boolean isFavorate() {
+		return isFavorate;
+	}
+
+	public void setFavorate(boolean isFavorate) {
+		this.isFavorate = isFavorate;
+	}
 
 	public Integer getEventCount() {
 		return eventCount;

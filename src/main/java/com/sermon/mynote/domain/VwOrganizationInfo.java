@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "vw_organizationInfo")
+@Table(name = "vw_organizationinfo")
 public class VwOrganizationInfo {
 
 	private int OrganizationId;
@@ -29,15 +29,19 @@ public class VwOrganizationInfo {
 	private String Denomination;
 	private String Pastor1Bio;
 	private String Pastor2Bio;
-	 private String Phone;
-
-	public VwOrganizationInfo() {
+	private String Phone;
+    private String StripeAcctId;
+	 
+	
+	 
+	public VwOrganizationInfo(){
+		
 	}
 
 	public VwOrganizationInfo(int organizationId, String organizationName, String address1, String address2, int cityId,
 			String cityName, int stateId, String stateName, int countryID, String countryName, String zipCode,
 			String hours, String generalInfo, String website, String primaryEmail, String facebookLink, String orgImage,
-			String Denomination, String Pastor1Bio, String Pastor2Bio) {
+			String Denomination, String Pastor1Bio, String Pastor2Bio,String StripeAcctId) {
 
 		this.OrganizationId = organizationId;
 		this.OrganizationName = organizationName;
@@ -59,6 +63,7 @@ public class VwOrganizationInfo {
 		this.Denomination = Denomination;
 		this.Pastor1Bio = Pastor1Bio;
 		this.Pastor2Bio = Pastor2Bio;
+		this.StripeAcctId = StripeAcctId;
 	}
 
 	
@@ -232,5 +237,16 @@ public class VwOrganizationInfo {
 	public void setPastor2Bio(String pastor2Bio) {
 		Pastor2Bio = pastor2Bio;
 	}
+
+	public String getStripeAcctId() {
+		return StripeAcctId;
+	}
+
+	@Column(name = "accountId")
+	public void setStripeAcctId(String stripeAcctId) {
+		StripeAcctId = stripeAcctId;
+	}
+
+	 
 
 }

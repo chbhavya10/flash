@@ -57,4 +57,13 @@ public class VwOrganizationNotesController {
 		}
 		return vwOrganizationNotes;
 	}
+	
+	@RequestMapping(value = "/favOrgSermons/{userId}", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	public List<VwOrganizationNotes> getUserFavorateChurchesNotes(@PathVariable int userId) {
+		logger.info("Listing getNotesByOrganization");
+
+		List<VwOrganizationNotes> vwOrganizationNotes = vwOrganizationNotesService.getUserFavorateChurchesNotes(userId);
+		return vwOrganizationNotes;
+	}
 }

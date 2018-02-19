@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sermon.mynote.domain.OrganizationUsers;
+import com.sermon.mynote.domain.StatusResponse;
 import com.sermon.mynote.service.OrganizationUsersService;
 
 @RequestMapping("/orglist")
@@ -38,9 +39,9 @@ public class OrganizationUsersController {
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST, headers = { "Content-type=application/json" })
-	public @ResponseBody OrganizationUsers CreateOrgUser(@RequestBody OrganizationUsers organizationUsers) {
+	public @ResponseBody StatusResponse CreateOrgUser(@RequestBody OrganizationUsers organizationUsers) {
 
-		OrganizationUsers newOrgUser = organizationUsersService.save(organizationUsers);
+		StatusResponse newOrgUser = organizationUsersService.save(organizationUsers);
 		return newOrgUser;
 	}
 
@@ -49,6 +50,7 @@ public class OrganizationUsersController {
 	@ResponseBody
 	public void updateOrgUser(@RequestBody OrganizationUsers organizationUsers, @PathVariable Long id) {
 		logger.info("Updating organization Users: " + organizationUsers);
+		System.out.println(organizationUsers.getUserId()+" "+ organizationUsers.getMembershipStatus()+" "+ organizationUsers.getOrganizationId());
 		organizationUsersService.save(organizationUsers);
 		logger.info("organizationUsers updated successfully with info: " + organizationUsers);
 	}

@@ -46,6 +46,7 @@ public class EventInput implements Serializable {
 	String ContactWebSite;
 	String ContactFB;
 	DateTime ModifiedDate;
+	int FavoriteEventId;
 
 
 
@@ -412,4 +413,15 @@ public class EventInput implements Serializable {
 		ModifiedDate = modifiedDate;
 	}
 
+	public int getFavoriteEventId() {
+		return FavoriteEventId;
+	}
+
+	public void setFavoriteEventId(int favoriteEventId) {
+		FavoriteEventId = favoriteEventId;
+	}
+ 
+
+	
+	
 }

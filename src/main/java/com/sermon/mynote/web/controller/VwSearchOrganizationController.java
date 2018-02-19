@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sermon.mynote.domain.LimitParameters;
 import com.sermon.mynote.domain.OrganizationLike;
 import com.sermon.mynote.domain.SearchOrganizationResult;
+import com.sermon.mynote.domain.User;
 import com.sermon.mynote.service.VwSearchOrganizationService;
 
 @RequestMapping("/searchorg")
@@ -30,28 +31,9 @@ public class VwSearchOrganizationController {
 		List<OrganizationLike> searchOrganization = vwSearchOrganizationService.SearchOrganiz(orgname, zipcode, city,
 				denomination);
 		return searchOrganization;
+		
 	}
-
-	@RequestMapping(value = "/search/{orgname}/{zipcode}/{city}", method = RequestMethod.POST, produces = "application/json")
-	@ResponseBody
-	public SearchOrganizationResult SearchOrganiz(@PathVariable String orgname, @PathVariable String zipcode,
-			@PathVariable String city, @RequestBody LimitParameters limitParameters) {
-
-		SearchOrganizationResult searchOrganization = vwSearchOrganizationService.SearchOrganiz(orgname, zipcode, city,
-				limitParameters);
-		return searchOrganization;
-	}
-
-	@RequestMapping(value = "/search/{orgname}/{zipcode}/{city}", method = RequestMethod.GET, produces = "application/json")
-	@ResponseBody
-	public List<OrganizationLike> searchOrganization(@PathVariable String orgname, @PathVariable String zipcode,
-			@PathVariable String city) {
-
-		List<OrganizationLike> searchOrganization = vwSearchOrganizationService.SearchOrganization(orgname, zipcode,
-				city);
-		return searchOrganization;
-	}
-
+	
 	@RequestMapping(value = "/search/{orgname}/{zipcode}/{city}/{denomination}", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public SearchOrganizationResult SearchOrganiz(@PathVariable String orgname, @PathVariable String zipcode,
@@ -62,4 +44,30 @@ public class VwSearchOrganizationController {
 				denomination, limitParameters);
 		return searchOrganization;
 	}
+
+	
+	@RequestMapping(value = "/searchByUser/{orgname}/{zipcode}/{city}", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public List<OrganizationLike> searchOrganization(@PathVariable String orgname, @PathVariable String zipcode,
+			@PathVariable String city, @RequestBody User userId) {
+
+		List<OrganizationLike> searchOrganization = vwSearchOrganizationService.SearchOrganization(orgname, zipcode,
+				city, userId.getUserId());
+		return searchOrganization;
+	}
+	
+	@RequestMapping(value = "/search/{orgname}/{zipcode}/{city}", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public SearchOrganizationResult SearchOrganiz(@PathVariable String orgname, @PathVariable String zipcode,
+			@PathVariable String city, @RequestBody LimitParameters limitParameters) {
+
+		SearchOrganizationResult searchOrganization = vwSearchOrganizationService.SearchOrganiz(orgname, zipcode, city,
+				limitParameters);
+		return searchOrganization;
+	}
+
+	
+	
+	
+
 }

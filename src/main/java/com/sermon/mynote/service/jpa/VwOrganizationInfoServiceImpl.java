@@ -72,9 +72,8 @@ public class VwOrganizationInfoServiceImpl implements VwOrganizationInfoService 
 
 		@SuppressWarnings("unchecked")
 		TypedQuery<VwOrganizationInfo> query = (TypedQuery<VwOrganizationInfo>) em.createNativeQuery(
-				"select o.* from  vw_organizationInfo o " + " WHERE (o.OrganizationId= :OrganizationId) ",
+				"select o.* from  vw_organizationinfo o " + " WHERE (o.OrganizationId= :OrganizationId) ",
 				VwOrganizationInfo.class).setParameter("OrganizationId", orgId);
-
 		System.out.println(query.toString());
 
 		List<VwOrganizationInfo> results = (List<VwOrganizationInfo>) query.getResultList();
@@ -121,7 +120,7 @@ public class VwOrganizationInfoServiceImpl implements VwOrganizationInfoService 
 		    orgInfo.setStateName(info.getStateName());
 		    orgInfo.setWebsite(info.getWebsite());
 		    orgInfo.setZipCode(info.getZipCode());
-
+		    orgInfo.setStripeAcctId(info.getStripeAcctId());
 		    vwOrgInfos.add(orgInfo);
 		 
 		    
@@ -130,15 +129,13 @@ public class VwOrganizationInfoServiceImpl implements VwOrganizationInfoService 
 	}
 
 	@Override
-	public int updateOrgInfo(int organizationId, String website, String primaryEmail, String generalInfo, String hours,
-			String facebookLink, String pastor1Bio, String pastor2Bio) {
-
+	public int updateOrgInfo(VwOrganizationInfo orgInfo){
+		
 		StoredProcedureQuery proc = em.createNamedStoredProcedureQuery("OrganizationInfo.update_orgInfo");
-
-		proc.setParameter("organizationId", organizationId).setParameter("website", website)
-				.setParameter("primaryEmail", primaryEmail).setParameter("generalInfo", generalInfo)
-				.setParameter("hours", hours).setParameter("facebookLink", facebookLink)
-				.setParameter("pastor1Bio", pastor1Bio).setParameter("pastor2Bio", pastor2Bio);
+		proc.setParameter("organizationId", orgInfo.getOrganizationId()).setParameter("website", orgInfo.getWebsite())
+				.setParameter("primaryEmail", orgInfo.getPrimaryEmail()).setParameter("generalInfo", orgInfo.getGeneralInfo())
+				.setParameter("hours", orgInfo.getHours()).setParameter("facebookLink", orgInfo.getFacebookLink())
+				.setParameter("pastor1Bio", orgInfo.getPastor1Bio()).setParameter("pastor2Bio", orgInfo.getPastor2Bio());
 
 		int result = proc.executeUpdate();
 

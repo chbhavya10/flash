@@ -7,5 +7,5 @@ import com.sermon.mynote.domain.UserOrgList;
 public interface VwUserorganizationsService {
 
 	public List<UserOrgList> findOrganizationsByUser(int userid);
-
+	
 }

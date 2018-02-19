@@ -69,13 +69,9 @@ public class VwOrganizationInfoController {
 	@ResponseBody
 	public StatusResponse updateOrgInfo(@RequestBody VwOrganizationInfo orgInfo) {
 
-		int result = vwOrganizationInfoService.updateOrgInfo(orgInfo.getOrganizationId(), orgInfo.getWebsite(),
-				orgInfo.getPrimaryEmail(), orgInfo.getGeneralInfo(), orgInfo.getHours(), orgInfo.getFacebookLink(),
-				orgInfo.getPastor1Bio(), orgInfo.getPastor2Bio());
+		int result = vwOrganizationInfoService.updateOrgInfo(orgInfo);
 
-		organizationService.updateOrganization(orgInfo.getOrganizationId(), orgInfo.getAddress1(),
-				orgInfo.getAddress2(), orgInfo.getCityId(), orgInfo.getStateId(), orgInfo.getCountryID(),
-				orgInfo.getZipCode());
+		organizationService.updateOrganization(orgInfo);
 
 		StatusResponse status = new StatusResponse();
 		if (result == 0) {
@@ -84,8 +80,6 @@ public class VwOrganizationInfoController {
 			status.setStatus(false);
 		}
 		
-		
-
 		return status;
 	}
 

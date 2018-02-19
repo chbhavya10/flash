@@ -32,6 +32,7 @@ public class VwOrgInfo implements  Serializable{
 	private int likeCount;
 	private int downloadCount;
 	private int sermonCount;
+	private String stripeAcctId;
 	
 	
 
@@ -393,6 +394,14 @@ public class VwOrgInfo implements  Serializable{
 	 */
 	public void setSermonCount(int sermonCount) {
 		this.sermonCount = sermonCount;
+	}
+
+	public String getStripeAcctId() {
+		return stripeAcctId;
+	}
+
+	public void setStripeAcctId(String stripeAcctId) {
+		this.stripeAcctId = stripeAcctId;
 	}
 
 }

@@ -9,5 +9,7 @@ import com.sermon.mynote.domain.VwUserorganizations;
 public interface VwUserorganizationsRepository extends PagingAndSortingRepository<VwUserorganizations, Long> {
 
 	public List<VwUserorganizations> findOrganizationsByUser(int userid);
+	
+	public List<VwUserorganizations> findOrganizationsByUser(int userid, int OrganizationId);
 
 }

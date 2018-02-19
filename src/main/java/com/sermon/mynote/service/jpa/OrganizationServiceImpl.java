@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
 import com.sermon.mynote.domain.Organization;
+import com.sermon.mynote.domain.VwOrganizationInfo;
 import com.sermon.mynote.repository.OrganizationRepository;
 import com.sermon.mynote.service.OrganizationService;
 
@@ -35,13 +36,12 @@ public class OrganizationServiceImpl implements OrganizationService {
 	}
 
 	@Override
-	public int updateOrganization(int organizationId, String address1, String address2, int cityId, int stateId,
-			int countryID, String zipCode) {
-
+	public int updateOrganization(VwOrganizationInfo orgInfo){
 		StoredProcedureQuery proc = em.createNamedStoredProcedureQuery("Organization.update_organization");
-		proc.setParameter("organizationId", organizationId).setParameter("address1", address1)
-				.setParameter("address2", address2).setParameter("cityId", cityId).setParameter("stateId", stateId)
-				.setParameter("countryId", countryID).setParameter("zipCode", zipCode);
+		proc.setParameter("organizationId", orgInfo.getOrganizationId()).setParameter("address1", orgInfo.getAddress1())
+				.setParameter("address2", orgInfo.getAddress2()).setParameter("cityId", orgInfo.getCityId()).setParameter("stateId", orgInfo.getStateId())
+				.setParameter("countryId", orgInfo.getCountryID()).setParameter("zipCode", orgInfo.getZipCode())
+				.setParameter("accountId", orgInfo.getStripeAcctId());
 
 		int result = proc.executeUpdate();
 		return result;

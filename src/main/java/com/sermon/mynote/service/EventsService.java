@@ -7,6 +7,7 @@ import java.util.List;
 import com.amazonaws.services.s3.transfer.Upload;
 import com.sermon.mynote.domain.Event;
 import com.sermon.mynote.domain.EventDetails;
+import com.sermon.mynote.domain.UserFavorateEvents;
 import com.sermon.mynote.domain.EventType;
 import com.sermon.mynote.domain.StatusResponse;
 
@@ -20,13 +21,14 @@ public interface EventsService {
 	
 	List<Event> getEventsByOrg(int organizationId);
 	
-	List<Event> getEventsList();
+	List<Event> getUserFavorateEvents(int userId);
+	
+	List<EventDetails> getEventsList(int userId);
+	
 	
 	int saveImage(int eventId, String imgName);
 	
-	Event findById(Integer id);
-
-	Event save(Event event);
+	Event save(Event eventTemp);
 	
 	String getEventImage(int noteId);
 		
@@ -35,6 +37,16 @@ public interface EventsService {
 	StatusResponse deleteEvent(int eventId);
 	
 	InputStream getEventImageAsStream(int eventId);
+
+	StatusResponse favorateEvent(UserFavorateEvents favorateEvent);
+
+	StatusResponse unfavorateEvent(UserFavorateEvents favorateEvent);
+	
+
+
+	
+
+	
 	
 
 

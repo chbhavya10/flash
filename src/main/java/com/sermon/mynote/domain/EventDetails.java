@@ -38,8 +38,20 @@ public class EventDetails implements Serializable {
 	String startTime;
 	String endTime;
 	String EventImage;
+	boolean isFavourite;
 	
 	
+	
+	
+	
+
+	public boolean isFavourite() {
+		return isFavourite;
+	}
+
+	public void setFavourite(boolean isFavourite) {
+		this.isFavourite = isFavourite;
+	}
 
 	public String getEventImage() {
 		return EventImage;

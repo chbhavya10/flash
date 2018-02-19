@@ -9,5 +9,7 @@ public interface VwOrganizationNotesService {
 	public List<VwOrganizationNotes> findAll();
 
 	public List<VwOrganizationNotes> findSermonsByOrgId(int orgid);
+	
+	public List<VwOrganizationNotes> getUserFavorateChurchesNotes(int userId);
 
 }

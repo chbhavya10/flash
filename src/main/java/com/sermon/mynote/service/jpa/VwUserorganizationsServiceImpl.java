@@ -132,4 +132,6 @@ public class VwUserorganizationsServiceImpl implements VwUserorganizationsServic
 		return userOrgLists;
 
 	}
+
+	
 }

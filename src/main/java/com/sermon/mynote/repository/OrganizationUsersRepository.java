@@ -9,4 +9,8 @@ import com.sermon.mynote.domain.OrganizationUsers;
 public interface OrganizationUsersRepository extends PagingAndSortingRepository<OrganizationUsers, Integer> {
 
 	public List<OrganizationUsers> findOrgUserById(int userid);
+	
+	public List<OrganizationUsers> findOrgUserById(int userid, int organizationId);
+	
+
 }

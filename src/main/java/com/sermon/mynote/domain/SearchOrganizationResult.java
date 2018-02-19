@@ -17,6 +17,7 @@ public class SearchOrganizationResult implements Serializable {
 	private Set<State> states;
 	private Set<City> cities;
 	private Set<Denomination> denominations;
+	
 
 	public Set<Country> getCountries() {
 		return countries;

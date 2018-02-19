@@ -9,4 +9,6 @@ import com.sermon.mynote.domain.Note;
 public interface NoteRepository extends PagingAndSortingRepository<Note, Integer> {
 
 	public List<Note> findNotesByAuthorId(int authorId);
+	
+	public Note findNoteByNoteId(int NoteId);
 }

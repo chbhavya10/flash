@@ -9,5 +9,8 @@ import com.sermon.mynote.domain.VwOrganizationNotes;
 public interface VwOrganizationNotesRepository extends PagingAndSortingRepository<VwOrganizationNotes, Long> {
 
 	public List<VwOrganizationNotes> findSermonsByOrgId(int orgid);
+	
+	public List<VwOrganizationNotes> findSermonsByNoteId(int NoteId);
+
 
 }

@@ -2,6 +2,7 @@ package com.sermon.mynote.domain;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -36,7 +37,8 @@ import javax.persistence.Table;
 				@StoredProcedureParameter(mode = ParameterMode.IN, name = "cityId", type = Integer.class),
 				@StoredProcedureParameter(mode = ParameterMode.IN, name = "stateId", type = Integer.class),
 				@StoredProcedureParameter(mode = ParameterMode.IN, name = "countryId", type = Integer.class),
-				@StoredProcedureParameter(mode = ParameterMode.IN, name = "zipCode", type = String.class) }) })
+				@StoredProcedureParameter(mode = ParameterMode.IN, name = "zipCode", type = String.class),
+				@StoredProcedureParameter(mode = ParameterMode.IN, name = "accountId", type = String.class) }) })
 @Table(name = "organization")
 public class Organization implements java.io.Serializable {
 
@@ -196,4 +198,6 @@ public class Organization implements java.io.Serializable {
 	 * public void setCountry(Country country) { this.country = country; }
 	 */
 
+ 
+	 
 }
