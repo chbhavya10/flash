@@ -272,7 +272,7 @@ public class EventControlller {
 	}
 	
 	
-	@RequestMapping(value = "/unfavorateEvent", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/unfavorateEvent", method = RequestMethod.DELETE, produces = "application/json")
 	@ResponseBody
 	private StatusResponse unfavorateOrUnfavorateEvent(@RequestBody UserFavorateEvents favorateEvent) {
 		

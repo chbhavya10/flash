@@ -10,7 +10,7 @@ public interface OrganizationUsersRepository extends PagingAndSortingRepository<
 
 	public List<OrganizationUsers> findOrgUserById(int userid);
 	
-	public List<OrganizationUsers> findOrgUserById(int userid, int organizationId);
+	OrganizationUsers findOrgUserById(int userid, int organizationId);
 	
 
 }

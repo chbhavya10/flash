@@ -12,6 +12,9 @@ public interface OrganizationUsersService {
 	public OrganizationUsers findById(Integer id);
 
 	void delete(OrganizationUsers organizationUsers);
+	
+	void deleteByUserIdAndOrganizationId(int userId, int  organizationId);
+
 
 	public List<OrganizationUsers> findOrgUserById(int userid);
 

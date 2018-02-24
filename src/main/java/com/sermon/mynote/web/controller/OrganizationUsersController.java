@@ -57,10 +57,19 @@ public class OrganizationUsersController {
 
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
 	@ResponseBody
-	public void delete(@PathVariable Long id) {
+	public void deleteByOrgUserId(@PathVariable Long id) {
 		logger.info("Deleting contact with id: " + id);
 		OrganizationUsers orgUser = organizationUsersService.findById(id.intValue());
 		organizationUsersService.delete(orgUser);
+		logger.info("org User deleted successfully");
+	}
+	
+	@RequestMapping(value = "/delete",produces = "application/json", consumes = "application/json", method = RequestMethod.DELETE)
+	@ResponseBody
+	public void deleteByUserIdAndOrganizationId(@RequestBody OrganizationUsers organizationUsers) {
+		logger.info("Deleting contact with id: " + organizationUsers.getUserId());
+		System.out.println(organizationUsersService +" "+organizationUsers.getUserId() + " "+organizationUsers.getOrganizationId());
+		organizationUsersService.deleteByUserIdAndOrganizationId(organizationUsers.getUserId(), organizationUsers.getOrganizationId());
 		logger.info("org User deleted successfully");
 	}
 }
